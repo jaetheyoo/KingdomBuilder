@@ -16,3 +16,7 @@ Game.spawns['Spawn1'].spawnCreep( [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOU
                     MOVE,MOVE,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE],'a1',{memory:{role:'manualAttack', attackFlag:'attackFlag',healFlag:'healFlag'}})
 Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE],'h',{memory:{role:'manualHeal', flag: 'healer'}})
 Game.spawns['Spawn2'].spawnCreep([WORK,CARRY,MOVE,MOVE], 'u1', {memory: {role: 'upgraderStarter'}})
+
+
+//harvester maximization
+//50*c*1420/(90+25c/w)-75c-125w where w=17, c=16
