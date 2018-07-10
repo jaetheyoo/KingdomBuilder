@@ -77,27 +77,6 @@ class Village {
         });
     }
     
-    deregister(creepName) {
-        //console.log(this.villageName + ' DEREGISTERING: ' + creepName);
-        //this.printStatus();
-        let source;
-        switch(this.creeps[creepName].role) {
-            case 'dropHarvester':
-                source = this.creeps[creepName].mySource;
-                Memory.Villages[this.villageName].sources[source].dropHarvesters--
-                break;
-            case 'harvester':
-                source = this.creeps[creepName].mySource;
-                //console.log("IN HEAP: " + JSON.stringify(this.sources[source]));
-                //console.log("IN MEM: " + JSON.stringify(this.memoryAddr.sources[source].harvesters));
-                Memory.Villages[this.villageName].sources[source].harvesters--
-                //console.log("IN MEM: " + JSON.stringify(this.memoryAddr.sources[source].harvesters));
-                //console.log("IN HEAP: " + JSON.stringify(this.sources[source]));
-                break;
-        }
-        //this.printStatus();
-    }
-    
     registerRemoteRooms() {
         let that = this;
         _.forEach(Object.keys(this.memoryAddr['remoteRooms']), function(r) {
@@ -235,10 +214,15 @@ class Village {
         }
     }
 
+    /**
+     * register sources to this creep and add this creep to memory
+     * @param {creepBuild} creepBuild 
+     */
     registerCreep(creepBuild) {
-        this.creeps[creepBuild.name] = creepBuild.memoryConfig;
+        console.log(``)
+        this.creeps[creepBuild.name] = creepBuild.memoryConfig; // TODO: is this necessary?
         this.memoryAddr.creeps[creepBuild.name] = creepBuild.memoryConfig;
-        console.log('CREEP BUILD ROLE NAME: ' + creepBuild.roleName)
+        // console.log('CREEP BUILD ROLE NAME: ' + creepBuild.roleName)
         let mySource;
         switch (creepBuild.roleName) {
             case 'harvester':
@@ -262,6 +246,30 @@ class Village {
                 this.memoryAddr.creeps[creepBuild.name].mySource = mySource;
                 break;                
         }
+    }
+
+    /**
+     * Deregister sources associated with these creeps
+     */
+    deregister(creepName) {
+        //console.log(this.villageName + ' DEREGISTERING: ' + creepName);
+        //this.printStatus();
+        let source;
+        switch(this.creeps[creepName].role) {
+            case 'dropHarvester':
+                source = this.creeps[creepName].mySource;
+                Memory.Villages[this.villageName].sources[source].dropHarvesters--
+                break;
+            case 'harvester':
+                source = this.creeps[creepName].mySource;
+                //console.log("IN HEAP: " + JSON.stringify(this.sources[source]));
+                //console.log("IN MEM: " + JSON.stringify(this.memoryAddr.sources[source].harvesters));
+                Memory.Villages[this.villageName].sources[source].harvesters--
+                //console.log("IN MEM: " + JSON.stringify(this.memoryAddr.sources[source].harvesters));
+                //console.log("IN HEAP: " + JSON.stringify(this.sources[source]));
+                break;
+        }
+        //this.printStatus();
     }
 
     canSpawn(creepBuild) {

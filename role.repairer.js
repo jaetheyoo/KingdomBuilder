@@ -16,7 +16,8 @@ var roleRepairer = {
                 let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: function(object){
                         return (object.structureType == STRUCTURE_ROAD && object.hits/object.hitsMax <= .9) ||
-                        (object.structureType != STRUCTURE_ROAD && object.hits < object.hitsMax && object.hits < 150000);
+                        (object.structureType != STRUCTURE_ROAD && object.hits < object.hitsMax && object.hits < 150000)||
+                        (object.structureType == STRUCTURE_CONTAINER && object.hits < object.hitsMax && object.hits < 230000);
                     } 
                 });
                 
@@ -26,7 +27,7 @@ var roleRepairer = {
                     }
                 } else {
                     creep.memory.role = 'builder';
-                    creep.say('🚧 build');
+                    creep.say('ð§ build');
                 }
             }
            

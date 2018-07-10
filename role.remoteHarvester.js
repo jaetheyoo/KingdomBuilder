@@ -2,8 +2,8 @@ var roleRemoteHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        const MINING_TIME = 64;
-        const TRAVEL_TO_BASE_TIME = 49;
+        const MINING_TIME = 25;
+        const TRAVEL_TO_BASE_TIME = 45;
         let harvestFlag = creep.memory.harvestFlag ? Game.flags[creep.memory.harvestFlag] : Game.flags['RemoteSource0'];
         targets = [harvestFlag];
         if(creep.carry.energy < creep.carryCapacity && creep.ticksToLive >= (MINING_TIME + TRAVEL_TO_BASE_TIME*2)) {

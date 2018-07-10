@@ -342,7 +342,7 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='builder' || object.memory.role=='repairer';
         }
-    }).length < 1 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+    }).length < 4 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='harvester' ;
         }}).length >=5) {
@@ -354,7 +354,7 @@ module.exports.loop = function () {
             return object.memory.role=='dropHarvester';
         }
     }).length < 1) {
-        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: ''}})
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: 'R2Source1', sourceId: '59f19fad82100e1594f35641'}})
     }
     
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
@@ -370,7 +370,7 @@ module.exports.loop = function () {
             return object.memory.role=='upgraderStarter';
         }
     }).length < 1) {
-        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,CARRY,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
     }
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
@@ -455,7 +455,7 @@ module.exports.loop = function () {
                     creep.moveTo( Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#272626'}});
                     Game.spawns['Spawn1'].recycleCreep(creep);
                 } catch (err) {
-                        console.log(err);
+                        console.log(creep.name + " | " + err);
                     }     
             } else {
                 if(creep.memory.role == 'repairer') {
@@ -463,7 +463,7 @@ module.exports.loop = function () {
                         creep.say('🔧');
                         roleRepairer.run(creep, repairers.length >= adjustedMaxRepairers);
                     } catch (err) {
-                        console.log(err);
+                       console.log('REPAIRER ERROR: ' + err);
                     }     
                 }
                 
@@ -472,7 +472,7 @@ module.exports.loop = function () {
                         creep.say('✈️🔋');
                         roleRemoteHarvester.run(creep);
                     } catch (err) {
-                       console.log(err);
+                       console.log('REMOTE HARVESTER ERROR: ' + err);
                     }     
                 }
                 
@@ -480,7 +480,7 @@ module.exports.loop = function () {
                     try {
                         roleRemoteTransfer.run(creep);
                     } catch (err) {
-                        console.log(err);
+                       console.log('REMOTE Transfer: ' + err);
                     }     
                 }
                 
@@ -489,7 +489,7 @@ module.exports.loop = function () {
                         creep.say('🔋');
                         roleHarvester.run(creep);
                     } catch (err) {
-                        console.log(err);
+                       console.log('HARVESTER: ' + err);
                     }     
                 }
                 if(creep.memory.role == 'transporter') {
@@ -499,7 +499,7 @@ module.exports.loop = function () {
                         let shouldWait = false;
                         roleTransporter.run(creep, shouldWait);
                     } catch (err) {
-                        console.log(err);
+                       console.log('TRANSPORTER: ' + err);
                     }                        
                 }
                 if(creep.memory.role == 'scavenger') {
@@ -509,7 +509,7 @@ module.exports.loop = function () {
                         let shouldWait = false;                
                         roleScavenger.run(creep, shouldWait);
                     } catch (err) {
-                        console.log(err);
+                       console.log('SCAVENGER: ' + err);
                     }
                 }
                 if(creep.memory.role == 'dropHarvester') {
@@ -518,7 +518,7 @@ module.exports.loop = function () {
                         //let shouldWait = harvesterNames.length < harvestFlags.length || upgraderNames.length < conf.UPGRADER_COUNT || builderNames < conf.BUILDER_COUNT;
                         roleDropHarvester.run(creep, Game.flags[creep.memory.myFlag], Game.getObjectById(creep.memory.sourceId));
                     } catch (err) {
-                        console.log(err);
+                       console.log('DROP HARVESTER: ' + err);
                     }
                 }
                 if(creep.memory.role == 'upgrader') {

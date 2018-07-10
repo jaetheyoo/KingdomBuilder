@@ -6,7 +6,7 @@ to dude:
 
 */
 Game.spawns['Spawn1'].spawnCreep([MOVE],'bob',{memory:{role:'extends'}})
-Game.spawns['Spawn1'].spawnCreep([MOVE],'bob',{memory:{role:'extends'}})
+Game.spawns['Spawn1'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE],'bob',{memory:{role:'extends'}})
 Game.spawns['Spawn1'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE],'r1',{memory:{role:'remoteBuilder',searchFlag:'Room2Spawn'}})
 
 Game.spawns['Spawn1'].spawnCreep( [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
