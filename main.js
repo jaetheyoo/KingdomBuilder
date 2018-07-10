@@ -28,6 +28,11 @@ module.exports.loop = function () {
             delete Memory.creeps[i];
         }
     }
+
+    let closeHarvesters = Game.spawns['Spawn1'].pos.findInRange(FIND_MY_CREEPS, 1,{
+        filter: _creep => (_creep.memory.role == 'harvester') && _creep.ticksToLive < 600 && _creep.ticksToLive > 150
+    });
+    closeHarvesters.forEach(_creep => Game.spawns['Spawn1'].renewCreep(_creep)); 
     
     var tower3 = Game.getObjectById('5b415d9ca8f9805e72b8b1aa');
     if(tower3) {
