@@ -2,7 +2,6 @@ var roleRemoteHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        console.log("testing");
         const MINING_TIME = 64;
         const TRAVEL_TO_BASE_TIME = 49;
         let harvestFlag = creep.memory.harvestFlag ? Game.flags[creep.memory.harvestFlag] : Game.flags['RemoteSource0'];
