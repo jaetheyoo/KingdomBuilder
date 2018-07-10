@@ -342,18 +342,34 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='builder' || object.memory.role=='repairer';
         }
-    }).length < 1 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+    }).length < 4 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='harvester' ;
         }}).length >=5) {
-        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], "bu" + Game.time.toString(), {memory: {role: 'builder', withdrawFlag: 'S2', room: 'S2R2'}})
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], "bu" + Game.time.toString(), {memory: {role: 'builder', withdrawFlag: 'S2', room: 'S2R2'}})
+    }
+    
+    if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+        filter: function(object) {
+            return object.memory.role=='dropHarvester';
+        }
+    }).length < 1) {
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: ''}})
+    }
+    
+    if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+        filter: function(object) {
+            return object.memory.role=='scavenger';
+        }
+    }).length < 1) {
+        Game.spawns['Spawn2'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], "scav" + Game.time.toString(), {memory: {role: 'scavenger', myDropOffFlag: 'Room2Spawn', mySpawn: 'Spawn2', harvestFlag: 'R2Source1'}})
     }
     
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='upgraderStarter';
         }
-    }).length < 2) {
+    }).length < 1) {
         Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,CARRY,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
     }
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
@@ -500,7 +516,7 @@ module.exports.loop = function () {
                     try {
                         creep.say('Drop');
                         //let shouldWait = harvesterNames.length < harvestFlags.length || upgraderNames.length < conf.UPGRADER_COUNT || builderNames < conf.BUILDER_COUNT;
-                        roleDropHarvester.run(creep, shouldWait);
+                        roleDropHarvester.run(creep, Game.flags[creep.memory.myFlag], Game.getObjectById(creep.memory.sourceId));
                     } catch (err) {
                         console.log(err);
                     }

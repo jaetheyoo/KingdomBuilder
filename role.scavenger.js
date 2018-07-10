@@ -7,9 +7,13 @@ var roleScavenger = {
             once there, they will scavenge in the room the flag is in
     */
     run: function(creep, shouldWait) {
+        if (!shouldWait) {
+            shouldWait = false;
+        }
         try {
             if (creep.carry.UH || creep.carry.OH || creep.carry.GO || creep.carry.KO || creep.carry.ZH || creep.carry.ZK || creep.carry.GH || creep.carry.ZO || creep.carry.LO) {
-                let targets = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {
+                let mySpawn = creep.memory.mySpawn ? creep.memory.mySpawn : 'Spawn1'; 
+                let targets = Game.spawns[mySpawn].room.find(FIND_STRUCTURES, {
                     filter: (i) => i.structureType == STRUCTURE_STORAGE &&
                     i.store[RESOURCE_ENERGY] < i.storeCapacity 
                 });
@@ -62,7 +66,8 @@ var roleScavenger = {
                             creep.moveTo(droppedResources,  {visualizePathStyle: {stroke: '#ffffff'}});
                             creep.pickup(droppedResources);
                         } else {
-                            let miningContainers = Game.flags['HarvestA1'].pos.findInRange(FIND_STRUCTURES,3, {
+                            let myFlag = creep.memory.harvestFlag ? creep.memory.harvestFlag : 'HarvestA1';
+                            let miningContainers = Game.flags[myFlag].pos.findInRange(FIND_STRUCTURES,3, {
                                 filter: (structure) => {
                                     return ((structure.structureType == STRUCTURE_CONTAINER) && 
                                         structure.store[RESOURCE_ENERGY] > 0);
@@ -97,7 +102,6 @@ var roleScavenger = {
                                     structure.energy < structure.energyCapacity);
                             }
                         });
-            
                         if(targets) {
                             if(creep.transfer(targets, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(targets, {visualizePathStyle: {stroke: '#ffffff'}});
@@ -107,7 +111,9 @@ var roleScavenger = {
                             creep.say("🛑 Waiting");
                             creep.moveTo(Game.flags["WaitingZone"],{visualizePathStyle: {stroke: '#EE9B8A'}});
                         } else {
-                            targets = Game.flags['DropoffContainers'].pos.findInRange(FIND_STRUCTURES,4, {
+                            let myDropOffFlag = creep.memory.myDropOffFlag ? creep.memory.myDropOffFlag : 'DropoffContainers';
+                            
+                            targets = Game.flags[myDropOffFlag].pos.findInRange(FIND_STRUCTURES,4, {
                                 filter: (structure) => {
                                     return ((structure.structureType == STRUCTURE_CONTAINER) && 
                                         structure.store[RESOURCE_ENERGY] < structure.storeCapacity);
@@ -119,7 +125,8 @@ var roleScavenger = {
                                     creep.transfer(targets[0], RESOURCE_ENERGY);
                                 }
                             } else {
-                                targets = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {
+                                let mySpawn = creep.memory.mySpawn ? creep.memory.mySpawn : 'Spawn1'; 
+                                targets = Game.spawns[mySpawn].room.find(FIND_STRUCTURES, {
                                     filter: (i) => i.structureType == STRUCTURE_STORAGE &&
                                     i.store[RESOURCE_ENERGY] < i.storeCapacity 
                                 });
