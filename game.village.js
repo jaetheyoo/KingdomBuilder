@@ -18,12 +18,19 @@ class Village {
         this.sources = {};
         this.remoteCreeps = {};
         this.structures = {};
+        this.flags = {};
         this.controllerId = controllerId;
         this.controller = Game.structures[controllerId];
         this.spawnQueue = [];
+        
         this.debugMessage = new DebugMessage();
         this.debug = debug;
-
+        
+        if(!this.memoryAddr['flags']) {
+            this.debugMessage.append("Village.ctr: no flags initialized");
+            this.initFlags();
+        }
+        
         if (!this.memoryAddr['creeps']) {
             this.debugMessage.append("Village.ctr: no creeps initialized");
             this.initCreeps();
@@ -43,6 +50,7 @@ class Village {
             this.initRemoteRooms();
         }
         
+        this.registerFlags();
         this.registerRemoteRooms();
         this.registerSources();
         this.registerLevel();
@@ -75,6 +83,18 @@ class Village {
         Game.rooms[this.roomName].find(FIND_SOURCES).forEach(function(s) {
             that.memoryAddr['sources'][s.id] = {harvesters: 0, harvestersAmount: 3, dropHarvesters: 0}; // todo: analyze sources for harvestersAmount
         });
+    }
+    
+    initFlags() {
+        let that = this;
+        this.memoryAddr.flags = {};
+    }
+    
+    registerFlags() {
+        let that = this;
+        _.forEach(Object.keys(this.memoryAddr['flags']), function(r) {
+            that.flags[r] = that.memoryAddr['flags'][r];            
+        });        
     }
     
     registerRemoteRooms() {
@@ -330,6 +350,10 @@ class Village {
     
     hasCreep(creepName) {
         return this.creeps[creepName] ? true : false;
+    }
+
+    getHideoutFlag() {
+        return this.memoryAddr['flags'].hideoutFlag;
     }
     
     toString() {

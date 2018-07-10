@@ -51,6 +51,10 @@ var speech = {
         return'👴🏻';
     },
     
+    get DROPOFF() {
+        return '📦'
+    },
+
     get OLDBUILDER() {
         return '👷👴🏻';
     },

@@ -9,7 +9,7 @@ var init = function initVillage(Villages, debug) {
         let village1_Spawn = Game.spawns['Spawn1'];
         let village1_room = village1_Spawn.room;
         let village1_controller = village1_room.controller; 
-        let village1_remoteRooms = {
+        let village1_remoteRooms = { // TODO: do I need this?
             "W55N48": {
                 "remoteSources": {
                     "59f19f8a82100e1594f351e5" : {}
@@ -59,6 +59,9 @@ var init = function initVillage(Villages, debug) {
                         },
                         "remoteController": '59f19f9982100e1594f3540c',
                     },
+                },
+                "flags": {
+                    "hideoutFlag" : '',
                 }
             },
             //"village2": {

@@ -32,7 +32,7 @@ var CreepReporter = function(creeps, debug, village) {
                 roleMeleeDefender.run(creep);
                 break;
             case 'remoteHarvester':
-                roleRemoteHarvester.run(creep);
+                roleRemoteHarvester.run(creep,village.getSource(creep.name));
                 break;
             case 'remoteTransporter':
                 roleRemoteTransporter.run(creep);
