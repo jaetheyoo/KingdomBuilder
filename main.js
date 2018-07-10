@@ -366,7 +366,7 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='scavenger';
         }
-    }).length < 1) {
+    }).length < 2) {
         Game.spawns['Spawn2'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], "scav" + Game.time.toString(), {memory: {role: 'scavenger', myDropOffFlag: 'Room2Spawn', mySpawn: 'Spawn2', harvestFlag: 'R2Source1'}})
     }
     
@@ -531,21 +531,21 @@ module.exports.loop = function () {
                         creep.say('⏫');
                         roleUpgrader.run(creep);
                     } catch (err) {
-                        console.log(err);
+                        console.log('Upgrader' + err);
                     }
                 }
                 if(creep.memory.role == 'builder') {
                     try {
                         roleBuilder.run(creep, repairers.length >= adjustedMaxRepairers);
                     } catch (err) {
-                        console.log(err);
+                        console.log('Builder: ' + err);
                     }
                 }
                 if (creep.memory.role == 'upgraderStarter') {
                     try {
                         roleUpgraderStarter.run(creep);
                     } catch (err) {
-                        console.log(err);
+                        console.log('UpgradeStarter: ' + err);
                     }
                 }
             }
