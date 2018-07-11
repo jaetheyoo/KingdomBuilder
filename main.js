@@ -347,7 +347,7 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='builder' || object.memory.role=='repairer';
         }
-    }).length < 4 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+    }).length < 0 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='harvester' ;
         }}).length >=5) {
@@ -374,8 +374,8 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='upgraderStarter';
         }
-    }).length < 1) {
-        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
+    }).length < 4) {
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
     }
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
@@ -531,21 +531,21 @@ module.exports.loop = function () {
                         creep.say('⏫');
                         roleUpgrader.run(creep);
                     } catch (err) {
-                        console.log(err);
+                        console.log('Upgrader' + err);
                     }
                 }
                 if(creep.memory.role == 'builder') {
                     try {
                         roleBuilder.run(creep, repairers.length >= adjustedMaxRepairers);
                     } catch (err) {
-                        console.log(err);
+                        console.log('Builder: ' + err);
                     }
                 }
                 if (creep.memory.role == 'upgraderStarter') {
                     try {
                         roleUpgraderStarter.run(creep);
                     } catch (err) {
-                        console.log(err);
+                        console.log('UpgradeStarter: ' + err);
                     }
                 }
             }
