@@ -30,41 +30,41 @@ module.exports.loop = function () {
     }
     
     /// WAR CODE
-    try {
-        var taxNames = Object.keys(Game.creeps).filter(x=>x.match(/Taxer/gi)).length;
-        if (taxNames < 1) {
-            if (taxNames == 1) {
-                if (Game.creeps[Object.keys(Game.creeps).filter(x=>x.match(/Taxer/gi))[0]].ticksToLive < 150) {
-                    //Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
-                }
-            } else if (taxNames == 0 && Game.time % 5000 == 0) {
-                //Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
-            }
-        }
+    // try {
+    //     var taxNames = Object.keys(Game.creeps).filter(x=>x.match(/Taxer/gi)).length;
+    //     if (taxNames < 1) {
+    //         if (taxNames == 1) {
+    //             if (Game.creeps[Object.keys(Game.creeps).filter(x=>x.match(/Taxer/gi))[0]].ticksToLive < 150) {
+    //                 Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
+    //             }
+    //         } else if (taxNames == 0 && Game.time % 5000 == 0) {
+    //             Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
+    //         }
+    //     }
         
         
-        if (Game.time >= 7786266 ) {
-            if(!Game.creeps['h']) {
-                Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE],'h',{memory:{role:'manualHeal', flag: 'healer'}})
-            }
-            if(!Game.creeps['h1']) {
-                Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE],'h1',{memory:{role:'manualHeal', flag: 'healer'}})
-            }            
-            if (!Game.creeps['h2']){
-                Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE],'h2',{memory:{role:'manualHeal', flag: 'healer'}})
-            }
+    //     if (Game.time > 7786266 ) {
+    //         if(!Game.creeps['h']) {
+    //             Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],'h',{memory:{role:'manualHeal', flag: 'healer'}})
+    //         }
+    //         if(!Game.creeps['h93425']) {
+    //             Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],'h93425',{memory:{role:'manualHeal', flag: 'healer2'}})
+    //         }            
+    //         if (!Game.creeps['h2']){
+    //             Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],'h2',{memory:{role:'manualHeal', flag: 'healer3'}})
+    //         }
 
-            if(!Game.creeps['a1']) {
-                Game.spawns['Spawn1'].spawnCreep( [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
-                    TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
-                    TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    MOVE,MOVE,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE],'a1',{memory:{role:'manualAttack', attackFlag:'attackFlag',healFlag:'healFlag'}})
-            }
-       }
-    } catch (err) {
-        console.log('taxer didnt work');
-    }
+    //         if(!Game.creeps['a1']) {
+    //             //Game.spawns['Spawn1'].spawnCreep( [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+    //             //    TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+    //             //    TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+    //             //    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+    //             //    MOVE,MOVE,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE],'a1',{memory:{role:'manualAttack', attackFlag:'attackFlag',healFlag:'healFlag'}})
+    //         }
+    //    }
+    // } catch (err) {
+    //     console.log('taxer didnt work');
+    // }
 
     let closeHarvesters = Game.spawns['Spawn1'].pos.findInRange(FIND_MY_CREEPS, 1,{
         filter: _creep => (_creep.memory.role == 'harvester') && _creep.ticksToLive < 600 && _creep.ticksToLive > 150
@@ -384,7 +384,7 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='builder' || object.memory.role=='repairer';
         }
-    }).length < 1 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+    }).length < 0 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='harvester' ;
         }}).length >=5) {
