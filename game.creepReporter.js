@@ -14,47 +14,50 @@ var CreepReporter = function(creeps, debug, village) {
         let creep = Game.creeps[creepName];
         creepReport.report(creep, village);
         let creepRole = village.creeps[creepName].role;
-        
-        switch (creepRole) {
-            case 'builder':
-                roleBuilder.run(creep, village.remoteRooms);
-                break;
-            case 'claimer':
-                roleClaimer.run(creep);
-                break;
-            case 'harvester':
-                roleHarvester.run(creep, village);
-                break;
-            case 'dropHarvester':
-                roleDropHarvester.run(creep, village.getDropHarvestLocation(creepName), village.getSource(creepName));
-                break;
-            case 'meleeDefender':
-                roleMeleeDefender.run(creep);
-                break;
-            case 'remoteHarvester':
-                roleRemoteHarvester.run(creep,village.getSource(creep.name));
-                break;
-            case 'remoteTransporter':
-                roleRemoteTransporter.run(creep);
-                break;
-            case 'repairer':
-                roleRepairer.run(creep);
-                break;
-            case 'scavenger':
-                roleScavenger.run(creep);
-                break;
-            case 'scout':
-                roleScout.run(creep);
-                break;
-            case 'transporter':
-                roleTransporter.run(creep);
-                break;
-            case 'upgrader':
-                roleUpgrader.run(creep);
-                break;
-            case 'extends':
-                roleExtends.run(creep);
-                break;
+        try {
+            switch (creepRole) {
+                case 'builder':
+                    roleBuilder.run(creep, village.remoteRooms);
+                    break;
+                case 'claimer':
+                    roleClaimer.run(creep);
+                    break;
+                case 'harvester':
+                    roleHarvester.run(creep, village);
+                    break;
+                case 'dropHarvester':
+                    roleDropHarvester.run(creep, village.getDropHarvestLocation(creepName), village.getSource(creepName));
+                    break;
+                case 'meleeDefender':
+                    roleMeleeDefender.run(creep);
+                    break;
+                case 'remoteHarvester':
+                    roleRemoteHarvester.run(creep,village.getSource(creep.name));
+                    break;
+                case 'remoteTransporter':
+                    roleRemoteTransporter.run(creep);
+                    break;
+                case 'repairer':
+                    roleRepairer.run(creep);
+                    break;
+                case 'scavenger':
+                    roleScavenger.run(creep);
+                    break;
+                case 'scout':
+                    roleScout.run(creep);
+                    break;
+                case 'transporter':
+                    roleTransporter.run(creep);
+                    break;
+                case 'upgrader':
+                    roleUpgrader.run(creep, village);
+                    break;
+                case 'extends':
+                    roleExtends.run(creep);
+                    break;
+            }
+        } catch (err) {
+            console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] ` + err);
         }
     });
     

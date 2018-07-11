@@ -70,6 +70,10 @@ var speech = {
     get REPAIR() {
         return '🔧';
     },
+
+    get UPGRADE() {
+        return '⚡';
+    },
     
     get BUILD() {
         return '🚧';

@@ -11,7 +11,16 @@ var roleManualAttack = {
         if (creep.hits <= creep.hitsMax - 10) {
             creep.memory.attack = false;
             creep.moveTo(healFlag,{visualizePathStyle: {stroke: '#ffffff'}});
-        } 
+        }
+        try{
+            if (creep.hits <= 2500) {
+                creep.memory.attack = false;
+                creep.moveTo(Game.flags['retreat'],{visualizePathStyle: {stroke: '#ffffff'}});
+            }
+        } catch (err) {
+            console.log(err)
+        }
+
         if (creep.hits === creep.hitsMax) {
             creep.memory.attack = true;
         }
@@ -21,20 +30,20 @@ var roleManualAttack = {
         } else {
             
         }
-         let target = creep.pos.findClosestByRange(FIND_HOSTILE_STRUCTURES, {filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_RAMPART)}});
+         let target = creep.pos.findInRange(FIND_HOSTILE_STRUCTURES,1, {filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_WALL)}})[0]; //STRUCTURE_RAMPART
             if(target) {
                 
                 if(creep.attack(target) == ERR_NOT_IN_RANGE) {
                     console.log(target)
-                    creep.moveTo(target)
+                    //creep.moveTo(target)
                 }
             } else {
                 target = creep.pos.findInRange(FIND_HOSTILE_CREEPS,1);
                 if(target[0]) {
                     if(creep.attack(target[0]) == ERR_NOT_IN_RANGE) {
                         console.log('die ' + target)
-                        creep.moveTo(target);
+                        //creep.moveTo(target);
                     }
                 }
             }

@@ -18,19 +18,19 @@ class CreepReport {
                 "scalingFactor": 0
             },
             "builder": {
-                "priority": 3,
+                "priority": 2,
                 "count": 4,
                 "scalingFactor": 0
             },
             "upgrader": {
-                "priority": 2,
+                "priority": 3,
                 "count": 4,
                 "scalingFactor": 0
             }
         };
     }
 
-    configLevel2() {
+    configLevel2() { // dont know if I can hit drop harvesters here
         return {
             "dropHarvester": {
                 "priority": 5,
