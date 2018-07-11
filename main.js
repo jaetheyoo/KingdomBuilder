@@ -28,6 +28,27 @@ module.exports.loop = function () {
             delete Memory.creeps[i];
         }
     }
+    
+    /// WAR CODE
+    try {
+        var taxNames = Object.keys(Game.creeps).filter(x=>x.match(/Taxer/gi)).length;
+        if (taxNames < 1) {
+            if (taxNames == 1) {
+                if (Game.creeps[Object.keys(Game.creeps).filter(x=>x.match(/Taxer/gi))[0]].ticksToLive < 150) {
+                    Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
+                }
+            } else if (taxNames == 0) {
+                Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
+            }
+        }
+        
+        
+        //if (Game.time < ) {
+            
+    //    }
+    } catch (err) {
+        console.log('taxer didnt work');
+    }
 
     let closeHarvesters = Game.spawns['Spawn1'].pos.findInRange(FIND_MY_CREEPS, 1,{
         filter: _creep => (_creep.memory.role == 'harvester') && _creep.ticksToLive < 600 && _creep.ticksToLive > 150
@@ -347,11 +368,11 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='builder' || object.memory.role=='repairer';
         }
-    }).length < 0 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+    }).length < 1 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='harvester' ;
         }}).length >=5) {
-        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], "bu" + Game.time.toString(), {memory: {role: 'builder', withdrawFlag: 'S2', room: 'S2R2'}})
+        Game.spawns['Spawn2'].spawnCreep([WORK,CARRY,MOVE], "bu" + Game.time.toString(), {memory: {role: 'builder', withdrawFlag: 'S2', room: 'S2R2'}})
     }
     
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
@@ -405,7 +426,7 @@ module.exports.loop = function () {
             roleManualHeal.run(creep)
         } else if (creep.memory.role == 'meleeBodyGuard') {
             try {
-                creep.say('🛡️');
+                creep.say('ð¡ï¸');
                 roleMeleeBodyGuard.run(creep);
             } catch (err) {
                 console.log(err);
@@ -426,7 +447,7 @@ module.exports.loop = function () {
             }
         }else if(creep.memory.role == 'claimer') {
             try {
-                creep.say('🚩');
+                creep.say('ð©');
                 roleClaimer.run(creep);
             } catch (err) {
                 console.log(err);
@@ -456,7 +477,7 @@ module.exports.loop = function () {
     
             if (creep.ticksToLive <= 10) {
                 try {
-                    creep.say("💀 RIP");
+                    creep.say("ð RIP");
                     creep.moveTo( Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#272626'}});
                     Game.spawns['Spawn1'].recycleCreep(creep);
                 } catch (err) {
@@ -465,7 +486,7 @@ module.exports.loop = function () {
             } else {
                 if(creep.memory.role == 'repairer') {
                     try {
-                        creep.say('🔧');
+                        creep.say('ð§');
                         roleRepairer.run(creep, repairers.length >= adjustedMaxRepairers);
                     } catch (err) {
                        console.log('REPAIRER ERROR: ' + err);
@@ -474,7 +495,7 @@ module.exports.loop = function () {
                 
                 if(creep.memory.role == 'remoteHarvester') {
                     try {
-                        creep.say('✈️🔋');
+                        creep.say('âï¸ð');
                         roleRemoteHarvester.run(creep);
                     } catch (err) {
                        console.log('REMOTE HARVESTER ERROR: ' + err);
@@ -491,7 +512,7 @@ module.exports.loop = function () {
                 
                 if(creep.memory.role == 'harvester') {
                     try {
-                        creep.say('🔋');
+                        creep.say('ð');
                         roleHarvester.run(creep);
                     } catch (err) {
                        console.log('HARVESTER: ' + err);
@@ -499,7 +520,7 @@ module.exports.loop = function () {
                 }
                 if(creep.memory.role == 'transporter') {
                     try {
-                        creep.say('🚌');
+                        creep.say('ð');
                         //let shouldWait = harvesterNames.length < harvestFlags.length || upgraderNames.length < conf.UPGRADER_COUNT || builderNames < conf.BUILDER_COUNT;
                         let shouldWait = false;
                         roleTransporter.run(creep, shouldWait);
@@ -509,7 +530,7 @@ module.exports.loop = function () {
                 }
                 if(creep.memory.role == 'scavenger') {
                     try {
-                        creep.say('🦉');
+                        creep.say('ð¦');
                         //let shouldWait = harvesterNames.length < harvestFlags.length || upgraderNames.length < conf.UPGRADER_COUNT || builderNames < conf.BUILDER_COUNT;
                         let shouldWait = false;                
                         roleScavenger.run(creep, shouldWait);
@@ -528,7 +549,7 @@ module.exports.loop = function () {
                 }
                 if(creep.memory.role == 'upgrader') {
                     try {
-                        creep.say('⏫');
+                        creep.say('â«');
                         roleUpgrader.run(creep);
                     } catch (err) {
                         console.log('Upgrader' + err);
