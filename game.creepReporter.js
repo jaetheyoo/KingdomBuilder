@@ -12,8 +12,7 @@ var CreepReporter = function(creeps, debug, village) {
     _.forEach(Object.keys(creeps), function(creepName) {
         // console.log('id: ' + idx + ' | CreepName: ' + creepName)
         let creep = Game.creeps[creepName];
-        creepReport.report(creep, village);
-        let creepRole = village.creeps[creepName].role;
+        let creepRole = creepReport.report(creep, village);
         try {
             switch (creepRole) {
                 case 'builder':

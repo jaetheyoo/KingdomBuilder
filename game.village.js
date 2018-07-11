@@ -355,6 +355,88 @@ class Village {
     getHideoutFlag() {
         return this.memoryAddr['flags'].hideoutFlag;
     }
+
+    isStale(ticks) {
+        // TODO: decrease stale timer according to stimulus (ie. in war)
+        if (!ticks || Game.time - ticks > 500) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // TEST: does this actually write to memory;
+    getMemAddr(room) {
+        let memRoomAddr;
+        if (room == this.roomName) {
+            memRoomAddr = this.memoryAddr;
+        } else {
+            let remoteRoom = this.remoteRooms[room];
+            if (remoteRoom) {
+                let memRoomAddr = this.memoryAddr.remoteRooms[room];
+            } else {
+                // throw error: this is not a room in my domain
+                return;
+            }
+        }
+
+        return memRoomAddr;
+    }
+
+    setShouldNotRepair(room) {
+        let memRoomAddr = this.getMemAddr(room);
+
+        memRoomAddr['shouldRepair'] = false;
+        memRoomAddr['shouldRepairTime'] = Game.time;
+    }
+
+    /**
+     * @param {string} room 
+     */
+    shouldRepair(room) {
+        // if there are buildings under their respective hit thresholds, return true
+        // TODO: store these thresholds in memory or have them accessible through the village
+        // TODO: you only really need to do this once per room per village, and not all that often
+        let memRoomAddr = this.getMemAddr(room);
+        if (memRoomAddr) {
+            let shouldRepairTime = memRoomAddr.shouldRepairTime;
+
+            if (this.isStale(shouldRepairTime)) {
+                let containerThreshold = 100000 + villageLevel * 20000;
+                let roadThreshold = .6 + villageLevel + .05;
+                let wallThreshold = 10000 + 10000 * i * i;
+                let rampartThreshold = 10000 + 10000 * i * i;
+                let structureThreshold = .8;
+                
+                let shouldRepair = false;
+                if (structures.length) {
+                    let repairTarget = _.find(structures, function (s) {
+                        let type = s.structureType;
+                        return ((type == STRUCTURE_CONTAINER && s.hits < containerThreshold) ||
+                            (type == STRUCTURE_ROAD && s.hits < roadThreshold) ||
+                            (type == STRUCTURE_WALL && s.hits < wallThreshold) ||
+                            (type == STRUCTURE_RAMPART && s.hits < rampartThreshold) ||
+                            (type == !STRUCTURE_CONTAINER &&
+                                type == !STRUCTURE_ROAD && 
+                                type == !STRUCTURE_WALL && 
+                                type == !STRUCTURE_RAMPART && 
+                                s.hits < structureThreshold)
+                        );
+                    });
+                    if (repairTarget) {
+                        shouldRepair = true;
+                    } else {
+                        shouldRepair = false;
+                    }
+                }
+    
+                memRoomAddr['shouldRepair'] = shouldRepair;
+                memRoomAddr['shouldRepairTime'] = Game.time;
+                
+                return shouldRepair;
+            }
+        }
+    }
     
     toString() {
         return ("ROOM: " + this.roomName + " | SPAWN: " + this.spawnName + " | CONTROLLER: " + this.controllerId);

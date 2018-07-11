@@ -145,15 +145,24 @@ class CreepReport {
         return this.counts['hostiles'] > 0;
     }
 
+    /**
+     * Tallies all creep roles in a village for processing.
+     * Returns a creep role 
+     * @param {creep} creep 
+     * @param {Village} village 
+     */
     report(creep, village) {
-        if (creep.my && village.creeps[creep.name].role) {
-            if (this.counts[village.creeps[creep.name].role]) {
-                this.counts[village.creeps[creep.name].role]++; 
+        let myRole = village.creeps[creep.name].role;
+        if (creep.my && myRole) {
+            if (this.counts[myRole]) {
+                this.counts[myRole]++; 
             } else {
-                this.counts[village.creeps[creep.name].role] = 1; 
+                this.counts[myRole] = 1; 
             }
+            return myRole;
         } else {
            this.counts.hostiles++;
+           return 'enemy';
         }
     }
     
