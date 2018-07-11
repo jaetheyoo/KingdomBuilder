@@ -1,8 +1,13 @@
+// CHANGES THIS AND MAIN
+
 var roleMeleeBodyGuard = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-
+        if (creep.memory.guardPostFlag == 'snipeFlag2' && creep.ticksToLive < 20) {
+            creep.moveTo(Game.flags['death']);
+            return;
+        }
         var target;
         var killCreeps = true;
         if (creep.memory.dismantle === true) {
@@ -29,9 +34,9 @@ var roleMeleeBodyGuard = {
             if(creep.attack(target) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);
             }
-            if(creep.dismantle(target) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
+            //if(creep.dismantle(target) == ERR_NOT_IN_RANGE) {
+            //    creep.moveTo(target);
+            //}
         } else {
             creep.moveTo(Game.flags[creep.memory.guardPostFlag]);
             if (creep.pos.isEqualTo(Game.flags[creep.memory.guardPostFlag].pos)) {

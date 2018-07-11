@@ -35,17 +35,33 @@ module.exports.loop = function () {
         if (taxNames < 1) {
             if (taxNames == 1) {
                 if (Game.creeps[Object.keys(Game.creeps).filter(x=>x.match(/Taxer/gi))[0]].ticksToLive < 150) {
-                    Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
+                    //Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
                 }
-            } else if (taxNames == 0) {
-                Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
+            } else if (taxNames == 0 && Game.time % 5000 == 0) {
+                //Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'Taxer' + Game.time,{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
             }
         }
         
         
-        //if (Game.time < ) {
-            
-    //    }
+        if (Game.time >= 7786266 ) {
+            if(!Game.creeps['h']) {
+                Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE],'h',{memory:{role:'manualHeal', flag: 'healer'}})
+            }
+            if(!Game.creeps['h1']) {
+                Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE],'h1',{memory:{role:'manualHeal', flag: 'healer'}})
+            }            
+            if (!Game.creeps['h2']){
+                Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE],'h2',{memory:{role:'manualHeal', flag: 'healer'}})
+            }
+
+            if(!Game.creeps['a1']) {
+                Game.spawns['Spawn1'].spawnCreep( [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    MOVE,MOVE,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE],'a1',{memory:{role:'manualAttack', attackFlag:'attackFlag',healFlag:'healFlag'}})
+            }
+       }
     } catch (err) {
         console.log('taxer didnt work');
     }
@@ -426,7 +442,7 @@ module.exports.loop = function () {
             roleManualHeal.run(creep)
         } else if (creep.memory.role == 'meleeBodyGuard') {
             try {
-                creep.say('ð¡ï¸');
+                creep.say('🛡️');
                 roleMeleeBodyGuard.run(creep);
             } catch (err) {
                 console.log(err);
@@ -447,7 +463,7 @@ module.exports.loop = function () {
             }
         }else if(creep.memory.role == 'claimer') {
             try {
-                creep.say('ð©');
+                creep.say('🚩');
                 roleClaimer.run(creep);
             } catch (err) {
                 console.log(err);
@@ -477,7 +493,7 @@ module.exports.loop = function () {
     
             if (creep.ticksToLive <= 10) {
                 try {
-                    creep.say("ð RIP");
+                    creep.say("💀 RIP");
                     creep.moveTo( Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#272626'}});
                     Game.spawns['Spawn1'].recycleCreep(creep);
                 } catch (err) {
@@ -486,7 +502,7 @@ module.exports.loop = function () {
             } else {
                 if(creep.memory.role == 'repairer') {
                     try {
-                        creep.say('ð§');
+                        creep.say('🔧');
                         roleRepairer.run(creep, repairers.length >= adjustedMaxRepairers);
                     } catch (err) {
                        console.log('REPAIRER ERROR: ' + err);
@@ -495,7 +511,7 @@ module.exports.loop = function () {
                 
                 if(creep.memory.role == 'remoteHarvester') {
                     try {
-                        creep.say('âï¸ð');
+                        creep.say('✈️🔋');
                         roleRemoteHarvester.run(creep);
                     } catch (err) {
                        console.log('REMOTE HARVESTER ERROR: ' + err);
@@ -512,7 +528,7 @@ module.exports.loop = function () {
                 
                 if(creep.memory.role == 'harvester') {
                     try {
-                        creep.say('ð');
+                        creep.say('🔋');
                         roleHarvester.run(creep);
                     } catch (err) {
                        console.log('HARVESTER: ' + err);
@@ -520,7 +536,7 @@ module.exports.loop = function () {
                 }
                 if(creep.memory.role == 'transporter') {
                     try {
-                        creep.say('ð');
+                        creep.say('🚌');
                         //let shouldWait = harvesterNames.length < harvestFlags.length || upgraderNames.length < conf.UPGRADER_COUNT || builderNames < conf.BUILDER_COUNT;
                         let shouldWait = false;
                         roleTransporter.run(creep, shouldWait);
@@ -530,7 +546,7 @@ module.exports.loop = function () {
                 }
                 if(creep.memory.role == 'scavenger') {
                     try {
-                        creep.say('ð¦');
+                        creep.say('🦉');
                         //let shouldWait = harvesterNames.length < harvestFlags.length || upgraderNames.length < conf.UPGRADER_COUNT || builderNames < conf.BUILDER_COUNT;
                         let shouldWait = false;                
                         roleScavenger.run(creep, shouldWait);
@@ -549,7 +565,7 @@ module.exports.loop = function () {
                 }
                 if(creep.memory.role == 'upgrader') {
                     try {
-                        creep.say('â«');
+                        creep.say('⏫');
                         roleUpgrader.run(creep);
                     } catch (err) {
                         console.log('Upgrader' + err);
