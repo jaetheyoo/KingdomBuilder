@@ -46,7 +46,7 @@ var roleBuilder = {
                 return;
             }
     
-            if (village.shouldRepair(creep.room)) {
+            if (village.shouldRepair(creep.room.name)) {
                 creep.role = 'repairer';
                 return;
             }
@@ -57,9 +57,11 @@ var roleBuilder = {
                 creep.buildMove(buildTarget);
                 return;
             } else {
-                creep.moveTo(village.nextRemoteRoom(creep.room));
+                let remoteRoom = village.nextRemoteRoom(creep.room.name);
+                if (remoteRoom) {
+                    creep.moveTo(Game.rooms[remoteRoom]);
+                }
             }
-    
         } else {
             creep.emote('builder', speech.REFILL)
 

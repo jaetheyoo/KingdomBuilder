@@ -69,7 +69,7 @@ class CreepReport {
             },
             "scavenger": {
                 "priority": 5,
-                "count": 1,
+                "count": 2,
                 "scalingFactor": 0
             },
             "transporter": {
@@ -110,7 +110,7 @@ class CreepReport {
             },
             "scavenger": {
                 "priority": 5,
-                "count": 1,
+                "count": 2,
                 "scalingFactor": 0
             },
             "transporter": {

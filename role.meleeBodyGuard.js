@@ -27,12 +27,12 @@ var roleMeleeBodyGuard = {
             }); // FIND_HOSTILE_STRUCTURES
         } else if (killCreeps && creep.memory.guardPostFlag != 'snipeFlag2' ){
                 target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-            if (!target) {
+            // if (false) {
 
-                target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: s => s.structureType == STRUCTURE_CONTAINER
-            }); // FIND_HOSTILE_STRUCTURES
-            }
+            //     target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            //     filter: s => s.structureType == STRUCTURE_CONTAINER
+            // }); // FIND_HOSTILE_STRUCTURES
+            // }
         }
 
         if(target) {

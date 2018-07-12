@@ -48,7 +48,7 @@ var roleBuilder = {
                     creep.memory.moving = false;
                 }
             } else if (creep.ticksToLive > REMOTE_TRAVEL_TIME) {
-                if (creep.memory.room && creep.room != Game.flags[creep.memory.room].room) {
+                if (creep.memory.room && Game.flags[creep.memory.room] && creep.room != Game.flags[creep.memory.room].room) {
                     creep.memory.moving = true;
                     creep.memory.moveTarget = creep.memory.room;
                     creep.say(speech.REMOTEBUILD);
@@ -103,6 +103,17 @@ var roleBuilder = {
                     if (withdrawTarget) {
                         if(creep.withdraw(withdrawTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                             creep.moveTo(withdrawTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+                        }
+                    } else {
+                        const droppedResources = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+                            filter: function(object) {
+                                return (object.resourceType == RESOURCE_ENERGY && object.amount >= 25 || object.resourceType != RESOURCE_ENERGY);
+                            }
+                        });
+                        if(droppedResources) {
+                            creep.say("✋");
+                            creep.moveTo(droppedResources,  {visualizePathStyle: {stroke: '#ffffff'}});
+                            creep.pickup(droppedResources);
                         }
                     }
                 }

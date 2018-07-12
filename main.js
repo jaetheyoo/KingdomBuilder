@@ -390,10 +390,10 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='builder' || object.memory.role=='repairer';
         }
-    }).length < 3 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+    }).length < 1 && Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='harvester' ;
-        }}).length >=5) {
+        }}).length >=0) {
         Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], 'bu' + Game.time.toString(), {memory: {role: 'builder', withdrawFlag: 'S2', room: 'S2R2'}})
     }
     
@@ -401,8 +401,9 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='dropHarvester';
         }
-    }).length < 1) {
-        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: 'R2Source1', sourceId: '59f19fad82100e1594f35641'}})
+    }).length < 2) {
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: 'R2S1', sourceId: '59f19fad82100e1594f35641'}})
+        //Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: 'R2S2', sourceId: '59f19fad82100e1594f35640'}})
     }
     
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
@@ -410,21 +411,21 @@ module.exports.loop = function () {
             return object.memory.role=='scavenger';
         }
     }).length < 2) {
-        Game.spawns['Spawn2'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], "scav" + Game.time.toString(), {memory: {role: 'scavenger', myDropOffFlag: 'Room2Spawn', mySpawn: 'Spawn2', harvestFlag: 'R2Source1'}})
+        Game.spawns['Spawn2'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], "scav" + Game.time.toString(), {memory: {role: 'scavenger', myDropOffFlag: 'Room2Spawn', mySpawn: 'Spawn2', harvestFlag: 'R2S1'}})
     }
     
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='upgraderStarter';
         }
-    }).length < 0) {
+    }).length < 2) {
         Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
     }
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='harvester';
         }
-    }).length < 5) {
+    }).length < 0) {
         if (Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,CARRY,MOVE,MOVE], 'harv' + Game.time.toString(), {memory: {role: 'harvester'}})==-6) {
             //Game.spawns['Spawn2'].spawnCreep([WORK,CARRY,MOVE,MOVE], 'harv' + Game.time.toString(), {memory: {role: 'harvester'}})
         }

@@ -40,7 +40,7 @@ var CreepReporter = function(creeps, debug, village) {
                     roleRepairer.run(creep);
                     break;
                 case 'scavenger':
-                    roleScavenger.run(creep);
+                    roleScavenger.run(creep, village);
                     break;
                 case 'scout':
                     roleScout.run(creep);

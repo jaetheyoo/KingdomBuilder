@@ -147,16 +147,12 @@ class CreepConfig {
                 }
             case 'scavenger':
                 switch (this.villageLevel) {
-                    case 1:
-                        return [WORK,CARRY,MOVE,MOVE];
-                    case 2:
-                        return [WORK,CARRY,MOVE,MOVE];
                     case 3:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                     case 4:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                     case 5:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                 }
             case 'claimer':
                 switch (this.villageLevel) {

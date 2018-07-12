@@ -356,6 +356,21 @@ class Village {
         return this.remoteRooms[room] ? true : false;
     }
 
+    getNextRemoteRoomName(currentRoomName) {
+        let remoteRoomKeys = Object.keys(this.remoteRooms);
+        if (!remoteRoomKeys.length) {
+            return null;
+        }
+
+        if(currentRoomName == this.roomName) {
+            return Object.keys(this.remoteRooms)[0];
+        } else {
+            let idx = remoteRoomKeys.findIndex(remoteRoom => currentRoomName = remoteRoom);
+            idx = (idx + 1) % remoteRoomKeys.length;
+            return (this.remoteRooms[remoteRoomKeys[idx]]);
+        }
+    }
+
     getHideoutFlag() {
         return this.memoryAddr['flags'].hideoutFlag;
     }

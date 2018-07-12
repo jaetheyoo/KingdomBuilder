@@ -116,6 +116,15 @@ var speech = {
     
     get WAIT() {
         return '🛑';
+    },
+    get PICKUP() {
+        return'✋';
+    },
+    get RIP() {
+        return '⚰️'
+    },
+    get WITHDRAW() {
+        return '🏧'
     }
 }
 
