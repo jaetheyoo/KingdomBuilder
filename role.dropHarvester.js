@@ -12,3 +12,5 @@ var roleDropHarvester = {
         }
     }
 };
+
+module.exports = roleDropHarvester;
