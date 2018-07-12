@@ -62,6 +62,7 @@ var init = function initVillage(Villages, debug) {
                 },
                 "flags": {
                     "hideoutFlag" : '',
+                    "refuelWaitingZone" : ''
                 }
             },
             //"village2": {

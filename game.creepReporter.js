@@ -16,7 +16,7 @@ var CreepReporter = function(creeps, debug, village) {
         try {
             switch (creepRole) {
                 case 'builder':
-                    roleBuilder.run(creep, village.remoteRooms);
+                    roleBuilder.run(creep, village);
                     break;
                 case 'claimer':
                     roleClaimer.run(creep);
@@ -25,7 +25,7 @@ var CreepReporter = function(creeps, debug, village) {
                     roleHarvester.run(creep, village);
                     break;
                 case 'dropHarvester':
-                    roleDropHarvester.run(creep, village.getDropHarvestLocation(creepName), village.getSource(creepName));
+                    roleDropHarvester.run(creep, village);
                     break;
                 case 'meleeDefender':
                     roleMeleeDefender.run(creep);

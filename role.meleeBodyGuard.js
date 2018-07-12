@@ -15,18 +15,24 @@ var roleMeleeBodyGuard = {
         }
         if (killCreeps &&  Game.flags['snipeFlag2'].room && creep.memory.guardPostFlag == 'snipeFlag2') {
             //console.log(Game.flags['snipeFlag2'].pos.findInRange(FIND_HOSTILE_CREEPS, 15))
-            target = Game.flags['snipeFlag2'].pos.findInRange(FIND_HOSTILE_CREEPS, 1)[0];
+            target = Game.flags['snipeFlag2'].pos.findInRange(FIND_HOSTILE_CREEPS, 2)[0];
             if (!target) {
                 target = Game.flags['snipeFlag2'].pos.findInRange(FIND_STRUCTURES, 1, {
-                    filter: s => s.structureType == STRUCTURE_CONTAINER
+                    filter: s => s.structureType == STRUCTURE_ROAD
                 })[0]; // FIND_HOSTILE_STRUCTURES
             }
         } else if ( Game.flags['snipeFlag2'].room && creep.memory.guardPostFlag == 'snipeFlag2') {
             target = Game.flags['snipeFlag2'].pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: s => s.structureType == STRUCTURE_CONTAINER
+                filter: s => s.structureType == STRUCTURE_ROAD
             }); // FIND_HOSTILE_STRUCTURES
         } else if (killCreeps && creep.memory.guardPostFlag != 'snipeFlag2' ){
-            target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+                target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            if (!target) {
+
+                target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: s => s.structureType == STRUCTURE_CONTAINER
+            }); // FIND_HOSTILE_STRUCTURES
+            }
         }
 
         if(target) {
@@ -44,11 +50,14 @@ var roleMeleeBodyGuard = {
             if (Game.flags[creep.memory.guardPostFlag].room && creep.pos.isEqualTo(Game.flags[creep.memory.guardPostFlag].pos)) {
                 if (creep.memory.guardPostFlag == 'snipeFlag2'){
                     
-                } else if (creep.memory.guardPostFlag == 'snipeFlag') {
+                } else if (creep.memory.guardPostFlag == 'killStuff') {
+                    creep.memory.guardPostFlag = 'sniperFlag2';
+                } 
+                else if (creep.memory.guardPostFlag == 'snipeFlag') {
                     creep.memory.guardPostFlag = 'snipeFlag2';
                 } else if (creep.memory.guardPostFlag == 'guardPost2') {
                     creep.memory.guardPostFlag = 'guardPost1';
-                } else {
+                } else if (creep.memory.guardPostFlag == 'guardPost1'){
                     creep.memory.guardPostFlag = 'guardPost2';
                 }
             }

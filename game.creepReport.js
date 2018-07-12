@@ -32,19 +32,9 @@ class CreepReport {
 
     configLevel2() { // dont know if I can hit drop harvesters here
         return {
-            "dropHarvester": {
+            "harvester": {
                 "priority": 5,
-                "count": 2,
-                "scalingFactor": 0
-            },
-            "scavenger": {
-                "priority": 4,
-                "count": 1,
-                "scalingFactor": 0
-            },
-            "transporter": {
-                "priority": 4,
-                "count": 1,
+                "count": 5,
                 "scalingFactor": 0
             },
             "builder": {

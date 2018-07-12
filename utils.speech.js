@@ -20,6 +20,9 @@ var speech = {
             case 'harvester':
                 roleEmote = '⛏️';
                  break;
+            case 'dropHarvester':
+                roleEmote = '👨‍🔧';
+                break;
             case 'meleeDefender':
                 roleEmote = '🛡️';
                  break;

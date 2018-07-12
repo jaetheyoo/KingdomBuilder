@@ -278,7 +278,7 @@ class Village {
         switch(this.creeps[creepName].role) {
             case 'dropHarvester':
                 source = this.creeps[creepName].mySource;
-                Memory.Villages[this.villageName].sources[source].dropHarvesters--
+                Memory.Villages[this.villageName].sources[source].harvesters--
                 break;
             case 'harvester':
                 source = this.creeps[creepName].mySource;
@@ -305,7 +305,7 @@ class Village {
         // if you can't find one, return null
         let mySource = getSource(creepName);
         if(!this.sources[mySource.id].container) {
-            let containers = mySource.findInRange(FIND_MY_STRUCTURES, 1,  {filter: {structureType: STRUCTURE_CONTAINER}})[0];
+            let containers = mySource.findInRange(FIND_STRUCTURES, 1,  {filter: {structureType: STRUCTURE_CONTAINER}})[0];
             if (containers.length > 0) {
                 this.memoryAddr.sources[mySource.id].container = containers[0].id;
             }
@@ -350,6 +350,10 @@ class Village {
     
     hasCreep(creepName) {
         return this.creeps[creepName] ? true : false;
+    }
+
+    inRemoteRoom(room) {
+        return this.remoteRooms[room] ? true : false;
     }
 
     getHideoutFlag() {
@@ -409,6 +413,7 @@ class Village {
                 let structureThreshold = .8;
                 
                 let shouldRepair = false;
+                let structures = Game.rooms[room].find(FIND_STRUCTURES); // TODO: optimize this
                 if (structures.length) {
                     let repairTarget = _.find(structures, function (s) {
                         let type = s.structureType;
