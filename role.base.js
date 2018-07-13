@@ -11,7 +11,7 @@ let roleBase = {
         if (!flag) {
             throw new Error(`${creep.name}-role.base: flight() ERROR: no hideoutFlag`);
         }
-        if (creep.isNearEnemy) {
+        if (creep.isNearEnemy()) {
             creep.say(speech.RUN);
             creep.moveTo(flag);
             return -1;

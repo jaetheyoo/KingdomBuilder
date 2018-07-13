@@ -92,8 +92,9 @@ class Village {
     
     registerFlags() {
         let that = this;
+        //console.log(Object.keys(this.memoryAddr['flags']));
         _.forEach(Object.keys(this.memoryAddr['flags']), function(r) {
-            that.flags[r] = that.memoryAddr['flags'][r];            
+            that.flags[r] = that.memoryAddr.flags[r];            
         });        
     }
     
@@ -120,8 +121,12 @@ class Village {
 
     registerStructures() {
         let that = this;
-        _.forEach(Object.keys(this.memoryAddr['structures']), function(c) {
-            that.structures[c] = that.memoryAddr['structures'][c];
+        // _.forEach(Object.keys(this.memoryAddr['structures']), function(c) {
+        //     that.structures[c] = that.memoryAddr['structures'][c];
+        // });
+        this.structures.links = {};
+        _.forEach(Object.keys(this.memoryAddr['structures'].links), function(c) {
+            that.structures.links[c] = that.memoryAddr.structures.links[c];
         });
     }
 
@@ -129,20 +134,47 @@ class Village {
         this.level = this.memoryAddr['level'];
     }
 
+    hasLinks() {
+        let links = this.structures.links;
+        if (!links) {
+            return false;
+        }
+        let toLinks = links.toLinks.length;
+        let fromLinks = links.fromLinks.length;
+        return toLinks && fromLinks;
+    }
+
+    getToLinks() {
+        let links = this.structures.links;
+        if (!links) {
+            return null;
+        }
+        return links.toLinks;
+    }
+
     initStructures() {
         // for each creep in the room, add it to creeps array
         //FEATURE: have remote creep be in their own array
         let that = this;
         this.memoryAddr.structures = {};
-        Game.rooms[this.roomName].find(FIND_MY_STRUCTURES).forEach(function(s) {
-            that.memoryAddr['structures'][s.id] = {};
-        });
+        // Game.rooms[this.roomName].find(FIND_MY_STRUCTURES).forEach(function(s) { // TODO: do we need to track all strucutres?
+        //     that.memoryAddr['structures'][s.id] = {};
+        // });
+        this.memoryAddr.structures.links = {};
     }
     
+    increaseSourceHarvesters() { // TEST: does this actually work?
+        let keys =  Object.keys(this.memoryAddr.sources);
+        for (let k in keys) {
+            this.memoryAddr.sources[keys[k]].harvesters++;
+        }
+    }
+
     checkLevel() {
         switch(this.level) {
             case 1: // just starting out
                 if (this.controller.level >= 2 && Object.keys(this.creeps).length >= 10){
+                    this.increaseSourceHarvesters();
                     this.levelUp();
                 }
                 break;
@@ -194,7 +226,7 @@ class Village {
     
     // TODO: don't do this every tick
     // TODO: sort structures into bins: extensions, etc.
-    scanStructures() {
+    scanStructures() { 
         // let structures = _.map(this.room.find(FIND_MY_STRUCTURES), x=>x.id);
         // let myStructures = Object.keys(this.structures);
         // if (structures.length > myStructures.length) {
@@ -213,7 +245,7 @@ class Village {
         // TODO: depending on spawning priority, allow skipping forward in the queue
         if (this.spawnQueue.length > 0) {
             let creepToSpawn = this.spawnQueue.peek();
-            let creepBuild = new CreepConfig(creepToSpawn, this.level);
+            let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning());
             if (this.canSpawn(creepBuild)) {
                 let spawnMessage = this.spawn.spawnCreep(creepBuild.body, creepBuild.name);
                 if (spawnMessage === OK) {
@@ -239,7 +271,6 @@ class Village {
      * @param {creepBuild} creepBuild 
      */
     registerCreep(creepBuild) {
-        console.log(``)
         this.creeps[creepBuild.name] = creepBuild.memoryConfig; // TODO: is this necessary?
         this.memoryAddr.creeps[creepBuild.name] = creepBuild.memoryConfig;
         // console.log('CREEP BUILD ROLE NAME: ' + creepBuild.roleName)
@@ -322,6 +353,19 @@ class Village {
         return null;
     }
 
+    getMaximumEnergyForSpawning() {
+        let energyInExtensions = 0;
+        _.forEach(this.room.find(FIND_MY_STRUCTURES, {
+            filter: function(o) {
+                return o.structureType == STRUCTURE_EXTENSION
+            }
+        }), function(structure) {
+            energyInExtensions += 50;
+        });
+        // ADD $$ for extra spawns
+        return energyInExtensions + 300;
+    }
+
     // TODO: associate these with in-memory structures
     getAvailableEnergyForSpawning() {
         let energyInExtensions = 0;
@@ -372,7 +416,9 @@ class Village {
     }
 
     getHideoutFlag() {
-        return this.memoryAddr['flags'].hideoutFlag;
+        //console.log("FLAGS: " + this.memoryAddr['flags']);
+        //console.log(this.memoryAddr['flags'].hideoutFlag);
+        return this.memoryAddr.flags.hideoutFlag;
     }
 
     isStale(ticks) {
@@ -421,8 +467,8 @@ class Village {
             let shouldRepairTime = memRoomAddr.shouldRepairTime;
 
             if (this.isStale(shouldRepairTime)) {
-                let containerThreshold = 100000 + villageLevel * 20000;
-                let roadThreshold = .6 + villageLevel + .05;
+                let containerThreshold = 100000 + this.Level * 20000;
+                let roadThreshold = .6 + this.Level + .05;
                 let wallThreshold = 10000 + 10000 * i * i;
                 let rampartThreshold = 10000 + 10000 * i * i;
                 let structureThreshold = .8;

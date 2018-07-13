@@ -63,10 +63,10 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
         }
     }
     
-    let status = creep.transfer(transferTarget, resourceType);
+    let status = this.transfer(transferTarget, resourceType);
     switch(status) {
         case (ERR_NOT_IN_RANGE):
-            creep.moveTo(store);
+            this.moveTo(store);
             break;
         case (ERR_FULL):
         case (ERR_INVALID_TARGET):
@@ -79,10 +79,10 @@ Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_
         throw new Error(`ERROR: ${this.name} failed on prototype WITHDRAWMOVE due to withdrawTarget being undefined`);
     }
     
-    let status = creep.withdraw(withdrawTarget, resourceType);
+    let status = this.withdraw(withdrawTarget, resourceType);
     switch(status) {
         case (ERR_NOT_IN_RANGE):
-            creep.moveTo(withdrawTarget);
+            this.moveTo(withdrawTarget);
             break;
         case (ERR_FULL):
         case (ERR_INVALID_TARGET):
@@ -93,8 +93,8 @@ Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_
 Creep.prototype.buildMove = function(buildTarget) {
     let target =  Game.getObjectById(buildTarget);
 // TODO: all not in range methods should be eradicated when pathfinding caches the nearest applicable spot for an action
-    if (Game.constructionSites[buildTarget]) {
-        if (this.inRangeTo(target,4)) {
+    if (target) {
+        if (this.pos.inRangeTo(target,4)) {
             this.moveTo(target); // TODO: find a place to park the builder in a way that it won't be in the way
             let status = this.build(target);
             switch(status) {

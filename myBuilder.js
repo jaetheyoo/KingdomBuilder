@@ -30,13 +30,13 @@ var roleBuilder = {
          *      TODO: if I'm under attack, repair the ramparts/walls
          */
 
-        if (creep.energy == 0) {
-            creep.building = false;
-        } else if (creep.energy == creep.carryCapacity) {
-            creep.building = true;
+        if (creep.carry.energy == 0) {
+            creep.memory.building = false;
+        } else if (creep.carry.energy == creep.carryCapacity) {
+            creep.memory.building = true;
         }
 
-        if (creep.building) {
+        if (creep.memory.building) {
             creep.emote('builder', speech.BUILD)
 
             let buildTarget = creep.memory.buildTarget;
@@ -54,7 +54,7 @@ var roleBuilder = {
             let constructionSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
             if (constructionSite) {
                 creep.memory.buildTarget = constructionSite.id;
-                creep.buildMove(buildTarget);
+                creep.buildMove(constructionSite.id);
                 return;
             } else {
                 let remoteRoom = village.nextRemoteRoom(creep.room.name);

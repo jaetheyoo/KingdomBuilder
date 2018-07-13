@@ -61,9 +61,16 @@ var init = function initVillage(Villages, debug) {
                     },
                 },
                 "flags": {
-                    "hideoutFlag" : '',
-                    "refuelWaitingZone" : ''
+                    "hideoutFlag" : 'hideoutFlag',
+                    "refuelWaitingZone" : 'refuelWaitingZone'
+                },
+                "structures": {
+                    "links" : {
+                        "toLinks": [],
+                        "fromLinks": []
+                    }
                 }
+
             },
             //"village2": {
             //    "spawn": village2_Spawn.name,

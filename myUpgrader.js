@@ -8,7 +8,7 @@ var roleUpgrader = {
         if (base.run(creep, village) == -1){
             return;
         }
-        console.log(`${creep.name} -- Upgrading: ${creep.memory.upgrading}`);
+        //console.log(`${creep.name} -- Upgrading: ${creep.memory.upgrading}`);
 
 
         if(creep.carry.energy == 0) {
@@ -42,16 +42,10 @@ var roleUpgrader = {
                     return ((structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] > 0);
                 }
             });
-
             if(target) {
-                if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-                    return;
-                }
+                creep.withdrawMove(target);
             } else if (village.spawn.energy > 0) {
-                if(creep.transfer(village.spawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(village.spawn, {visualizePathStyle: {stroke: '#ffffff'}});
-                }
+                creep.withdrawMove(village.spawn);
             }
             
         }

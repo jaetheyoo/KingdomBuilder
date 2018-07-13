@@ -399,13 +399,22 @@ module.exports.loop = function () {
     
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
-            return object.memory.role=='dropHarvester';
+            return object.memory.role=='dropHarvester' && object.memory.myFlag == 'R2S2';
         }
-    }).length < 2) {
+    }).length < 1) {
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: 'R2S2', sourceId: '59f19fad82100e1594f35640'}})
+    }
+
+    if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
+        filter: function(object) {
+            return object.memory.role=='dropHarvester' && object.memory.myFlag == 'R2S1';
+        }
+    }).length < 1 ) {
         Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: 'R2S1', sourceId: '59f19fad82100e1594f35641'}})
-        //Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE], "dh" + Game.time.toString(), {memory: {role: 'dropHarvester', myFlag: 'R2S2', sourceId: '59f19fad82100e1594f35640'}})
     }
     
+
+
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='scavenger';

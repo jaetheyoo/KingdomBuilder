@@ -19,12 +19,12 @@ class CreepReport {
             },
             "builder": {
                 "priority": 2,
-                "count": 4,
+                "count": 2,
                 "scalingFactor": 0
             },
             "upgrader": {
                 "priority": 3,
-                "count": 4,
+                "count": 2,
                 "scalingFactor": 0
             }
         };
@@ -34,17 +34,17 @@ class CreepReport {
         return {
             "harvester": {
                 "priority": 5,
-                "count": 5,
+                "count": 8,
                 "scalingFactor": 0
             },
             "builder": {
                 "priority": 3,
-                "count": 4,
+                "count": 3,
                 "scalingFactor": 0
             },
             "upgrader": {
                 "priority": 2,
-                "count": 4,
+                "count": 3,
                 "scalingFactor": 0
             }
         };
@@ -70,11 +70,6 @@ class CreepReport {
             "scavenger": {
                 "priority": 5,
                 "count": 2,
-                "scalingFactor": 0
-            },
-            "transporter": {
-                "priority": 5,
-                "count": 1,
                 "scalingFactor": 0
             },
             "builder": {
@@ -113,7 +108,7 @@ class CreepReport {
                 "count": 2,
                 "scalingFactor": 0
             },
-            "transporter": {
+            "linkMaintainer": {
                 "priority": 5,
                 "count": 1,
                 "scalingFactor": 0

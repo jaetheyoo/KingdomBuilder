@@ -11,7 +11,7 @@ var roleHarvester = {
         // walk miner
         const mySource = village.getSource(creep.name);
         
-        console.log(`${creep.name} -- mySource: ${mySource}`)
+        //console.log(`${creep.name} -- mySource: ${mySource}`)
         if (creep.carry.energy == 0) {
             creep.memory.harvesting = true;
         } else if (creep.carry.energy == creep.carryCapacity) {

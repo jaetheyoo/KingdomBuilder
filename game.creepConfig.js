@@ -1,10 +1,15 @@
 class CreepConfig {
     // TODO: build up or down according to available resources and other factors
-    constructor(roleName, villageLevel) {
+    constructor(roleName, villageLevel, maxEnergy) {
         this.roleName = roleName;
         this.villageLevel = villageLevel;
         this.body = this.getBody();
         this.cost = this.getMinimumCost();
+        while (this.cost > maxEnergy) {
+            this.villageLevel--;
+            this.body = this.getBody();
+            this.cost = this.getMinimumCost();
+        }
         this.memoryConfig = this.getMemoryConfig();
         this.name = this.getName();
     }

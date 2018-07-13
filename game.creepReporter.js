@@ -3,6 +3,10 @@ var roleExtends = require('role.extends');
 var roleHarvester = require('role.harvester');
 var roleBuilder = require('role.builder');
 var roleUpgrader = require('role.upgrader');
+var roleLinkMaintainer = require('role.linkMaintainer');
+var roleDropHarvester = require('./role.dropHarvester');
+var roleScavenger = require('./role.scavenger');
+var roleRepairer = require('./role.repairer');
 
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
@@ -15,6 +19,9 @@ var CreepReporter = function(creeps, debug, village) {
         let creepRole = creepReport.report(creep, village);
         try {
             switch (creepRole) {
+                case 'linkMaintainer':
+                    roleLinkMaintainer.run(creep,village);
+                    break;
                 case 'builder':
                     roleBuilder.run(creep, village);
                     break;
