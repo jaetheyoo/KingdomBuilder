@@ -13,7 +13,8 @@ var roleUpgraderStarter = {
             }
     
             if(creep.memory.upgrading) {
-                if (!creep.pos.inRangeTo(Game.flags['S2U'].pos,2)) {
+                creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+                if (!creep.pos.inRangeTo(Game.flags['S2U'].pos,4)) {
                     creep.moveTo(Game.flags['S2U']);
                 }
                 else if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
@@ -23,7 +24,7 @@ var roleUpgraderStarter = {
             else {
                 var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0);
+                        return (structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > 0); // structure_container
                     }
                 });
     

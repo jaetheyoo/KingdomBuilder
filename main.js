@@ -419,16 +419,16 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='scavenger';
         }
-    }).length < 2) {
-        Game.spawns['Spawn2'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], "scav" + Game.time.toString(), {memory: {role: 'scavenger', myDropOffFlag: 'Room2Spawn', mySpawn: 'Spawn2', harvestFlag: 'R2S1'}})
+    }).length < 3) {
+        Game.spawns['Spawn2'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], "scav" + Game.time.toString(), {memory: {role: 'scavenger', myDropOffFlag: 'Room2Spawn', mySpawn: 'Spawn2', harvestFlag: 'R2S1'}})
     }
     
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
             return object.memory.role=='upgraderStarter';
         }
-    }).length < 2) {
-        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
+    }).length < 3) {
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
     }
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {
