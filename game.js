@@ -43,19 +43,25 @@ var init = function initVillage(Villages, debug) {
                 "remoteRooms": {
                     "W55N48": {
                         "remoteSources": {
-                            "59f19f8a82100e1594f351e5" : {}
+                            "59f19f8a82100e1594f351e5" : {
+                                remoteDropHarvester: 0, remoteTransporter: 0, remoteRepairer: 0
+                            }
                         },
                         "remoteController": '59f19f8a82100e1594f351e6',
                     },
                     "W54N40": {
                         "remoteSources": {
-                            "59f19f9982100e1594f35405" : {}
+                            "59f19f9982100e1594f35405" : {
+                                remoteDropHarvester: 0, remoteTransporter: 0, remoteRepairer: 0
+                            }
                         },
                         "remoteController": '59f19f9982100e1594f35406',
                     },
                     "W54N47": {
                         "remoteSources": {
-                            "59f19f9982100e1594f3540d" : {}
+                            "59f19f9982100e1594f3540d" : {
+                                remoteDropHarvester: 0, remoteTransporter: 0, remoteRepairer: 0
+                            }
                         },
                         "remoteController": '59f19f9982100e1594f3540c',
                     },

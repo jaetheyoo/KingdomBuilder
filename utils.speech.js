@@ -26,11 +26,11 @@ var speech = {
             case 'meleeDefender':
                 roleEmote = '🛡️';
                  break;
-            case 'remoteHarvester':
-                roleEmote = '✈️⛏️';
+            case 'remoteDropHarvester':
+                roleEmote = '🏕️';
                  break;
             case 'remoteTransporter':
-                roleEmote = '✈️📦';
+                roleEmote = '🚚';
                  break;
             case 'repairer':
                 roleEmote =  '🔧';
@@ -105,11 +105,19 @@ var speech = {
     get TRANSFER() {
         return '🚌';
     },
+    get REMOTETRAVEL() {
+        return '🗺️'
+    },
+    get TRANSPORT() {
+        return '📦';
+    },
     
     get REMOTETRANSFER() {
         return '✈️🚌';
     },
-    
+    get REMOTETRANSPORTER() {
+        return '✈️🚌';
+    },
     get SCAVENGE() {
         return '🦉';
     },

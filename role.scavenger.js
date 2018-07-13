@@ -40,14 +40,14 @@ var roleScavenger = {
                     creep.memory.moving = true;
                 } 
                 if (creep.memory.moving) {
-                    creep.say('✈️');
+                    creep.say('âï¸');
                     creep.moveTo(Game.flags[creep.memory.flag],{visualizePathStyle: {stroke: '#ffffff'}});
                 }
                 else {
                     if(creep.memory.harvesting) {
                         const droppedResources = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
                             filter: function(object) {
-                                return (object.resourceType == RESOURCE_ENERGY && object.amount >= 0 || object.resourceType != RESOURCE_ENERGY);
+                                return (object.resourceType == RESOURCE_ENERGY && object.amount >= 50 || object.resourceType != RESOURCE_ENERGY);
                             }
                         });
                         const tombstones = creep.pos.findClosestByRange(FIND_TOMBSTONES, {
@@ -71,7 +71,7 @@ var roleScavenger = {
                             creep.pickup(droppedResources);
                         } else {
                             let myFlag = creep.memory.harvestFlag ? creep.memory.harvestFlag : 'HarvestA1';
-                            let miningContainers = Game.flags[myFlag].pos.findInRange(FIND_STRUCTURES,3, {
+                            let miningContainers = Game.flags[myFlag].room.find(FIND_STRUCTURES, {
                                 filter: (structure) => {
                                     return ((structure.structureType == STRUCTURE_CONTAINER) && 
                                         structure.store[RESOURCE_ENERGY] > 0);
@@ -112,7 +112,7 @@ var roleScavenger = {
                                 creep.transfer(targets, RESOURCE_ENERGY);
                             }
                         } else if (shouldWait) {
-                            creep.say("🛑 Waiting");
+                            creep.say("ð Waiting");
                             creep.moveTo(Game.flags["WaitingZone"],{visualizePathStyle: {stroke: '#EE9B8A'}});
                         } else {
                             let myDropOffFlag = creep.memory.myDropOffFlag ? creep.memory.myDropOffFlag : 'DropoffContainers';

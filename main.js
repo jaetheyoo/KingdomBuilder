@@ -419,7 +419,7 @@ module.exports.loop = function () {
         filter: function(object) {
             return object.memory.role=='scavenger';
         }
-    }).length < 3) {
+    }).length < 2) {
         Game.spawns['Spawn2'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], "scav" + Game.time.toString(), {memory: {role: 'scavenger', myDropOffFlag: 'Room2Spawn', mySpawn: 'Spawn2', harvestFlag: 'R2S1'}})
     }
     

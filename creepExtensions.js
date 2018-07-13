@@ -53,7 +53,11 @@ Creep.prototype.scavenge = function() { // TEST: functionality
 // Creep.prototype.findTarget = function(findTargets, findFilters) {
 
 // }
-
+/**
+ * 
+ * @param {gameObject} transferTarget 
+ * @param {resourceEnum} resourceType 
+ */
 Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_ENERGY) {
     let store = transferTarget.store;
     if (store) {

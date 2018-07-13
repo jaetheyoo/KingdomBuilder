@@ -21,6 +21,14 @@ var roleMeleeBodyGuard = {
                     filter: s => s.structureType == STRUCTURE_ROAD
                 })[0]; // FIND_HOSTILE_STRUCTURES
             }
+        } else if (killCreeps &&  Game.flags['sniperFlag2'].room && creep.memory.guardPostFlag == 'sniperFlag2') {
+            //console.log(Game.flags['snipeFlag2'].pos.findInRange(FIND_HOSTILE_CREEPS, 15))
+            target = Game.flags['sniperFlag2'].pos.findInRange(FIND_HOSTILE_CREEPS, 14)[0];
+            if (!target) {
+                target = Game.flags['sniperFlag2'].pos.findInRange(FIND_STRUCTURES, 14, {
+                    filter: s => s.structureType == STRUCTURE_CONTAINER
+                })[0]; // FIND_HOSTILE_STRUCTURES
+            }
         } else if ( Game.flags['snipeFlag2'].room && creep.memory.guardPostFlag == 'snipeFlag2') {
             target = Game.flags['snipeFlag2'].pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: s => s.structureType == STRUCTURE_ROAD

@@ -12,117 +12,57 @@ class CreepReport {
 
     configLevel1() {
         return {
-            "harvester": {
-                "priority": 5,
-                "count": 5,
-                "scalingFactor": 0
-            },
-            "builder": {
-                "priority": 2,
-                "count": 2,
-                "scalingFactor": 0
-            },
-            "upgrader": {
-                "priority": 3,
-                "count": 2,
-                "scalingFactor": 0
-            }
+            "harvester": { "priority": 5, "count": 5, "scalingFactor": 0},
+            "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
+            "upgrader": { "priority": 3, "count": 2, "scalingFactor": 0}
         };
     }
 
     configLevel2() { // dont know if I can hit drop harvesters here
         return {
-            "harvester": {
-                "priority": 5,
-                "count": 8,
-                "scalingFactor": 0
-            },
-            "builder": {
-                "priority": 3,
-                "count": 3,
-                "scalingFactor": 0
-            },
-            "upgrader": {
-                "priority": 2,
-                "count": 3,
-                "scalingFactor": 0
-            }
+            "harvester": { "priority": 5, "count": 8, "scalingFactor": 0},
+            "builder": { "priority": 3, "count": 3, "scalingFactor": 0},
+            "upgrader": { "priority": 2, "count": 3, "scalingFactor": 0}
         };
     }
 
     configLevel3() {
         return {
-            "dropHarvester": {
-                "priority": 5,
-                "count": 2,
-                "scalingFactor": 0
-            },
-            "remoteDropHarvester": {
-                "priority": 4,
-                "count": 4,
-                "scalingFactor": 0
-            },
-            "remoteTransfer": {
-                "priority": 3,
-                "count": 3,
-                "scalingFactor": 0
-            },
-            "scavenger": {
-                "priority": 5,
-                "count": 2,
-                "scalingFactor": 0
-            },
-            "builder": {
-                "priority": 2,
-                "count": 4,
-                "scalingFactor": 0
-            },
-            "upgrader": {
-                "priority": 1,
-                "count": 4,
-                "scalingFactor": 2000
-            }
+            "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "remoteDropHarvester": { "priority": 3, "count": 0, "scalingFactor": 0},
+            "remoteRepairer": { "priority": 2, "count": 0, "scalingFactor": 0},
+            "remoteTransporter": { "priority": 3, "count": 0, "scalingFactor": 0},
+            "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "builder": { "priority": 2, "count": 4, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
         };
     }
 
     configLevel4() {
         return {
-            "dropHarvester": {
-                "priority": 5,
-                "count": 2,
-                "scalingFactor": 0
-            },
-            "remoteDropHarvester": {
-                "priority": 4,
-                "count": 4,
-                "scalingFactor": 0
-            },
-            "scout": {
-                "priority": 5,
-                "count": 5,
-                "scalingFactor": 0,
-                "delay": 100
-            },
-            "scavenger": {
-                "priority": 5,
-                "count": 2,
-                "scalingFactor": 0
-            },
-            "linkMaintainer": {
-                "priority": 5,
-                "count": 1,
-                "scalingFactor": 0
-            },
-            "builder": {
-                "priority": 2,
-                "count": 4,
-                "scalingFactor": 0
-            },
-            "upgrader": {
-                "priority": 1,
-                "count": 4,
-                "scalingFactor": 2000
-            }
+            "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
+            "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
+            "builder": { "priority": 2, "count": 4, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
+        };
+    }
+
+    configLevel5() {
+        return {
+            "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
+            "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
+            "builder": { "priority": 2, "count": 4, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
         };
     }
 
@@ -156,7 +96,7 @@ class CreepReport {
         console.log(`DangerPresent: ${this.dangerPresent()}`);
     }
 
-    process() {
+    process(village) {
         let config;
         switch (this.level) {
             case 1:
@@ -188,11 +128,21 @@ class CreepReport {
         var spawnQueue = [];
         //console.log("------STARTING")
         _.forEach(priorityList, function(role) {
+            // Calculate differently for remote roles
+            let adjustedCount = config[role.count];
+            switch (role) {
+                // TODO: add other conditions, like war or crash
+                case ('remoteDropHarvester'):
+                case ('remoteRepairer'):
+                case ('remoteTransporter'):
+                    adjustedCount += village.getNeededRemoteRole(role);
+                    break;
+            }
             // console.log('Required: ' + config[role].count);
             // console.log('Have: ' + that.counts[role])
-            if (!that.counts[role] || that.counts[role] < config[role].count) {
+            if (!that.counts[role] || that.counts[role] < adjustedCount) { // TODO: scale up and down
                 // console.log("--> We have 0 or fewer than necessary of role " + role);
-                let creepCount = that.counts[role] ? config[role].count - that.counts[role] : config[role].count;
+                let creepCount = that.counts[role] ? adjustedCount - that.counts[role] : adjustedCount;
                 _.times(creepCount, function() {
                     spawnQueue.push(role);
                 })

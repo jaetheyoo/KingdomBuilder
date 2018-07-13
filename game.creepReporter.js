@@ -7,6 +7,8 @@ var roleLinkMaintainer = require('role.linkMaintainer');
 var roleDropHarvester = require('./role.dropHarvester');
 var roleScavenger = require('./role.scavenger');
 var roleRepairer = require('./role.repairer');
+var roleRemoteDropHarvester = require('./role.remoteDropHarvester');
+var roleRemoteRepairer = require('./role.remoteRepairer')
 
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
@@ -19,29 +21,39 @@ var CreepReporter = function(creeps, debug, village) {
         let creepRole = creepReport.report(creep, village);
         try {
             switch (creepRole) {
-                case 'linkMaintainer':
-                    roleLinkMaintainer.run(creep,village);
-                    break;
+
                 case 'builder':
                     roleBuilder.run(creep, village);
                     break;
                 case 'claimer':
                     roleClaimer.run(creep);
                     break;
+                case 'dropHarvester':
+                    roleDropHarvester.run(creep, village);
+                    break;
+                case 'extends':
+                    roleExtends.run(creep);
+                    break; 
                 case 'harvester':
                     roleHarvester.run(creep, village);
                     break;
-                case 'dropHarvester':
-                    roleDropHarvester.run(creep, village);
+                case 'linkMaintainer':
+                    roleLinkMaintainer.run(creep,village);
                     break;
                 case 'meleeDefender':
                     roleMeleeDefender.run(creep);
                     break;
+                case 'remoteDropHarvester':
+                    roleRemoteDropHarvester.run(creep,village);
+                    break;
                 case 'remoteHarvester':
-                    roleRemoteHarvester.run(creep,village.getSource(creep.name));
+                    roleRemoteHarvester.run(creep,village);
+                    break;
+                case 'remoteRepairer':
+                    roleRemoteRepairer.run(creep,village);
                     break;
                 case 'remoteTransporter':
-                    roleRemoteTransporter.run(creep);
+                    roleRemoteTransporter.run(creep,village);
                     break;
                 case 'repairer':
                     roleRepairer.run(creep);
@@ -57,9 +69,6 @@ var CreepReporter = function(creeps, debug, village) {
                     break;
                 case 'upgrader':
                     roleUpgrader.run(creep, village);
-                    break;
-                case 'extends':
-                    roleExtends.run(creep);
                     break;
             }
         } catch (err) {

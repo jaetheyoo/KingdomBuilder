@@ -116,14 +116,27 @@ class CreepConfig {
                     case 1:
                         return [WORK,CARRY,MOVE,MOVE];
                     case 2:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                     case 3:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                     case 4:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                     case 5:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                 }
+            case 'remoteRepairer':
+                switch (this.villageLevel) {
+                    case 1:
+                        return [WORK,CARRY,MOVE,MOVE];
+                    case 2:
+                        return [WORK,WORK,CARRY,MOVE,MOVE,MOVE];
+                    case 3:
+                        return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+                    case 4:
+                        return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+                    case 5:
+                        return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+                }         
             case 'transporter':
                 switch (this.villageLevel) {
                     case 1:
@@ -140,15 +153,15 @@ class CreepConfig {
             case 'remoteTransporter':
                 switch (this.villageLevel) {
                     case 1:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,MOVE,MOVE];
                     case 2:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,MOVE,MOVE];
                     case 3:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                     case 4:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                     case 5:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
             case 'scavenger':
                 switch (this.villageLevel) {
