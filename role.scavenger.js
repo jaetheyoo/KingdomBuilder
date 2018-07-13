@@ -47,7 +47,7 @@ var roleScavenger = {
                     if(creep.memory.harvesting) {
                         const droppedResources = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
                             filter: function(object) {
-                                return (object.resourceType == RESOURCE_ENERGY && object.amount >= 25 || object.resourceType != RESOURCE_ENERGY);
+                                return (object.resourceType == RESOURCE_ENERGY && object.amount >= 0 || object.resourceType != RESOURCE_ENERGY);
                             }
                         });
                         const tombstones = creep.pos.findClosestByRange(FIND_TOMBSTONES, {

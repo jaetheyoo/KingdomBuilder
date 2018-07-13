@@ -428,7 +428,7 @@ module.exports.loop = function () {
             return object.memory.role=='upgraderStarter';
         }
     }).length < 3) {
-        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
+        Game.spawns['Spawn2'].spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], "up" + Game.time.toString(), {memory: {role: 'upgraderStarter'}})
     }
     if (Game.spawns['Spawn2'].room.find(FIND_MY_CREEPS, {
         filter: function(object) {

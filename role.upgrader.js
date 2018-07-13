@@ -25,6 +25,7 @@ var roleUpgrader = {
                     }
                 });
                 if (targets) {
+                    creep.moveTo(targets, {visualizePathStyle: {stroke: '#ffaa00'}});
                     if(creep.withdraw(targets, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(targets, {visualizePathStyle: {stroke: '#ffaa00'}});
                     }
