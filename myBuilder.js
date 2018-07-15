@@ -57,7 +57,7 @@ var roleBuilder = {
                 creep.buildMove(constructionSite.id);
                 return;
             } else {
-                let remoteRoom = village.nextRemoteRoomName(creep.room.name);
+                let remoteRoom = village.getNextRemoteRoomName(creep.room.name);
                 if (remoteRoom) {
                     creep.moveTo(Game.rooms[remoteRoom]);
                 }

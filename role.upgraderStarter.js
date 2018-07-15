@@ -5,16 +5,21 @@ var roleUpgraderStarter = {
         try {
             if(creep.memory.upgrading && creep.carry.energy == 0) {
                 creep.memory.upgrading = false;
-                creep.say('🔄');
+                creep.say('ð');
             }
             if(!creep.memory.upgrading && creep.carry.energy == creep.carryCapacity) {
                 creep.memory.upgrading = true;
-                creep.say('⚡');
+                creep.say('â¡');
             }
     
             if(creep.memory.upgrading) {
                 creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
-                if (!creep.pos.inRangeTo(Game.flags['S2U'].pos,4)) {
+                if (creep.memory.fuckOff) {
+                    if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+                }
+                else if (!creep.pos.inRangeTo(Game.flags['S2U'].pos,4)) {
                     creep.moveTo(Game.flags['S2U']);
                 }
                 else if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {

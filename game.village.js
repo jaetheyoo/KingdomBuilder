@@ -147,23 +147,23 @@ class Village {
     checkLevel() {
         switch(this.level) {
             case 1: // just starting out
-                if (this.controller.level >= 2 && Object.keys(this.creeps).length >= 10){
+                if (this.controller.level >= 2 && Object.keys(this.creeps).length >= 9){
                     this.increaseSourceHarvesters();
                     this.levelUp();
                 }
                 break;
             case 2: // focus on drop mining into containers with transportation
-                if (this.controller.level >= 3 && Object.keys(this.creeps).length >= 15){
+                if (this.controller.level >= 3 && Object.keys(this.creeps).length >= 11){
                     this.levelUp(); // TODO: add condition to check for containers
                 }
                 break;
             case 3: // start remote mining // TODO: Not yet implemented in creep Report
-                if (this.controller.level >= 4 && Object.keys(this.creeps).length >= 20) {
+                if (this.controller.level >= 4 && Object.keys(this.creeps).length >= 13) {
                     this.levelUp();
                 }
                 break;
             case 4: // start harvesting minerals and boosting and using links for remote mining
-                if (this.controller.level >= 5 && Object.keys(this.creeps).length>= 25) {
+                if (this.controller.level >= 5 && Object.keys(this.creeps).length>= 15) {
                     this.levelUp();
                 }
                 break;
@@ -175,6 +175,7 @@ class Village {
     levelUp() {
         this.memoryAddr.level++;
         this.level++;
+        village.debugMessage.append(`\t${this.villageName} has leveled up to lv ${this.level}`);
     }
     
     printStatus() {
@@ -292,6 +293,25 @@ class Village {
         return dropContainers;
     }
 
+    // FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU this isn't assigning to the actual mem location
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Returns the container obj for a drop harvester
      * @param {string} creepName 
@@ -300,27 +320,27 @@ class Village {
     getDropHarvestLocation(creepName, remoteRoomName) {
         // find the nearest container to my source
         // if you can't find one, return null
-        let mySource = getSource(creepName);
+        let mySource = this.getSource(creepName);
         let villageSources = this.sources;
 
         if (remoteRoomName) {
             villageSources = this.remoteRooms[remoteRoomName].sources;
         }
         if(!villageSources[mySource.id].container) {
-            let containers = mySource.pos.findInRange(FIND_STRUCTURES, 1,  {filter: {structureType: STRUCTURE_CONTAINER}})[0];
+            let containers = mySource.pos.findInRange(FIND_STRUCTURES, 1,  {filter: {structureType: STRUCTURE_CONTAINER}});
             if (containers.length > 0) {
                 villageSources[mySource.id].container = containers[0].id;
             }
         }
 
         if (villageSources[mySource.id].container) {
-            if ( Game.structures(villageSources[mySource.id].container)) {
+            if ( Game.getObjectById([villageSources[mySource.id].container])) {
                 return villageSources[mySource.id].container;
             } else {
                 delete villageSources[mySource.id].container; // TEST if this actually deletes the container
             }
         } else {
-            throw new error (`ERROR: ${creepName} at ${remoteRoomName? remoteRoomName : this.villageName} does not have a container available for drop harvesting`);
+            throw new Error (`ERROR: ${creepName} at ${remoteRoomName? remoteRoomName : this.villageName} does not have a container available for drop harvesting`);
         }
         return null;
     }
@@ -604,7 +624,7 @@ class Village {
                 let shouldRepair = false;
                 let visibleRoom = Game.rooms[room];
                 if (! visibleRoom) {
-                    throw new error(`ERROR: in ${this.villageName}, shouldRepair for room ${room} failed because room is not accessible`);
+                    throw new Error(`ERROR: in ${this.villageName}, shouldRepair for room ${room} failed because room is not accessible`);
                 }
                 let structures = Game.rooms[room].find(FIND_STRUCTURES); // TODO: optimize this
                 if (structures.length) {
@@ -637,6 +657,8 @@ class Village {
     }
 
     spawnCreep() {
+        village.debugMessage.append(`\t ${this.villageName} PREPARING TO SPAWN -- Spawn Queue: ${this.spawnQueue}`);
+
         //console.log("PREPARING TO SPAWN: " + this.spawnQueue)
         // TODO: depending on spawning priority, allow skipping forward in the queue
         if (this.spawnQueue.length > 0) {

@@ -15,11 +15,13 @@ var roleUpgrader = require('myUpgrader'); // needs debugging
  */
 var CreepReporter = function(creeps, debug, village) {
     let creepReport = new CreepReport(debug, village.level);
+    village.debugMessage.append(`\t [CreepReporter] is running for ${village.name}`);
+    
     _.forEach(Object.keys(creeps), function(creepName) {
 
         let creep = Game.creeps[creepName];
         let creepRole = creepReport.report(creep, village);
-        village.debugMessage.append(`\t [CreepReporter] ${creepname} is running role ${creepRole}`);
+        village.debugMessage.append(`\t\t [CreepReporter] ${creepName} is running role ${creepRole}`);
 
         try {
             switch (creepRole) {
@@ -67,7 +69,7 @@ var CreepReporter = function(creeps, debug, village) {
                     break;
             }
         } catch (err) {
-            console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] ` + err);
+            console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] at  ${err.fileName} line ${err.lineNumber}: ${err.message}`);
         }
     });
     return creepReport;

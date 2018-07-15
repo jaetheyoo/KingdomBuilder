@@ -41,7 +41,7 @@ class CreepReport {
             "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
             "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
-            "scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 4, "scalingFactor": 0},
@@ -55,7 +55,7 @@ class CreepReport {
             "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
             "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
-            "scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 4, "scalingFactor": 0},
@@ -98,6 +98,8 @@ class CreepReport {
     }
 
     process(village) {
+        village.debugMessage.append(`\t [CreepReport] BEGIN processing for ${village.villageName}`);
+
         let config;
         switch (this.level) {
             case 1:
@@ -125,7 +127,7 @@ class CreepReport {
             return config[a].priority < config[b].priority;
         });
         let that = this;
-        //console.log(priorityList);
+        village.debugMessage.append(`\t\t [CreepReport] priority list: ${priorityList}`);
         var spawnQueue = [];
         //console.log("------STARTING")
         _.forEach(priorityList, function(role) {
@@ -139,8 +141,8 @@ class CreepReport {
                     adjustedCount += village.getNeededRemoteRole(role);
                     break;
             }
-            // console.log('Required: ' + config[role].count);
-            // console.log('Have: ' + that.counts[role])
+            village.debugMessage.append(`\t\t [CreepReport] Required for role ${config[role]}: ${config[role].count}`);
+            village.debugMessage.append(`\t\t [CreepReport] Have: ${that.counts[role]}`);
             if (!that.counts[role] || that.counts[role] < adjustedCount) { // TODO: scale up and down
                 // console.log("--> We have 0 or fewer than necessary of role " + role);
                 let creepCount = that.counts[role] ? adjustedCount - that.counts[role] : adjustedCount;
@@ -149,6 +151,7 @@ class CreepReport {
                 })
             }
         });
+        village.debugMessage.append(`\t\t [CreepReport] COMPLETE -- SpawnQueue for ${village.villageName}: ${spawnQueue}`);
         //console.log( " QUEUE: " +spawnQueue + ':' + spawnQueue.forEach(x=>console.log(x)))
         //console.log("------FINISHED")
         

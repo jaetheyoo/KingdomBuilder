@@ -9,6 +9,8 @@ var roleDropHarvester = {
             return;
         }
         
+        village.debugMessage.append(`\t\t\t${creep.name} is running role RemoteReporter`);
+
         // if my location isn't equal to my drop location
         // move there
         // else harvest
