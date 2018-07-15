@@ -643,12 +643,12 @@ class Village {
             let creepToSpawn = this.spawnQueue.peek();
             let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning());
             if (this.canSpawn(creepBuild)) {
-                console.log(creepBuild.body + " | " + creepBuild.name)
+                //console.log(creepBuild.body + " | " + creepBuild.name)
                 for (let spawn in this.spawns) {
                     let spawnMessage = this.spawns[spawn].spawnCreep(creepBuild.body, creepBuild.name);
 
                     if (spawnMessage === OK) {
-                        console.log('SUCCESSFULLY SPAWNED: ' + creepBuild.name);
+                        //console.log('SUCCESSFULLY SPAWNED: ' + creepBuild.name);
                         this.registerCreep(creepBuild);
                         Memory.creepNameCounter = (Memory.creepNameCounter + 1) % 100;
                         this.spawnQueue.shift();
