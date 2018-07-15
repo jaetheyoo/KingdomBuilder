@@ -44,10 +44,8 @@ var roleScavenger = {
                     throw new Error(`ERROR: ${creep.name} failed to find dropoff for minerals while Scavenging`);
                 }
             } else {
-                let transferTarget;
-                if (village.spawn.energy < village.spawn.energyCapacity) {
-                    transferTarget = village.spawn;
-                } else {
+                let transferTarget = village.spawns.find(x=>x.energy < x.energyCapacity);
+                if (!transferTarget) {
                     transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                         filter: structure => structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity
                     });

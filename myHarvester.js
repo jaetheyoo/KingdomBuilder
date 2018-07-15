@@ -28,17 +28,17 @@ var roleHarvester = {
             creep.emote('harvester', speech.DROPOFF)
             // go to dropoff location
             // TODO: if CPU is an issue, access these in memory
-            var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_SPAWN && structure.energy < structure.energyCapacity ||
-                    structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity);
-                }
-            });
+            let target = village.getEmptySpawns;
+            if (!target) {
+                target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity);
+                    }
+                });
+            }
 
             if(target) {
-                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-                }
+                creep.transferMove(target);
             }
         }
     }

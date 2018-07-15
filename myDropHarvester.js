@@ -13,7 +13,7 @@ var roleDropHarvester = {
         // move there
         // else harvest
 
-        // doesn't run base class, is a mindless worker
+        // TODO: doesn't run base class, is a mindless worker
         //creep.
 
         let mySource = village.getSource(creep.name);

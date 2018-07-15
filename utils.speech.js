@@ -32,8 +32,11 @@ var speech = {
             case 'remoteTransporter':
                 roleEmote = '🚚';
                  break;
+            case 'remoteRepairer':
+                roleEmote = '📡'
+                break;
             case 'repairer':
-                roleEmote =  '🔧';
+                roleEmote =  '🏗️';
                 break;
             case 'scavenger':
                 roleEmote = '🦉';

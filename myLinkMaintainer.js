@@ -19,7 +19,7 @@ var roleLinkMaintainer = {
          * 
          */
 
-        if (village.hasLinks()) {
+        if (village.hasLinks()) { // TODO: add stuff to do when TOLINKS are empty
             let toLinkIds = village.getToLinks();
             for(let i in toLinkIds) {
                 let toLink = Game.getObjectById(toLinkIds[i]);

@@ -29,12 +29,9 @@ class CreepReport {
     configLevel3() {
         return {
             "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
-            "remoteDropHarvester": { "priority": 3, "count": 0, "scalingFactor": 0},
-            "remoteRepairer": { "priority": 2, "count": 0, "scalingFactor": 0},
-            "remoteTransporter": { "priority": 3, "count": 0, "scalingFactor": 0},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
-            "builder": { "priority": 2, "count": 4, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
+            "builder": { "priority": 2, "count": 3, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 3, "scalingFactor": 2000}
         };
     }
 
@@ -82,7 +79,11 @@ class CreepReport {
             if (this.counts[myRole]) {
                 this.counts[myRole]++; 
             } else {
-                this.counts[myRole] = 1; 
+                if (myRole = 'repairer') {
+                    this.counts['builder'] ? this.counts['builder']++ : this.counts['builder'] = 1;
+                } else {
+                    this.counts[myRole] = 1; 
+                }
             }
             return myRole;
         } else {

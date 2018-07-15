@@ -20,5 +20,31 @@ Game.spawns['Spawn1'].spawnCreep( [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,
 Game.spawns['Spawn2'].spawnCreep([WORK,CARRY,MOVE,MOVE], 'u1', {memory: {role: 'upgraderStarter'}})
 
 
+Game.spawns['Spawn1'].spawnCreep( [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+    HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,
+    TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+    MOVE,MOVE,WORK,ATTACK,MOVE,MOVE,MOVE],'a1',{memory:{role:'goliath', attackFlag:'attackFlag',healFlag:'healFlag'}})
+
+    Game.spawns['Spawn3'].spawnCreep( [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+        WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+        WORK,WORK,WORK,WORK,WORK,
+        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+        MOVE,MOVE,MOVE,MOVE,MOVE],'breaker',{memory:{role:'breaker', attackFlag:'attackFlag',healFlag:'healFlag'}})
+    
+
 //harvester maximization
 //50*c*1420/(90+25c/w)-75c-125w where w=17, c=16
+
+Game.creeps[''].moveTo(Game.getObjectById(''))
+Game.creeps[''].transfer(Game.getObjectById(''), RESOURCE_ENERGY)
+Game.creeps[''].transfer(Game.getObjectById(''), 'GO')
+Game.creeps[''].withdraw(Game.getObjectById(''), RESOURCE_ENERGY)
+Game.creeps[''].withdraw(Game.getObjectById(''), 'GO')
+Game.getObjectById('5b48d94600dde4430f38b2ae').boostCreep(Game.creeps['breaker'], 25)
+
+Game.creeps['breaker'].moveTo(Game.getObjectById(''))
+
+Game.creeps['Upgrader66'].withdraw(Game.getObjectById('5b36e502b1fd8267f9bd48a2'), 'ZH')
+Game.creeps['Upgrader66'].transfer(Game.getObjectById('5b48d94600dde4430f38b2ae'), 'ZH')

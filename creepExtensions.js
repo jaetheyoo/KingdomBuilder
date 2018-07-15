@@ -94,6 +94,10 @@ Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_
     }
 }
 
+/**
+ * 
+ * @param {constructionSiteId} buildTarget 
+ */
 Creep.prototype.buildMove = function(buildTarget) {
     let target =  Game.getObjectById(buildTarget);
 // TODO: all not in range methods should be eradicated when pathfinding caches the nearest applicable spot for an action

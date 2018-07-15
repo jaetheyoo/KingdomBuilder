@@ -26,6 +26,8 @@ let roleBase = {
 
 module.exports = roleBase;
 
+// TODO: maximize uptime by making creep move back to base before they die and starting the spawn process before the previous creep is dead
+
 // if(creep.memory.role == 'meleeDefender') {
 //     creep.say('DIE');
 //     roleMeleeDefender.run(creep);

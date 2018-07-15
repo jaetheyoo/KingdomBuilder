@@ -30,7 +30,7 @@ var roleRemoteTransfer = {
                 let mySourceObject = Game.getObjectById(village.creeps[creep.name].mySource);
                 creep.moveTo(mySourceObject);
                 if (mySourceObject.room) {
-                    let containerId = getDropHarvestLocation(creepName, remoteRoomName);
+                    let containerId = village.getDropHarvestLocation(creepName, remoteRoomName);
                     if (containerId) {
                         creep.memory.pickupContainer = containerId;
                         creep.withdrawMove(creep.memory.pickupContainer);

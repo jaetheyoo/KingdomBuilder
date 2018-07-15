@@ -4,16 +4,6 @@ var DebugMessage = require('game.debugMessage')
 var _Game = require('./game');
 var debug = false;
 
-class CreepConfig {
-    constructor(role) {
-        this.role;
-        this.bodyConfigType;
-        this.creepName;
-        this.memoryConfig;
-        this.cost;
-    }
-}
-
 var Villages = {}
 
 _Game.init(Villages, debug);
@@ -59,12 +49,16 @@ module.exports.loop = function () {
 
     */
     _Game.upkeep(Villages);
-            
-    _.forEach(Object.keys(Villages), function (village) {
-        Villages[village].execute();
+    for (village in Villages) {
+        try {
+            Villages[village].execute();
+        } catch (err) {
+            console.log(err);
+        }
+        
         if(debug) {
             Villages[village].debugMessage.log();
         }
-    });
+    }
 }
 

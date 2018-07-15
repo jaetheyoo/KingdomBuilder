@@ -44,10 +44,12 @@ var roleUpgrader = {
             });
             if(target) {
                 creep.withdrawMove(target);
-            } else if (village.spawn.energy > 0) {
-                creep.withdrawMove(village.spawn);
+            } else {
+                target = village.spawns.find(x=>x.energy > 0);
+                if (target) {
+                    creep.withdrawMove(target);
+                }
             }
-            
         }
     }
 };
