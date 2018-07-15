@@ -6,8 +6,8 @@ var init = function initVillage(Villages, debug) {
     }
     // write to memory, run once
     if (!Memory.Villages) {
-        let village1_Spawns = [Game.spawns['Spawn1'], Game.spawns['Spawn3']];
-        let village1_room = village1_Spawn.room;
+        let village1_Spawns = ['Spawn1','Spawn3'];
+        let village1_room = Game.spawns[village1_Spawns[0]].room;
         let village1_controller = village1_room.controller; 
 
         //let village2_Spawn = Game.spawns['Spawn1'];

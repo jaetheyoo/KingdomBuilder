@@ -49,7 +49,7 @@ module.exports.loop = function () {
 
     */
     _Game.upkeep(Villages);
-    for (village in Villages) {
+    for (let village in Villages) {
         try {
             Villages[village].execute();
         } catch (err) {

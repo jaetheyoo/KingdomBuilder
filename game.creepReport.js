@@ -130,7 +130,7 @@ class CreepReport {
         //console.log("------STARTING")
         _.forEach(priorityList, function(role) {
             // Calculate differently for remote roles
-            let adjustedCount = config[role.count];
+            let adjustedCount = config[role].count;
             switch (role) {
                 // TODO: add other conditions, like war or crash
                 case ('remoteDropHarvester'):

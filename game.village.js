@@ -12,7 +12,13 @@ class Village {
         this.remoteRooms = {};
         this.spawnNames = spawnNames;
         this.room = Game.rooms[roomName];
-        this.spawns = _.forEach(spawnNames, x => Game.spawns[x]);
+        this.spawns = [];
+        for (let mySpawnName in this.spawnNames) {
+            let mySpawn = Game.spawns[this.spawnNames[mySpawnName]];
+            if (mySpawn) {
+                this.spawns.push(mySpawn);
+            }
+        }
         this.level = 1;
         this.creeps = {};
         this.sources = {};
@@ -174,8 +180,8 @@ class Village {
     printStatus() {
         let status = 'STATUS FOR VILLAGE: ' + this.villageName + ' LV: ' + this.level;
         status += `\n\tROOM: ${this.roomName}    REMOTE ROOMS: ${JSON.stringify(this.remoteRooms)}   
-        \n\tSPAWN 1 NAME ${this.spawnNames[0]}    SPAWN ${this.spawn[0]}
-        \n\tSPAWN 2 NAME ${this.spawnNames[1]}    SPAWN ${this.spawn[1]}
+        \n\tSPAWN 1 NAME ${this.spawnNames[0]}    SPAWN ${this.spawns[0]}
+        \n\tSPAWN 2 NAME ${this.spawnNames[1]}    SPAWN ${this.spawns[1]}
         \n\tCREEPS ${JSON.stringify(this.creeps)}
         \n\tSOURCES ${JSON.stringify(this.sources)}
         \n\tSTRUCTURES ${JSON.stringify(this.structures)}
@@ -185,7 +191,7 @@ class Village {
     }
     
     execute() {
-        //this.printStatus();
+        //this.printStatus(); 
         this.checkLevel();
         this.scanStructures();
         this.operateStructures();
@@ -278,7 +284,7 @@ class Village {
      */
     getDropContainers() {
         let dropContainers = [];
-        for (source in this.sources) {
+        for (let source in this.sources) {
             if (source.container) {
                 dropContainers.push(Game.getObjectById(source.container));
             }
@@ -366,8 +372,8 @@ class Village {
     getNeededRemoteRole(role) {
         // return the number of remoteSources that dont have any {role} assigned to them
         let neededRemoteRole = 0;
-        for (rooms in this.remoteRooms) {
-            for (sources in rooms.remoteSources) {
+        for (let rooms in this.remoteRooms) {
+            for (let sources in rooms.remoteSources) {
                 if(source[role] == 0) {
                     neededRemoteRole++;
                 }
@@ -420,12 +426,12 @@ class Village {
         }
     }
     operateStructures() {
-        operateLinks();
-        operateTowers();
+        this.operateLinks();
+        this.operateTowers();
     }
 
     operateLinks() {
-        for (fromLink in this.structures.links.fromLinks) {
+        for (let fromLink in this.structures.links.fromLinks) {
             let fromLinkObj = Game.structures[fromLink];
             let toLink = this.structures.links.toLinks.find(x => Game.structures[x].energy <= 400); // TODO: find a way to not hardcode this number
             if (fromLinkObj && toLink) {
@@ -441,7 +447,7 @@ class Village {
     }
     
     operateTowers() {
-        for (tower in this.structures.towers) {
+        for (let tower in this.structures.towers) {
             let towerObj = Game.structures[tower];
             if(towerObj) {
                 var closestDamagedStructure = towerObj.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -514,7 +520,7 @@ class Village {
     }
     registerCreeps() {
         for (let creep in this.memoryAddr.creeps) {
-            this.creeps[creep] = this.memoryAddr.creeps[c];
+            this.creeps[creep] = this.memoryAddr.creeps[creep];
         }
     }
     
@@ -530,7 +536,7 @@ class Village {
 
     registerRemoteRooms() {
         for (let room in this.memoryAddr.remoteRooms) {
-            this.remoteRooms[room] = that.memoryAddr.remoteRooms[r];
+            this.remoteRooms[room] = this.memoryAddr.remoteRooms[room];
         }
     }
 
@@ -637,7 +643,7 @@ class Village {
             let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning());
             if (this.canSpawn(creepBuild)) {
                 console.log(creepBuild.body + " | " + creepBuild.name)
-                for (spawn in this.spawns) {
+                for (let spawn in this.spawns) {
                     let spawnMessage = this.spawns[spawn].spawnCreep(creepBuild.body, creepBuild.name);
 
                     if (spawnMessage === OK) {
