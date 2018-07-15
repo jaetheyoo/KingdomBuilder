@@ -79,7 +79,7 @@ class CreepReport {
             if (this.counts[myRole]) {
                 this.counts[myRole]++; 
             } else {
-                if (myRole = 'repairer') {
+                if (myRole == 'repairer') {
                     this.counts['builder'] ? this.counts['builder']++ : this.counts['builder'] = 1;
                 } else {
                     this.counts[myRole] = 1; 

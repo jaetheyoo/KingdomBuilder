@@ -477,7 +477,8 @@ class Village {
         let mySource;
         let foundSource = false;
         let myRoom;
-        switch (creepBuild.roleName) {
+        let roleName = creepBuild.roleName; 
+        switch (roleName) {
             case 'harvester':
                 for (let source in this.sources) {
                     if (this.sources[source][roleName] < this.sources[source].harvestersAmount) {
@@ -542,7 +543,7 @@ class Village {
 
     registerSources() {
         for (let source in this.memoryAddr.sources) {
-            this.sources[source] = this.memoryAddr.sources.source;
+            this.sources[source] = this.memoryAddr.sources[source];
         }
     }
 

@@ -70,9 +70,10 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
     let status = this.transfer(transferTarget, resourceType);
     switch(status) {
         case (ERR_NOT_IN_RANGE):
-            this.moveTo(store);
+            this.moveTo(transferTarget);
             break;
         case (ERR_FULL):
+            break;
         case (ERR_INVALID_TARGET):
             throw new Error(`ERROR: ${this.name} failed on prototype TRANSFERMOVE due to error code ${status}`);
     }

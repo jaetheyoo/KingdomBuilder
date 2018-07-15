@@ -28,7 +28,7 @@ var roleHarvester = {
             creep.emote('harvester', speech.DROPOFF)
             // go to dropoff location
             // TODO: if CPU is an issue, access these in memory
-            let target = village.getEmptySpawns;
+            let target = village.getEmptySpawn();
             if (!target) {
                 target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                     filter: (structure) => {

@@ -69,7 +69,9 @@ var init = function initVillage(Villages, debug) {
             //    "level":1
             //}
         };
-    }
+    } 
+    
+    
     
     // if recompiled, create new Village objects reading from memory
     var village1 = new Village("village1",Memory.Villages.village1.room,Memory.Villages.village1.spawns,Memory.Villages.village1.controller,  debug);
@@ -81,8 +83,7 @@ var init = function initVillage(Villages, debug) {
 var upkeep = function upkeep(Villages) {
     for(var i in Memory.creeps) {
         if(!Game.creeps[i]) {
-            let villages = Object.keys(Memory['Villages']);
-            for (village in villages) {
+            for (let village in Memory.Villages) {
                 if (Villages[village].hasCreep(i)) {
                     Villages[village].deregister(i);
                     delete Memory['Villages'][village].creeps[i];
