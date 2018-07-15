@@ -26,6 +26,8 @@ var init = function initVillage(Villages, debug) {
                 "level": 5,
                 "remoteRooms": {
                     "W55N48": {
+                        "remoteClaimer":0,
+                        "remoteBodyguard":0,
                         "remoteRepairer": 0,
                         "remoteSources": {
                             "59f19f8a82100e1594f351e5" : {
@@ -35,6 +37,8 @@ var init = function initVillage(Villages, debug) {
                         "remoteController": '59f19f8a82100e1594f351e6',
                     },
                     "W54N40": {
+                        "remoteClaimer":0,
+                        "remoteBodyguard":0,
                         "remoteRepairer": 0,
                         "remoteSources": {
                             "59f19f9982100e1594f35405" : {
@@ -44,6 +48,8 @@ var init = function initVillage(Villages, debug) {
                         "remoteController": '59f19f9982100e1594f35406',
                     },
                     "W54N47": {
+                        "remoteClaimer":0,
+                        "remoteBodyguard":0,
                         "remoteRepairer": 0,
                         "remoteSources": {
                             "59f19f9982100e1594f3540d" : {
@@ -77,6 +83,8 @@ var init = function initVillage(Villages, debug) {
                 "level": 2,
                 "remoteRooms": {
                     "W53N49": {
+                        "remoteClaimer":0,
+                        "remoteBodyguard":0,
                         "remoteRepairer": 0,
                         "remoteSources": {
                             "59f19fad82100e1594f3563c" : {
@@ -111,6 +119,8 @@ var init = function initVillage(Villages, debug) {
                 "level": 1,
                 "remoteRooms": {
                     "W52N45": {
+                        "remoteClaimer":0,
+                        "remoteBodyguard":0,
                         "remoteRepairer": 0,
                         "remoteSources": {
                             "59f19fbc82100e1594f357d1" : {
