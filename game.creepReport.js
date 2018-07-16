@@ -20,9 +20,10 @@ class CreepReport {
 
     configLevel2() { // dont know if I can hit drop harvesters here
         return {
-            "harvester": { "priority": 5, "count": 8, "scalingFactor": 0},
-            "builder": { "priority": 3, "count": 3, "scalingFactor": 0},
-            "upgrader": { "priority": 2, "count": 3, "scalingFactor": 0}
+            "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "builder": { "priority": 2, "count": 3, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 3, "scalingFactor": 2000}
         };
     }
 
@@ -44,8 +45,8 @@ class CreepReport {
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
-            "builder": { "priority": 2, "count": 4, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
+            "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 2000}
         };
     }
 
@@ -58,8 +59,8 @@ class CreepReport {
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
-            "builder": { "priority": 2, "count": 4, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
+            "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 2000}
         };
     }
 

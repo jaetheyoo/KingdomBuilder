@@ -69,7 +69,7 @@ var CreepReporter = function(creeps, debug, village) {
                     break;
             }
         } catch (err) {
-            console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] at  ${err.fileName} line ${err.lineNumber}: ${err.message}`);
+            console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] ${err.message}`);
         }
     });
     return creepReport;

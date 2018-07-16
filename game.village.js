@@ -175,7 +175,7 @@ class Village {
     levelUp() {
         this.memoryAddr.level++;
         this.level++;
-        village.debugMessage.append(`\t${this.villageName} has leveled up to lv ${this.level}`);
+        this.debugMessage.append(`\t${this.villageName} has leveled up to lv ${this.level}`);
     }
     
     printStatus() {
@@ -293,25 +293,6 @@ class Village {
         return dropContainers;
     }
 
-    // FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU this isn't assigning to the actual mem location
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Returns the container obj for a drop harvester
      * @param {string} creepName 
@@ -322,17 +303,23 @@ class Village {
         // if you can't find one, return null
         let mySource = this.getSource(creepName);
         let villageSources = this.sources;
-
+        let isRemoteRoom = false;
         if (remoteRoomName) {
+            isRemoteRoom = true;
             villageSources = this.remoteRooms[remoteRoomName].sources;
         }
         if(!villageSources[mySource.id].container) {
             let containers = mySource.pos.findInRange(FIND_STRUCTURES, 1,  {filter: {structureType: STRUCTURE_CONTAINER}});
             if (containers.length > 0) {
                 villageSources[mySource.id].container = containers[0].id;
+                if (isRemoteRoom) {
+                    this.memoryAddr.sources[mySource.id].container = containers[0].id;
+                } else {
+                    this.memoryAddr.remoteRooms[remoteRoomName].sources[mySource.id].container = containers[0].id;
+                }
             }
         }
-
+        
         if (villageSources[mySource.id].container) {
             if ( Game.getObjectById([villageSources[mySource.id].container])) {
                 return villageSources[mySource.id].container;
@@ -657,7 +644,7 @@ class Village {
     }
 
     spawnCreep() {
-        village.debugMessage.append(`\t ${this.villageName} PREPARING TO SPAWN -- Spawn Queue: ${this.spawnQueue}`);
+        this.debugMessage.append(`\t ${this.villageName} PREPARING TO SPAWN -- Spawn Queue: ${this.spawnQueue}`);
 
         //console.log("PREPARING TO SPAWN: " + this.spawnQueue)
         // TODO: depending on spawning priority, allow skipping forward in the queue

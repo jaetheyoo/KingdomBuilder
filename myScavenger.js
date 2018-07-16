@@ -23,7 +23,7 @@ var roleScavenger = {
         }
 
         if (creep.memory.scavenge && !creep.scavenge()) {
-            creep.emote('scavenger', WITHDRAW)
+            creep.emote('scavenger', speech.WITHDRAW)
             let miningContainers = village.getDropContainers()
                 .filter(x => x.store.energy > 0)
                 .sort((x,y) => y.store[RESOURCE_ENERGY] - x.store[RESOURCE_ENERGY]);
@@ -33,8 +33,8 @@ var roleScavenger = {
                 creep.withdrawMove(village.room.storage);
             }
         } else {
-            creep.emote('scavenger', DROPOFF);
-            if (Object.key(creep.carry).length > 1) {
+            creep.emote('scavenger', speech.DROPOFF);
+            if (Object.keys(creep.carry).length > 1) {
                 let storage = village.room.storage;
                 if (storage) {
                     creep.transferMove(storage);
@@ -53,6 +53,7 @@ var roleScavenger = {
                         transferTarget = village.room.storage;
                     }
                 }
+                village.debugMessage.append(`\t\t\t\t${creep.name} transferring to ${transferTarget}`);
                 creep.transferMove(transferTarget, RESOURCE_ENERGY);
             }
         }

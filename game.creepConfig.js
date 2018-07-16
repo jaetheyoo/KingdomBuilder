@@ -5,11 +5,23 @@ class CreepConfig {
         this.villageLevel = villageLevel;
         this.body = this.getBody();
         this.cost = this.getMinimumCost();
-        while (this.cost > maxEnergy) {
-            this.villageLevel--;
+        if (this.cost > maxEnergy) {
+            while (this.cost > maxEnergy) {
+                this.villageLevel--;
+                this.body = this.getBody();
+                this.cost = this.getMinimumCost();
+            }
+        } else if (this.cost < .2 * maxEnergy) {
+            this.villageLevel++;
             this.body = this.getBody();
             this.cost = this.getMinimumCost();
+            if (this.cost > maxEnergy) {
+                this.villageLevel--;
+                this.body = this.getBody();
+                this.cost = this.getMinimumCost();
+            }
         }
+
         this.memoryConfig = this.getMemoryConfig();
         this.name = this.getName();
     }
@@ -75,7 +87,7 @@ class CreepConfig {
             case 'dropHarvester':
                 switch (this.villageLevel) {
                     case 1:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [WORK,WORK,MOVE,MOVE];
                     case 2:
                         return [WORK,WORK,WORK,MOVE,MOVE];
                     case 3:
@@ -114,7 +126,7 @@ class CreepConfig {
             case 'remoteHarvester':
                 switch (this.villageLevel) {
                     case 1:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [WORK,WORK,WORK,MOVE,MOVE];
                     case 2:
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                     case 3:
@@ -155,9 +167,9 @@ class CreepConfig {
                     case 1:
                         return [CARRY,CARRY,MOVE,MOVE];
                     case 2:
-                        return [CARRY,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
                     case 3:
-                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
                     case 4:
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                     case 5:
@@ -175,15 +187,15 @@ class CreepConfig {
             case 'claimer':
                 switch (this.villageLevel) {
                     case 1:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE];
                     case 2:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE];
                     case 3:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE];
                     case 4:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE];
                     case 5:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE];
                 }
             case 'meleeBodyGuard':
                 switch (this.villageLevel) {
