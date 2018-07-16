@@ -50,7 +50,7 @@ var roleRemoteTransfer = {
                 } else {
                     delete creep.memory.dropoffLink;
                 }
-            } else if (creep.room == village.room.name && village.hasLinks()) {
+            } else if (creep.room == village.roomName && village.hasLinks()) {
                 let fromLinkIds = village.getFromLinks();
                 let closestLink = creep.room.findClosestByRange(FIND_MY_STRUCTURES, {
                     filter: function(o) {

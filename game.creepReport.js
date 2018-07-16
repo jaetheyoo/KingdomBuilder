@@ -99,7 +99,7 @@ class CreepReport {
     }
 
     process(village) {
-        village.debugMessage.append(`\t [CreepReport] BEGIN processing for ${village.villageName}`);
+        //village.debugMessage.append(`\t [CreepReport] BEGIN processing for ${village.villageName}`);
 
         let config;
         switch (this.level) {
@@ -128,7 +128,7 @@ class CreepReport {
             return config[a].priority < config[b].priority;
         });
         let that = this;
-        village.debugMessage.append(`\t\t [CreepReport] priority list: ${priorityList}`);
+        //village.debugMessage.append(`\t\t [CreepReport] priority list: ${priorityList}`);
         var spawnQueue = [];
         //console.log("------STARTING")
         _.forEach(priorityList, function(role) {
@@ -142,8 +142,8 @@ class CreepReport {
                     adjustedCount += village.getNeededRemoteRole(role);
                     break;
             }
-            village.debugMessage.append(`\t\t [CreepReport] Required for role ${config[role]}: ${config[role].count}`);
-            village.debugMessage.append(`\t\t [CreepReport] Have: ${that.counts[role]}`);
+            //village.debugMessage.append(`\t\t [CreepReport] Required for role ${config[role]}: ${config[role].count}`);
+            //village.debugMessage.append(`\t\t [CreepReport] Have: ${that.counts[role]}`);
             if (!that.counts[role] || that.counts[role] < adjustedCount) { // TODO: scale up and down
                 // console.log("--> We have 0 or fewer than necessary of role " + role);
                 let creepCount = that.counts[role] ? adjustedCount - that.counts[role] : adjustedCount;

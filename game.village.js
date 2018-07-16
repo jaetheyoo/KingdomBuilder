@@ -644,7 +644,7 @@ class Village {
     }
 
     spawnCreep() {
-        this.debugMessage.append(`\t ${this.villageName} PREPARING TO SPAWN -- Spawn Queue: ${this.spawnQueue}`);
+        //this.debugMessage.append(`\t ${this.villageName} PREPARING TO SPAWN -- Spawn Queue: ${this.spawnQueue}`);
 
         //console.log("PREPARING TO SPAWN: " + this.spawnQueue)
         // TODO: depending on spawning priority, allow skipping forward in the queue
@@ -652,12 +652,12 @@ class Village {
             let creepToSpawn = this.spawnQueue.peek();
             let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning());
             if (this.canSpawn(creepBuild)) {
-                this.debugMessage.append(`\t\t ${this.villageName} ${creepBuild.body} | ${creepBuild.name}`);
+                //this.debugMessage.append(`\t\t ${this.villageName} ${creepBuild.body} | ${creepBuild.name}`);
 
                 //console.log(creepBuild.body + " | " + creepBuild.name)
                 for (let spawn in this.spawns) {
                     let spawnMessage = this.spawns[spawn].spawnCreep(creepBuild.body, creepBuild.name);
-                    this.debugMessage.append(`\t\t SPAWN MESSAGE: ${spawnMessage}`);
+                    //this.debugMessage.append(`\t\t SPAWN MESSAGE: ${spawnMessage}`);
                     if (spawnMessage === OK) {
                         //console.log('SUCCESSFULLY SPAWNED: ' + creepBuild.name);
                         this.registerCreep(creepBuild);
