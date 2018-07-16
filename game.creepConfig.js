@@ -84,6 +84,7 @@ class CreepConfig {
                     case 5:
                         return [WORK,WORK,WORK,CARRY,MOVE,MOVE];
                 }
+                return [WORK,WORK,WORK,CARRY,MOVE,MOVE];
             case 'dropHarvester':
                 switch (this.villageLevel) {
                     case 1:
@@ -97,6 +98,7 @@ class CreepConfig {
                     case 5:
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                 }
+                return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
             case 'upgrader':
                 switch (this.villageLevel) {
                     case 1:
@@ -110,6 +112,7 @@ class CreepConfig {
                     case 5:
                         return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
+                return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'builder':
                 switch (this.villageLevel) {
                     case 1:
@@ -123,6 +126,7 @@ class CreepConfig {
                     case 5:
                         return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
+                return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'remoteHarvester':
                 switch (this.villageLevel) {
                     case 1:
@@ -136,6 +140,7 @@ class CreepConfig {
                     case 5:
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                 }
+                return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
             case 'remoteRepairer':
                 switch (this.villageLevel) {
                     case 1:
@@ -148,7 +153,8 @@ class CreepConfig {
                         return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                     case 5:
                         return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
-                }         
+                }
+                return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];   
             case 'transporter':
                 switch (this.villageLevel) {
                     case 1:
@@ -162,6 +168,7 @@ class CreepConfig {
                     case 5:
                         return [WORK,CARRY,MOVE,MOVE];
                 }
+                return [WORK,CARRY,MOVE,MOVE];
             case 'remoteTransporter':
                 switch (this.villageLevel) {
                     case 1:
@@ -175,8 +182,13 @@ class CreepConfig {
                     case 5:
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
+                return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'scavenger':
                 switch (this.villageLevel) {
+                    case 1:
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
+                    case 2:
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
                     case 3:
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                     case 4:
@@ -184,6 +196,7 @@ class CreepConfig {
                     case 5:
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                 }
+                return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
             case 'claimer':
                 switch (this.villageLevel) {
                     case 1:
@@ -197,6 +210,7 @@ class CreepConfig {
                     case 5:
                         return [CLAIM,CLAIM,MOVE];
                 }
+                return [CLAIM,CLAIM,MOVE];
             case 'meleeBodyGuard':
                 switch (this.villageLevel) {
                     case 1:
