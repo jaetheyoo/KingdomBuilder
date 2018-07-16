@@ -199,6 +199,7 @@ class Village {
         let creepReport = CreepReporter(this.creeps, this.debug, this);
         this.spawnQueue = creepReport.process(this); // TODO: only process if I have available energy and my spawn isnt busy
         this.spawnCreep();
+        village.debugMessage.append(`\$${this.villageName} has successfully finished execution`);
     }
 
     
