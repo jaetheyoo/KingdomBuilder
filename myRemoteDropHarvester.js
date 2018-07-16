@@ -6,7 +6,7 @@ var roleRemoteDropHarvester = {
     /** @param {Creep} creep **/
     run: function(creep, village) {
         if (base.run(creep, village) == -1){
-            return;
+            return; 
         }
         // if my location isn't equal to my drop location
         // move there

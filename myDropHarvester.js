@@ -9,17 +9,22 @@ var roleDropHarvester = {
             return;
         }
         
-        village.debugMessage.append(`\t\t\t${creep.name} is running role RemoteReporter`);
+        village.debugMessage.append(`\t\t\t${creep.name} is running role DropHarvester`);
 
         // if my location isn't equal to my drop location
         // move there
         // else harvest
-
+ 
         // TODO: doesn't run base class, is a mindless worker
         //creep.
 
         let mySource = village.getSource(creep.name);
+        //console.log(creep.name + " | SOURCE " + mySource)
+
         let dropLocation = village.getDropHarvestLocation(creep.name);
+        if(!dropLocation) {
+            return; // TODO: do something graceful
+        }
         let dropContainer = Game.getObjectById(dropLocation);
 
         if (!creep.pos.isEqualTo(dropContainer.pos)) {

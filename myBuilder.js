@@ -43,11 +43,11 @@ var roleBuilder = {
         
             if (buildTarget) {
                 creep.buildMove(buildTarget);
-                return;
+                //return;
             }
     
             if (village.shouldRepair(creep.room.name)) {
-                creep.role = 'repairer';
+                village.creeps[creep.name].role = 'repairer';
                 return;
             }
     
@@ -57,15 +57,30 @@ var roleBuilder = {
                 creep.buildMove(constructionSite.id);
                 return;
             } else {
-                let remoteRoom = village.getNextRemoteRoomName(creep.room.name);
+                
+                let myCreepRemoteRoom = creep.room.name;
+                if (creep.memory.remoteRoom) {
+                    if (creep.room.name != creep.memory.remoteRoom) {
+                        creep.moveTo(Game.flags[creep.memory.remoteRoom], {visualizePathStyle: {stroke: '#ffffff'}});
+                        return;
+                    }
+                    myCreepRemoteRoom = creep.memory.remoteRoom;
+                }
+                
+                let remoteRoom = village.getNextRemoteRoomName(myCreepRemoteRoom);
+                
+                
+                // console.log(creep.name + '| moveTo' + remoteRoom + '| Current room: ' + creep.room.name);
                 if (remoteRoom) {
-                    creep.moveTo(Game.rooms[remoteRoom]);
+                    creep.memory.remoteRoom = remoteRoom;
+                    creep.moveTo(Game.flags[remoteRoom], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
         } else {
             creep.emote('builder', speech.REFILL)
 
-            if (village.inRemoteRoom(creep)) {
+            if (village.inRemoteRoom(creep.room.name)) {
+                //console.log("GOTTA GET OUTA HERE")
                 creep.moveTo(village.spawns[0]) // TODO: is it worth looking for a container in the curent room?
             } else {
                 let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {

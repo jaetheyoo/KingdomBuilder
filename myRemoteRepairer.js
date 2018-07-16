@@ -33,10 +33,10 @@ var roleRemoteRepairer = {
         } else {
             creep.emote('remoteRepairer', speech.REPAIR)
             let myRoomName = village.creeps[creep.name].myRemoteRoom;
-            village.debugMessage.append(`\t\t\t\t[REPAIR]: remote room set to ${myRemoteRoom}`);
+            village.debugMessage.append(`\t\t\t\t[REPAIR]: remote room set to ${myRoomName}`);
 
             if (!Game.rooms[myRoomName] || creep.room.name != myRoomName) {
-                village.debugMessage.append(`\t\t\t\t[REPAIR]: currently in ${ creep.room.name}; moving to ${myRemoteRoom}`);
+                village.debugMessage.append(`\t\t\t\t[REPAIR]: currently in ${ creep.room.name}; moving to ${myRoomName}`);
                 creep.moveTo(Game.flags[myRoomName]);
             }
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {

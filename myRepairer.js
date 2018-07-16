@@ -8,9 +8,9 @@ var roleRepairer = {
         if (base.run(creep, village) == -1){
             return;
         }
-
+        
         if(creep.carry.energy == 0) {
-            creep.memory.role = 'builder';
+            village.creeps[creep.name].role = 'builder';
         } else {
             creep.emote('repairer', speech.REPAIR);
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -22,13 +22,13 @@ var roleRepairer = {
             });
             
             if(target) {
-                village.setShouldRepair(creep.room)
+                village.setShouldRepair(creep.room.name)
                 if(creep.repair(target) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target);
                 }
             } else {
-                creep.memory.role = 'builder';
-                village.setShouldNotRepair(creep.room);
+                village.creeps[creep.name].role = 'builder';
+                village.setShouldNotRepair(creep.room.name);
             }
         }
     }

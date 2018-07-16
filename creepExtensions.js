@@ -27,21 +27,21 @@ Creep.prototype.scavenge = function() { // TEST: functionality
     for (let i in findTargets) {
         let target = this.pos.findClosestByRange(findTargets[i], findFilters[i]);
         if (target) {
-            switch(i) {
+            switch(parseInt(i)) {
                 case 0:
                     this.emote('scavenger', speech.PICKUP);
-                    this.moveTo(droppedResources,  {visualizePathStyle: {stroke: '#ffffff'}});
-                    this.pickup(droppedResources);
+                    this.moveTo(target,  {visualizePathStyle: {stroke: '#ffffff'}});
+                    this.pickup(target);
                     return true;
                 case 1:
                     this.emote('scavenger', speech.RIP);
-                    this.moveTo(tombstones,  {visualizePathStyle: {stroke: '#ffffff'}});
-                    let minerals = Object.keys(tombstone.store);
+                    this.moveTo(target,  {visualizePathStyle: {stroke: '#ffffff'}});
+                    let minerals = Object.keys(target.store);
                     let resourceType = RESOURCE_ENERGY;
                     if (minerals.length > 1) {
                         resourceType = minerals[1];
                     }
-                    this.withdraw(tombstone, resourceType);
+                    this.withdraw(target, resourceType);
                     return true;
             }
             break;

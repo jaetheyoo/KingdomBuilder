@@ -29,6 +29,7 @@ var roleUpgrader = {
                 }
             }
             
+            creep.moveTo(village.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             if(creep.upgradeController(village.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(village.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             }

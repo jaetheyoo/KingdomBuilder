@@ -23,7 +23,7 @@ class CreepReport {
             "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 3, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 3, "scalingFactor": 2000}
+            "upgrader": { "priority": 1, "count": 5, "scalingFactor": 2000}
         };
     }
 
@@ -54,13 +54,13 @@ class CreepReport {
         return {
             "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
             "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
-            "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
+            "remoteRepairer": { "priority": 3, "count": 3, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
-            "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
+            "linkMaintainer": { "priority": 5, "count": 0, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 2000}
+            "upgrader": { "priority": 1, "count": 1, "scalingFactor": 2000}
         };
     }
 

@@ -22,11 +22,15 @@ var roleScavenger = {
             creep.memory.scavenge = false;
         }
 
-        if (creep.memory.scavenge && !creep.scavenge()) {
+        if (creep.memory.scavenge) {
+            if (creep.scavenge()) {
+                return;
+            }
             creep.emote('scavenger', speech.WITHDRAW)
             let miningContainers = village.getDropContainers()
                 .filter(x => x.store.energy > 0)
                 .sort((x,y) => y.store[RESOURCE_ENERGY] - x.store[RESOURCE_ENERGY]);
+            //console.log('Scavenger mining containers for withdraw: ' + miningContainers)
             if (miningContainers.length > 0) {
                 creep.withdrawMove(miningContainers[0]);
             } else {
@@ -44,15 +48,22 @@ var roleScavenger = {
                     throw new Error(`ERROR: ${creep.name} failed to find dropoff for minerals while Scavenging`);
                 }
             } else {
-                let transferTarget = village.spawns.find(x=>x.energy < x.energyCapacity);
+                let transferTarget = Game.spawns[village.spawnNames.find(x=>Game.spawns[x].energy < Game.spawns[x].energyCapacity)];
                 if (!transferTarget) {
                     transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                         filter: structure => structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity
                     });
+                    
                     if (!transferTarget) {
-                        transferTarget = village.room.storage;
+                        transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                            filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
+                        });
+                        if (!transferTarget) {
+                            transferTarget = village.room.storage;
+                        }
                     }
                 }
+                //console.log(`\t\t\t\t${creep.name} transferring to ${transferTarget}`);
                 village.debugMessage.append(`\t\t\t\t${creep.name} transferring to ${transferTarget}`);
                 creep.transferMove(transferTarget, RESOURCE_ENERGY);
             }

@@ -2,9 +2,9 @@ require('creepExtensions')
 var Village = require('game.village')
 var DebugMessage = require('game.debugMessage')
 var _Game = require('./game');
-var debug = false;
+var debug = false; 
 
-var Villages = {}
+var Villages = {};
 
 _Game.init(Villages, debug);
 
@@ -50,11 +50,11 @@ module.exports.loop = function () {
     */
     _Game.upkeep(Villages);
     for (let village in Villages) {
-        try {
+        //try {
             Villages[village].execute();
-        } catch (err) {
-            console.log(err);
-        }
+        //} catch (err) {
+        //    console.log(err);
+        //}
         
         if(debug) {
             Villages[village].debugMessage.log();
