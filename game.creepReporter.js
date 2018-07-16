@@ -15,7 +15,7 @@ var roleUpgrader = require('myUpgrader'); // needs debugging
  */
 var CreepReporter = function(creeps, debug, village) {
     let creepReport = new CreepReport(debug, village.level);
-    village.debugMessage.append(`\t [CreepReporter] is running for ${village.name}`);
+    village.debugMessage.append(`\t [CreepReporter] is running for ${village.villageName}`);
     
     _.forEach(Object.keys(creeps), function(creepName) {
 
