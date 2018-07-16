@@ -7,7 +7,7 @@ var roleRemoteTransfer = {
         if (base.run(creep, village) == -1){
             return;
         }
-        return;
+
         // move to mySource, find the nearest container. // TODO resources on the ground
         // pick up, then move to nearest FROM link. If no FROM links, move to storage
 
@@ -30,7 +30,7 @@ var roleRemoteTransfer = {
                 let mySourceObject = Game.getObjectById(village.creeps[creep.name].mySource);
                 creep.moveTo(mySourceObject);
                 if (mySourceObject.room) {
-                    let containerId = village.getDropHarvestLocation(creep.name, creep.memory.remoteRoom);
+                    let containerId = village.getDropHarvestLocation(creep.name, village.creeps[creep.name].remoteRoom);
                     if (containerId) {
                         creep.memory.pickupContainer = containerId;
                         creep.withdrawMove(creep.memory.pickupContainer);
@@ -50,13 +50,15 @@ var roleRemoteTransfer = {
                 } else {
                     delete creep.memory.dropoffLink;
                 }
-            } else if (creep.room == village.roomName && village.hasLinks()) {
+            } else if (creep.room.name == village.roomName && village.hasLinks()) {
                 let fromLinkIds = village.getFromLinks();
-                let closestLink = creep.room.findClosestByRange(FIND_MY_STRUCTURES, {
+                //console.log('FROM LINKS: ' + fromLinkIds + ' | ' + fromLinkIds.length);
+                let closestLink = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                     filter: function(o) {
-                        fromLinkIds.includes(o.id);
+                        return fromLinkIds.includes(o.id);
                     }
                 })
+                //console.log("CLOSEST LINK: " + closestLink);
                 if (closestLink) {
                     creep.memory.dropoffLink = closestLink.id;
                     creep.transferMove(closestLink);

@@ -8,7 +8,6 @@ class Village {
     constructor(villageName, roomName, spawnNames, controllerId, debug) {
         this.villageName = villageName;
         this.roomName = roomName;
-        this.remoteRooms = {};
         this.spawnNames = spawnNames;
         this.spawns = [];
         for (let mySpawnName in this.spawnNames) {
@@ -18,10 +17,7 @@ class Village {
             }
         }
         this.level = 1;
-        this.creeps = {};
-        this.sources = {};
         this.remoteCreeps = {};
-        this.structures = {};
         this.flags = {};
         this.controllerId = controllerId;
         this.spawnQueue = [];
@@ -54,11 +50,7 @@ class Village {
         }
         
         this.registerFlags();
-        this.registerRemoteRooms();
-        this.registerSources();
         this.registerLevel();
-        this.registerCreeps();
-        this.registerStructures();
     }
     
     get memoryAddr() {
@@ -71,7 +63,22 @@ class Village {
 
     get controller() {
         return Game.structures[this.controllerId];
+    }
 
+    get creeps() {
+        return Memory.Villages[this.villageName].creeps;
+    }
+
+    get sources() {
+        return Memory.Villages[this.villageName].sources;
+    }
+
+    get remoteRooms() {
+        return Memory.Villages[this.villageName].remoteRooms;
+    }
+
+    get structures() {
+        return Memory.Villages[this.villageName].structures;
     }
 
     canSpawn(creepBuild) {
@@ -241,9 +248,11 @@ class Village {
                 //console.log("IN MEM: " + JSON.stringify(this.memoryAddr.sources[source].harvesters));
                 //console.log("IN HEAP: " + JSON.stringify(this.sources[source]));                
                 break;
-            case 'remoteRepairer':   
+            case 'remoteRepairer':
+            case 'remoteClaimer':
+            case 'remoteBodyguard':
                 myRoom = this.creeps[creepName].myRemoteRoom;
-                Memory.Villages[this.villageName].remoteRooms[myRoom].remoteRepairer--;
+                Memory.Villages[this.villageName].remoteRooms[myRoom][role]--;
                 break;
             case 'remoteTransporter':
             case 'remoteDropHarvester':
@@ -262,16 +271,16 @@ class Village {
      * @param {creepRole} role 
      */
     findRemoteSourceForRole(creepName, role) {
-        console.log(`FINDING REMOTE SOURCE FOR ${creepName}`)
+        console.log(`>     FINDING REMOTE SOURCE FOR ${creepName}`)
         for (let room in this.remoteRooms) {
-            console.log('ROOM: ' + room);
-            console.log('>>> ' + this.remoteRooms[room].remoteSources)
+            console.log('>>     ROOM: ' + room);
             for (let source in this.remoteRooms[room].remoteSources) {
-                console.log('Source: ' + room);
-                console.log('>>>' + this.remoteRooms[room].remoteSources[source])
+                console.log('>>>    Source: ' + source);
                 if(this.remoteRooms[room].remoteSources[source][role] < 1) {
                     this.remoteRooms[room].remoteSources[source][role]++;
                     this.creeps[creepName].remoteRoom = room;
+                    console.log('>>>>   SET ROOM TO: ' + room);
+                    console.log('>>>>   SET SOURCE TO: ' + source);
                     return source;
                 }
             }
@@ -444,9 +453,9 @@ class Village {
      * @param {string} creepName 
      */
     getSource(creepName) {
-        console.log('GETSOUCE ' + creepName)
-        console.log('WHETDFKLS     ' + Object.keys(this.creeps[creepName]))
-        console.log(`WHETDFKLS     ${this.creeps[creepName].mySource}`)
+        //console.log('GETSOUCE ' + creepName)
+        //console.log('WHETDFKLS     ' + Object.keys(this.creeps[creepName]))
+        //console.log(`WHETDFKLS     ${this.creeps[creepName].mySource}`)
         return Game.getObjectById(this.creeps[creepName].mySource);
     }
 
@@ -460,7 +469,7 @@ class Village {
 
     isStale(ticks) {
         // TODO: decrease stale timer according to stimulus (ie. in war)
-        if (!ticks || Game.time - ticks > 5) {
+        if (!ticks || Game.time - ticks > 500) {
             return true;
         } else {
             return false;
@@ -472,19 +481,21 @@ class Village {
     }
 
     operateLinks() {
-        for (let fromLink in this.structures.links.fromLinks) {
+        this.structures.links.fromLinks.forEach( fromLink => {
             let fromLinkObj = Game.structures[fromLink];
+            //console.log(fromLinkObj)
             let toLink = this.structures.links.toLinks.find(x => Game.structures[x].energy <= 400); // TODO: find a way to not hardcode this number
-            if (fromLinkObj && toLink) {
-                let energyToSend = toLink.energyCapacity - toLink.energy;
+            let toLinkObj = Game.structures[toLink];
+            if (fromLinkObj && toLinkObj) {
+                let energyToSend = toLinkObj.energyCapacity - toLinkObj.energy;
                 if (fromLinkObj.energy < energyToSend) {
                     energyToSend = fromLink.energy;
                 }
                 if (energyToSend >= 400) {
-                    fromLinkObj.transferEnergy(toLink,energyToSend);
+                    fromLinkObj.transferEnergy(toLinkObj,energyToSend);
                 }
             }
-        }
+        })
     }
     
     operateTowers() {
@@ -512,14 +523,19 @@ class Village {
      * @param {creepBuild} creepBuild 
      */
     registerCreep(creepBuild, myCreepName) {
+        console.log('REGISTERING CREEP: ' + myCreepName + ' | ' + creepBuild.roleName);
+        console.log('IN MEM BEFORE: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        console.log('IN HEAP BEFORE: ' + this.creeps[myCreepName]);
         this.creeps[myCreepName] = creepBuild.memoryConfig; // TODO: is this necessary?
-        this.memoryAddr.creeps[myCreepName] = creepBuild.memoryConfig;
+        console.log('IN MEM AFTER HEAP CHNG: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        console.log('IN HEAP AFTER HEAP CHNG: ' + this.creeps[myCreepName]);
         Memory.Villages[this.villageName].creeps[myCreepName] = creepBuild.memoryConfig;
-        console.log('REGISTERING CREEP: ' + myCreepName);
+        console.log('IN MEM AFTER MEM CHNG: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        console.log('IN HEAP AFTER MEM CHNG: ' + this.creeps[myCreepName]);
         let mySource;
         let foundSource = false;
         let myRoom;
-        let roleName = creepBuild.roleName; 
+        let roleName = creepBuild.roleName;
         switch (roleName) {
             case 'harvester':
                 for (let source in this.sources) {
@@ -547,10 +563,12 @@ class Village {
                 this.memoryAddr.creeps[creepBuild.name].mySource = mySource;
                 break;
             case 'remoteRepairer':
+            case 'remoteClaimer':
+            case 'remoteBodyguard':
                 for(let room in this.remoteRooms) {
-                    if (this.remoteRooms[room].remoteRepairer < 1) {
+                    if (this.remoteRooms[room][roleName] < 1) {
                         myRoom = room;
-                        this.remoteRooms[room].remoteRepairer++;
+                        this.remoteRooms[room][roleName]++;
                         break;
                     }
                 }
@@ -560,8 +578,9 @@ class Village {
             case 'remoteDropHarvester':
                 // for each remote room, find a source
                 mySource = this.findRemoteSourceForRole(creepBuild.name, roleName)
+                console.log('FINISHING REGISTRATION: SET MYSOURCE TO ' + mySource);
                 if (mySource && Game.getObjectById(mySource)) {
-                    this.memoryAddr.creeps[creepBuild.name].mySource = mySource;
+                    this.creeps[creepBuild.name].mySource = mySource;
                 }
                 break;
         }

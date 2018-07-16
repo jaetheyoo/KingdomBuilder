@@ -28,16 +28,17 @@ var roleRemoteRepairer = {
                 village.debugMessage.append(`\t\t\t\t[REFILL]: withdrawing from ${target.name ? target.name : target.structureType + ' with id: ' + target.id}`);
                 creep.withdrawMove(target);
             } else {
-                creep.moveTo(village.flags['refuelWaitingZone']);
+                creep.moveTo(village.flags['refuelWaitingZone'], {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else {
             creep.emote('remoteRepairer', speech.REPAIR)
             let myRoomName = village.creeps[creep.name].myRemoteRoom;
+            // console.log(creep.name + ' > ' + myRoomName)
             village.debugMessage.append(`\t\t\t\t[REPAIR]: remote room set to ${myRoomName}`);
 
             if (!Game.rooms[myRoomName] || creep.room.name != myRoomName) {
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: currently in ${ creep.room.name}; moving to ${myRoomName}`);
-                creep.moveTo(Game.flags[myRoomName]);
+                creep.moveTo(Game.flags[myRoomName], {visualizePathStyle: {stroke: '#ffffff'}});
             }
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object){
@@ -50,11 +51,11 @@ var roleRemoteRepairer = {
             if(target) {
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: repairing ${target.structureType} with id ${target.id}`);
                 if(creep.repair(target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target);
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             } else {
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: found nothing to repair`);
-                creep.moveTo(Game.flags[myRoomName]);
+                creep.moveTo(Game.flags[myRoomName], {visualizePathStyle: {stroke: '#ffffff'}});
                 village.setShouldNotRepair(creep.room);
             }
         }

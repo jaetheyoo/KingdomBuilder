@@ -120,7 +120,7 @@ class CreepConfig {
                     case 2:
                         return [WORK,WORK,CARRY,MOVE,MOVE,MOVE];
                     case 3:
-                        return [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+                        return [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE];
                     case 4:
                         return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                     case 5:
@@ -158,17 +158,17 @@ class CreepConfig {
             case 'linkMaintainer':
                 switch (this.villageLevel) {
                     case 1:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
                     case 2:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
                     case 3:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE]
                     case 4:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE]
                     case 5:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
                 }
-                return [WORK,CARRY,MOVE,MOVE];
+                return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE]
             case 'remoteTransporter':
                 switch (this.villageLevel) {
                     case 1:
@@ -197,7 +197,7 @@ class CreepConfig {
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                 }
                 return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
-            case 'claimer':
+            case 'remoteClaimer':
                 switch (this.villageLevel) {
                     case 1:
                         return [CLAIM,CLAIM,MOVE];
@@ -211,18 +211,18 @@ class CreepConfig {
                         return [CLAIM,CLAIM,MOVE];
                 }
                 return [CLAIM,CLAIM,MOVE];
-            case 'meleeBodyGuard':
+            case 'remoteBodyguard':
                 switch (this.villageLevel) {
                     case 1:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE];
                     case 2:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE];
                     case 3:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE];
                     case 4:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE];
                     case 5:
-                        return [WORK,CARRY,MOVE,MOVE];
+                        return [TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
                 }
             case 'meleeDefender':
                 switch (this.villageLevel) {

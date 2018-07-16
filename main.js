@@ -50,11 +50,11 @@ module.exports.loop = function () {
     */
     _Game.upkeep(Villages);
     for (let village in Villages) {
-        //try {
+        try {
             Villages[village].execute();
-        //} catch (err) {
-        //    console.log(err);
-        //} 
+        } catch (err) {
+            console.log(err);
+        } 
         
         if(debug) {
             Villages[village].debugMessage.log();
