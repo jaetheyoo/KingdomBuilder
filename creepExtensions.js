@@ -70,7 +70,7 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
     let status = this.transfer(transferTarget, resourceType);
     switch(status) {
         case (ERR_NOT_IN_RANGE):
-            this.moveTo(transferTarget);
+            this.moveTo(transferTarget, {visualizePathStyle: {stroke: '#ffffff'}});
             break;
         case (ERR_FULL):
             break;
@@ -87,7 +87,7 @@ Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_
     let status = this.withdraw(withdrawTarget, resourceType);
     switch(status) {
         case (ERR_NOT_IN_RANGE):
-            this.moveTo(withdrawTarget);
+            this.moveTo(withdrawTarget, {visualizePathStyle: {stroke: '#ffffff'}});
             break;
         case (ERR_FULL):
         case (ERR_INVALID_TARGET):
@@ -104,7 +104,7 @@ Creep.prototype.buildMove = function(buildTarget) {
 // TODO: all not in range methods should be eradicated when pathfinding caches the nearest applicable spot for an action
     if (target) {
         if (this.pos.inRangeTo(target,4)) {
-            this.moveTo(target); // TODO: find a place to park the builder in a way that it won't be in the way
+            this.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}}); // TODO: find a place to park the builder in a way that it won't be in the way
             let status = this.build(target);
             switch(status) {
                 case ERR_INVALID_TARGET:
@@ -113,7 +113,7 @@ Creep.prototype.buildMove = function(buildTarget) {
                     // TODO: investigate if this was destroyed
             }
         } else {
-            this.moveTo(target);
+            this.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
         }
     } else {
         delete this.memory.buildTarget;

@@ -651,7 +651,7 @@ class Village {
         // TODO: depending on spawning priority, allow skipping forward in the queue
         if (this.spawnQueue.length > 0) {
             let creepToSpawn = this.spawnQueue.peek();
-            let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning());
+            let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning(), this.getAvailableEnergyForSpawning());
             if (this.canSpawn(creepBuild)) {
                 //this.debugMessage.append(`\t\t ${this.villageName} ${creepBuild.body} | ${creepBuild.name}`);
 

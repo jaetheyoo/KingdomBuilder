@@ -37,7 +37,7 @@ var roleUpgrader = {
 
             // TODO: create a generic find target method that finds structures by type
             
-            var target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+            var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return ((structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] > 0);
                 }
