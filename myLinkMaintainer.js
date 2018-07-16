@@ -4,7 +4,7 @@ var base = require('role.base');
 var roleLinkMaintainer = {
 
     /** @param {Creep} creep **/
-    run: function(creep, shouldWait) {
+    run: function(creep, village) {
         if (base.run(creep, village) == -1){
             return;
         }
