@@ -6,7 +6,7 @@ class CreepConfig {
         this.body = this.getBody();
         this.cost = this.getMinimumCost();
         if (this.cost > availableEnergy) {
-            while (this.cost > availableEnergy) {
+            while (this.cost > availableEnergy && this.villageLevel > 1) {
                 this.villageLevel--;
                 this.body = this.getBody();
                 this.cost = this.getMinimumCost();
