@@ -17,10 +17,10 @@ var roleRemoteDropHarvester = {
 
         let mySource = village.getSource(creep.name);
         let dropLocation = village.getDropHarvestLocation(creep.name, village.getMyRemoteRoom(creep));
-
-        if (!creep.pos.isEqualTo(dropLocation.pos)) {
+        //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + Game.getObjectById(dropLocation))
+        if (!creep.pos.isEqualTo(Game.getObjectById(dropLocation).pos)) {
             creep.emote('remoteDropHarvester', speech.MOVE);
-            creep.moveTo(dropLocation);
+            creep.moveTo(Game.getObjectById(dropLocation).pos);
         } else {
             creep.emote('remoteDropHarvester', speech.HARVEST);
             creep.harvest(mySource); // TEST: is this the right mem addr?

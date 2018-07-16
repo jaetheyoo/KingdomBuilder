@@ -127,7 +127,7 @@ class CreepConfig {
                         return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
-            case 'remoteHarvester':
+            case 'remoteDropHarvester':
                 switch (this.villageLevel) {
                     case 1:
                         return [WORK,WORK,WORK,MOVE,MOVE];

@@ -45,7 +45,7 @@ var roleBuilder = {
                 creep.buildMove(buildTarget);
                 //return;
             }
-    
+            //console.log('SHOULD REPAIR: ' + creep.name);
             if (village.shouldRepair(creep.room.name)) {
                 village.creeps[creep.name].role = 'repairer';
                 return;

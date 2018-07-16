@@ -39,7 +39,7 @@ class CreepReport {
     configLevel4() {
         return {
             "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
-            "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "remoteDropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
             "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
@@ -59,8 +59,8 @@ class CreepReport {
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 0, "scalingFactor": 0},
-            "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 1, "scalingFactor": 2000}
+            "builder": { "priority": 2, "count": 1, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 0, "scalingFactor": 2000}
         };
     }
 

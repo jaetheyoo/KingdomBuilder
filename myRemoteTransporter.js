@@ -3,11 +3,11 @@ var base = require('role.base');
 var roleRemoteTransfer = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, village) {
         if (base.run(creep, village) == -1){
             return;
         }
-
+        return;
         // move to mySource, find the nearest container. // TODO resources on the ground
         // pick up, then move to nearest FROM link. If no FROM links, move to storage
 
@@ -30,7 +30,7 @@ var roleRemoteTransfer = {
                 let mySourceObject = Game.getObjectById(village.creeps[creep.name].mySource);
                 creep.moveTo(mySourceObject);
                 if (mySourceObject.room) {
-                    let containerId = village.getDropHarvestLocation(creepName, remoteRoomName);
+                    let containerId = village.getDropHarvestLocation(creep.name, creep.memory.remoteRoom);
                     if (containerId) {
                         creep.memory.pickupContainer = containerId;
                         creep.withdrawMove(creep.memory.pickupContainer);
