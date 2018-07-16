@@ -604,8 +604,8 @@ class Village {
             if (this.isStale(shouldRepairTime)) {
                 let containerThreshold = 150000 + this.Level * 12000;
                 let roadThreshold = .6 + this.Level + .05;
-                let wallThreshold = 10000 + 10000 * i * i;
-                let rampartThreshold = 10000 + 10000 * i * i;
+                let wallThreshold = 10000 + 10000 * this.Level * this.Level;
+                let rampartThreshold = 10000 + 10000 * this.Level * this.Level;
                 let structureThreshold = .8;
                 
                 let shouldRepair = false;
