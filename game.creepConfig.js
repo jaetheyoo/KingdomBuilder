@@ -155,7 +155,7 @@ class CreepConfig {
                         return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];   
-            case 'transporter':
+            case 'linkMaintainer':
                 switch (this.villageLevel) {
                     case 1:
                         return [WORK,CARRY,MOVE,MOVE];
