@@ -552,13 +552,13 @@ class Village {
                     if (this.sources[source][roleName] == 0) {
                         console.log("FOUND A SOURCE: " + source);
                         mySource = source;
-                        this.sources[source][roleName] = this.sources[source][roleName]++;
+                        this.sources[source][roleName]++;
                         // creepBuild.memoryConfig = {'role': 'dropHarvester', 'mySource': mySource}
                         Memory.Villages[this.villageName].creeps[myCreepName] = {'role': 'dropHarvester', 'mySource': mySource};
                         this.creeps[myCreepName] = {'role': 'dropHarvester', 'mySource': mySource}; // TODO: is this necessary?
                         break;
                     } else if (this.sources[source][roleName] < 0) {
-                        this.sources[source][roleName] == 0;
+                        this.sources[source][roleName] = 0;
                     }
                 }
                 if (mySource==null) {
@@ -567,7 +567,7 @@ class Village {
                         if (this.sources[source][roleName] == 0) {
                             console.log("FOUND A SOURCE: " + source);
                             mySource = source;
-                            this.sources[source][roleName] = this.sources[source][roleName]++;
+                            this.sources[source][roleName]++;
                             // creepBuild.memoryConfig = {'role': 'dropHarvester', 'mySource': mySource}
                             Memory.Villages[this.villageName].creeps[myCreepName] = {'role': 'dropHarvester', 'mySource': mySource};
                             this.creeps[myCreepName] = {'role': 'dropHarvester', 'mySource': mySource}; // TODO: is this necessary?
