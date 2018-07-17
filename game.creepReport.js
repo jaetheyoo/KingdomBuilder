@@ -38,7 +38,11 @@ class CreepReport {
 
     configLevel4() {
         return {
+<<<<<<< HEAD
             "dropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
+=======
+            "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
             "remoteDropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
             "remoteRepairer": { "priority": 3, "count": 1, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 2, "scalingFactor": 0},
@@ -53,10 +57,17 @@ class CreepReport {
 
     configLevel5() {
         return {
+<<<<<<< HEAD
             "dropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
             "remoteDropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
             "remoteRepairer": { "priority": 3, "count": 3, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 2, "scalingFactor": 0},
+=======
+            "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "remoteRepairer": { "priority": 3, "count": 1, "scalingFactor": 0},
+            "remoteTransporter": { "priority": 4, "count": 1, "scalingFactor": 0},
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "remoteBodyguard": { "priority": 1, "count": 1, "scalingFactor": 0},
             "remoteClaimer": { "priority": 1, "count": 1, "scalingFactor": 0},

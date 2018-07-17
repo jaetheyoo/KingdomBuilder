@@ -24,9 +24,15 @@ var roleRemoteDropHarvester = {
             return;
         }
         let dropLocation = village.getDropHarvestLocation(creep.name, village.getMyRemoteRoom(creep));
+<<<<<<< HEAD
         // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>     ' + creep.name + '|'+ Game.getObjectById(dropLocation))
         if (dropLocation && !creep.pos.isEqualTo(Game.getObjectById(dropLocation).pos)) {
             creep.emote('remoteDropHarvester', speech.REMOTEMOVING);
+=======
+        //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + Game.getObjectById(dropLocation))
+        if (!creep.pos.isEqualTo(Game.getObjectById(dropLocation).pos)) {
+            creep.emote('remoteDropHarvester', speech.MOVE);
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
             creep.moveTo(Game.getObjectById(dropLocation).pos);
         } else {
             creep.emote('remoteDropHarvester', speech.HARVEST);

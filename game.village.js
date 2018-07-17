@@ -252,13 +252,21 @@ class Village {
             case 'remoteClaimer':
             case 'remoteBodyguard':
                 myRoom = this.creeps[creepName].myRemoteRoom;
+<<<<<<< HEAD
                 if (myRoom) {Memory.Villages[this.villageName].remoteRooms[myRoom][role]--;}
+=======
+                Memory.Villages[this.villageName].remoteRooms[myRoom][role]--;
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
                 break;
             case 'remoteTransporter':
             case 'remoteDropHarvester':
                 // for each remote room, find a source
                 source = this.creeps[creepName].mySource;
+<<<<<<< HEAD
                 if (source) {Memory.Villages[this.villageName].remoteRooms[this.creeps[creepName].remoteRoom].remoteSources[source][role]--};
+=======
+                Memory.Villages[this.villageName].remoteRooms[this.creeps[creepName].remoteRoom].remoteSources[source][role]--;
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
                 break;
         }
         //this.printStatus();
@@ -525,6 +533,7 @@ class Village {
      */
     registerCreep(creepBuild, myCreepName) {
         console.log('REGISTERING CREEP: ' + myCreepName + ' | ' + creepBuild.roleName);
+<<<<<<< HEAD
         //console.log('IN MEM BEFORE: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
         //console.log('IN HEAP BEFORE: ' + this.creeps[myCreepName]);
         this.creeps[myCreepName] = creepBuild.memoryConfig; // TODO: is this necessary?
@@ -533,6 +542,16 @@ class Village {
         Memory.Villages[this.villageName].creeps[myCreepName] = creepBuild.memoryConfig;
         //console.log('IN MEM AFTER MEM CHNG: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
         //console.log('IN HEAP AFTER MEM CHNG: ' + this.creeps[myCreepName]);
+=======
+        console.log('IN MEM BEFORE: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        console.log('IN HEAP BEFORE: ' + this.creeps[myCreepName]);
+        this.creeps[myCreepName] = creepBuild.memoryConfig; // TODO: is this necessary?
+        console.log('IN MEM AFTER HEAP CHNG: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        console.log('IN HEAP AFTER HEAP CHNG: ' + this.creeps[myCreepName]);
+        Memory.Villages[this.villageName].creeps[myCreepName] = creepBuild.memoryConfig;
+        console.log('IN MEM AFTER MEM CHNG: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        console.log('IN HEAP AFTER MEM CHNG: ' + this.creeps[myCreepName]);
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
         let mySource;
         let foundSource = false;
         let myRoom;
@@ -585,7 +604,10 @@ class Village {
             case 'remoteClaimer':
             case 'remoteBodyguard':
                 for(let room in this.remoteRooms) {
+<<<<<<< HEAD
                     console.log( room + ' | ' + this.remoteRooms[room][roleName]);
+=======
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
                     if (this.remoteRooms[room][roleName] < 1) {
                         myRoom = room;
                         this.remoteRooms[room][roleName]++;
@@ -696,8 +718,13 @@ class Village {
             let shouldRepairTime = memRoomAddr.shouldRepairTime;
             //console.log(room + ' | ' + this.isStale(shouldRepairTime))
             if (this.isStale(shouldRepairTime)) {
+<<<<<<< HEAD
                 let containerThreshold = 150000 + this.level * 10000;
                 let roadThreshold = .5 + this.level + .05;
+=======
+                let containerThreshold = 150000 + this.level * 12000;
+                let roadThreshold = .6 + this.level + .05;
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
                 //let roadThreshold = 1;
                 let wallThreshold = 10000 + 10000 * this.level * this.level;
                 let rampartThreshold = 10000 + 10000 * this.level * this.level;
@@ -755,10 +782,17 @@ class Village {
 
         // TODO: depending on spawning priority, allow skipping forward in the queue
         if (this.spawnQueue.length > 0) {
+<<<<<<< HEAD
             // console.log(this.villageName + " > PREPARING TO SPAWN: " + this.spawnQueue)
             let creepToSpawn = this.spawnQueue.peek();
             let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning(), this.getAvailableEnergyForSpawning());
             // console.log(creepBuild.body + " | " + creepBuild.name)
+=======
+            console.log(this.villageName + " > PREPARING TO SPAWN: " + this.spawnQueue)
+            let creepToSpawn = this.spawnQueue.peek();
+            let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning(), this.getAvailableEnergyForSpawning());
+            console.log(creepBuild.body + " | " + creepBuild.name)
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
             if (this.canSpawn(creepBuild)) {
                 //this.debugMessage.append(`\t\t ${this.villageName} ${creepBuild.body} | ${creepBuild.name}`);
 
@@ -769,10 +803,17 @@ class Village {
                     if (!this.spawns[spawn].name) {
                         break;
                     }
+<<<<<<< HEAD
                     //console.log(spawn + ' in ' + this.spawnNames);
                     let myCreepName = creepBuild.name;
                     let spawnMessage = this.spawns[spawn].spawnCreep(creepBuild.body, myCreepName);
                     //console.log("SPAWNED " + myCreepName + ' with status ' + spawnMessage);
+=======
+                    console.log(spawn + ' in ' + this.spawnNames);
+                    let myCreepName = creepBuild.name;
+                    let spawnMessage = this.spawns[spawn].spawnCreep(creepBuild.body, myCreepName);
+                    console.log("SPAWNED " + myCreepName + ' with status ' + spawnMessage);
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
 
                     this.debugMessage.append(`\t\t SPAWN MESSAGE: ${spawnMessage}`);
                     if (spawnMessage === OK) {

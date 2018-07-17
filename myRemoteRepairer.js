@@ -39,7 +39,10 @@ var roleRemoteRepairer = {
             if (!Game.rooms[myRoomName] || creep.room.name != myRoomName) {
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: currently in ${ creep.room.name}; moving to ${myRoomName}`);
                 creep.moveTo(Game.flags[myRoomName], {visualizePathStyle: {stroke: '#ffffff'}});
+<<<<<<< HEAD
                 return;
+=======
+>>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
             }
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object){
