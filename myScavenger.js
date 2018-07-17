@@ -23,13 +23,15 @@ var roleScavenger = {
         }
 
         if (creep.memory.scavenge) {
-            if (creep.scavenge()) {
+            if (creep.scavenge()) { 
                 return;
             }
             creep.emote('scavenger', speech.WITHDRAW)
-            let miningContainers = village.getDropContainers()
-                .filter(x => x.store.energy > 0)
-                .sort((x,y) => x && y ? y.store[RESOURCE_ENERGY] - x.store[RESOURCE_ENERGY] : -1);
+            let miningContainers = village.getDropContainers();
+            if (miningContainers.length > 1) {
+                miningContainers = miningContainers.filter(x => x.store.energy > 0)
+                .sort((x,y) =>y.store[RESOURCE_ENERGY] - x.store[RESOURCE_ENERGY]);
+            } 
             //console.log('Scavenger mining containers for withdraw: ' + miningContainers)
             if (miningContainers.length > 0) {
                 creep.withdrawMove(miningContainers[0]);
