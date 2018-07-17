@@ -152,6 +152,9 @@ var speech = {
     },
     get WITHDRAW() {
         return '💰'
+    },
+    get PATROL() {
+        return '🏰';
     }
 }
 

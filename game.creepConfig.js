@@ -202,15 +202,15 @@ class CreepConfig {
                     case 1:
                         return [CLAIM,CLAIM,MOVE];
                     case 2:
-                        return [CLAIM,CLAIM,MOVE];
+                        return [CLAIM,CLAIM,MOVE,MOVE];
                     case 3:
-                        return [CLAIM,CLAIM,MOVE];
+                        return [CLAIM,CLAIM,MOVE,MOVE,MOVE];
                     case 4:
-                        return [CLAIM,CLAIM,MOVE];
+                        return [CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE];
                     case 5:
-                        return [CLAIM,CLAIM,MOVE];
+                        return [CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
-                return [CLAIM,CLAIM,MOVE];
+                return [CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'remoteBodyguard':
                 switch (this.villageLevel) {
                     case 1:

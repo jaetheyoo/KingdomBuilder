@@ -15,8 +15,10 @@ var roleRemoteBodyguard = {
         if(target) {
             creep.emote('meleeBodyguard',speech.ATTACKING);
             if(creep.attack(target) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target)
+                creep.moveTo(target);
             }
+        } else {
+            creep.emote('meleeBodyguard', speech.PATROL);
         }
     }
 }

@@ -43,7 +43,7 @@ var roleRemoteRepairer = {
             }
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object){
-                    return (object.structureType == STRUCTURE_CONTAINER && object.hits < object.hitsMax && object.hits < 175000);
+                    return (object.structureType == STRUCTURE_CONTAINER && object.hits < object.hitsMax && object.hits < 230000);
                 } 
             });
             

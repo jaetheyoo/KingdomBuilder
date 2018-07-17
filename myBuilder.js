@@ -50,7 +50,6 @@ var roleBuilder = {
                 village.creeps[creep.name].role = 'repairer';
                 return;
             }
-    
             let constructionSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
             if (constructionSite) {
                 creep.memory.buildTarget = constructionSite.id;
@@ -66,7 +65,6 @@ var roleBuilder = {
                     }
                     myCreepRemoteRoom = creep.memory.remoteRoom;
                 }
-                
                 let remoteRoom = village.getNextRemoteRoomName(myCreepRemoteRoom);
                 
                 
@@ -85,10 +83,20 @@ var roleBuilder = {
             } else {
                 let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (s) => {
-                        return ((s.structureType == STRUCTURE_STORAGE || s.structureType == STRUCTURE_CONTAINER) &&
+                        return ((s.structureType == STRUCTURE_STORAGE) &&
                             s.store[RESOURCE_ENERGY] >= creep.carryCapacity);
                     }
                 });
+                
+                if (!target) {
+                    target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                        filter: (s) => {
+                            return ((s.structureType == STRUCTURE_CONTAINER) &&
+                                s.store[RESOURCE_ENERGY] >= creep.carryCapacity);
+                        }
+                    });
+                }
+
                 if (!target && village.spawns[0].energy >= creep.carryCapacity) {
                     target = village.spawns[0];
                 }

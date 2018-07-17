@@ -28,6 +28,7 @@ var roleScavenger = {
             }
             creep.emote('scavenger', speech.WITHDRAW)
             let miningContainers = village.getDropContainers();
+            //console.log(creep.name + ' | '+miningContainers);
             if (miningContainers.length > 1) {
                 miningContainers = miningContainers.filter(x => x.store.energy > 0)
                 .sort((x,y) =>y.store[RESOURCE_ENERGY] - x.store[RESOURCE_ENERGY]);
@@ -36,6 +37,7 @@ var roleScavenger = {
             if (miningContainers.length > 0) {
                 creep.withdrawMove(miningContainers[0]);
             } else {
+                //console.log(creep.name + ' | No containers found' )
                 creep.withdrawMove(village.room.storage);
             }
         } else {
@@ -47,28 +49,27 @@ var roleScavenger = {
                     return;
                 } else {
                     // TODO: do something meaningful here
-                    throw new Error(`ERROR: ${creep.name} failed to find dropoff for minerals while Scavenging`);
+                    //throw new Error(`ERROR: ${creep.name} failed to find dropoff for minerals while Scavenging`);
                 }
-            } else {
-                let transferTarget = Game.spawns[village.spawnNames.find(x=>Game.spawns[x].energy < Game.spawns[x].energyCapacity)];
+            }
+            let transferTarget = Game.spawns[village.spawnNames.find(x=>Game.spawns[x].energy < Game.spawns[x].energyCapacity)];
+            if (!transferTarget) {
+                transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                    filter: structure => structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity
+                });
+                
                 if (!transferTarget) {
                     transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                        filter: structure => structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity
+                        filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
                     });
-                    
                     if (!transferTarget) {
-                        transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                            filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
-                        });
-                        if (!transferTarget) {
-                            transferTarget = village.room.storage;
-                        }
+                        transferTarget = village.room.storage;
                     }
                 }
-                //console.log(`\t\t\t\t${creep.name} transferring to ${transferTarget}`);
-                village.debugMessage.append(`\t\t\t\t${creep.name} transferring to ${transferTarget}`);
-                creep.transferMove(transferTarget, RESOURCE_ENERGY);
             }
+            //console.log(`\t\t\t\t${creep.name} transferring to ${transferTarget}`);
+            village.debugMessage.append(`\t\t\t\t${creep.name} transferring to ${transferTarget}`);
+            creep.transferMove(transferTarget, RESOURCE_ENERGY);
         }
     }
 };

@@ -10,7 +10,7 @@ var roleRemoteClaimer = {
         
         if (creep.memory.controller) {
             if(creep.reserveController(Game.getObjectById(creep.memory.controller)) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller, {swampCost: 1});
+                creep.moveTo(Game.getObjectById(creep.memory.controller));
                 return;
             }
         }
@@ -18,13 +18,13 @@ var roleRemoteClaimer = {
         let flag = Game.flags[village.creeps[creep.name].myRemoteRoom];
         if (!flag.room || creep.room != flag.room) {
             creep.emote('claimer',speech.REMOTEMOVING);
-            creep.moveTo(flag,{swampCost:1});
+            creep.moveTo(flag);
         } else {
             if(creep.room.controller) {
                 creep.memory.controller = creep.room.controller.id;
                 creep.emote('claimer',speech.CLAIMING);
                 if(creep.reserveController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(creep.room.controller,{swampCost:1});
+                    creep.moveTo(creep.room.controller);
                 }
             }
         }

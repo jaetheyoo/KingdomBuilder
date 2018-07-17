@@ -17,13 +17,13 @@ Creep.prototype.scavenge = function() { // TEST: functionality
     let findTargets = [FIND_DROPPED_RESOURCES, FIND_TOMBSTONES];
     let findFilters = [
         {
-            filter: object => object.resourceType == RESOURCE_ENERGY && object.amount >= 25 || object.resourceType != RESOURCE_ENERGY
+            filter: object => object.resourceType == RESOURCE_ENERGY && object.amount >= 100 || object.resourceType != RESOURCE_ENERGY
         },
         {
-            filter: structure => structure.store[RESOURCE_ENERGY] >= 25 || Object.keys(structure.store).length > 1
+            filter: structure => structure.store ? structure.store[RESOURCE_ENERGY] >= 100 || Object.keys(structure.store).length > 1 : false
         },
     ];
-
+    // console.log(this.name + ' | scavenging');
     for (let i in findTargets) {
         let target = this.pos.findClosestByRange(findTargets[i], findFilters[i]);
         if (target) {
@@ -36,6 +36,7 @@ Creep.prototype.scavenge = function() { // TEST: functionality
                 case 1:
                     this.emote('scavenger', speech.RIP);
                     this.moveTo(target,  {visualizePathStyle: {stroke: '#ffffff'}});
+                    // console.log(this.name + ' | ' + target);
                     let minerals = Object.keys(target.store);
                     let resourceType = RESOURCE_ENERGY;
                     if (minerals.length > 1) {
@@ -59,6 +60,9 @@ Creep.prototype.scavenge = function() { // TEST: functionality
  * @param {resourceEnum} resourceType 
  */
 Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_ENERGY) {
+    if (!transferTarget) {
+        return;
+    }
     let store = transferTarget.store;
     if (store) {
         let carryKeys = Object.keys(this.carry);
