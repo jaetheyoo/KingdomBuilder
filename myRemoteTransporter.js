@@ -35,11 +35,7 @@ var roleRemoteTransfer = {
                     return;
                 }
                 creep.moveTo(mySourceObject);
-<<<<<<< HEAD
                 if (mySourceObject && mySourceObject.room) {
-=======
-                if (mySourceObject.room) {
->>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
                     let containerId = village.getDropHarvestLocation(creep.name, village.creeps[creep.name].remoteRoom);
                     if (containerId) {
                         creep.memory.pickupContainer = containerId;
@@ -63,15 +59,9 @@ var roleRemoteTransfer = {
             } else if (creep.room.name == village.roomName && village.hasLinks()) {
                 let fromLinkIds = village.getFromLinks();
                 //console.log('FROM LINKS: ' + fromLinkIds + ' | ' + fromLinkIds.length);
-<<<<<<< HEAD
                 let closestLink = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: function(o) {
                         return fromLinkIds.includes(o.id) || o.structureType == STRUCTURE_CONTAINER;
-=======
-                let closestLink = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                    filter: function(o) {
-                        return fromLinkIds.includes(o.id);
->>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
                     }
                 })
                 //console.log("CLOSEST LINK: " + closestLink);

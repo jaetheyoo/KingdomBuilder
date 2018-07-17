@@ -30,7 +30,6 @@ var roleLinkMaintainer = {
                         return;
                     } else {
                         creep.emote('linkMaintainer', speech.TRANSFER);
-<<<<<<< HEAD
                         let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                             filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
                         });
@@ -38,9 +37,6 @@ var roleLinkMaintainer = {
                             transferTarget = village.room.storage;
                         }
                         creep.transferMove(transferTarget);
-=======
-                        creep.transferMove(creep.room.storage);
->>>>>>> 4c1586e4c32c5c1608432d8719147a86238c19a9
                         return
                     }
                 }
