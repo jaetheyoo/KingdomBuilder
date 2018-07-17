@@ -91,7 +91,7 @@ Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_
             break;
         case (ERR_FULL):
         case (ERR_INVALID_TARGET):
-            throw new Error(`ERROR: ${this.name} failed on prototype TRANSFERMOVE due to error code ${status}`)
+            throw new Error(`ERROR: ${this.name} failed on prototype WITHDRAWMOVE due to error code ${status}`)
     }
 }
 

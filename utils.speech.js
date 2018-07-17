@@ -11,6 +11,9 @@ var speech = {
     getRole(role) {
         let roleEmote = '';
         switch (role) {
+            case 'meleeBodyguard':
+                roleEmote =  '🛡️';
+                break;
             case 'builder':
                 roleEmote =  '👷';
                 break;
@@ -50,11 +53,19 @@ var speech = {
             case 'upgrader':
                 roleEmote =  '🤖';
                 break;
+            case 'linkMaintainer':
+                roleEmote = '🔗';
+                break;
         }
         return roleEmote;
     },
+    
     get OLD() {
         return'👴🏻';
+    },
+    
+    get IDLE() {
+        return'🎵';
     },
     
     get DROPOFF() {
@@ -76,7 +87,9 @@ var speech = {
     get REPAIR() {
         return '🔧';
     },
-
+    get ATTACKING() {
+        return '🗡️';
+    },
     get UPGRADE() {
         return '⚡';
     },
@@ -121,6 +134,9 @@ var speech = {
     get REMOTETRANSPORTER() {
         return '✈️🚌';
     },
+    get CLAIMING() {
+        return '☠️';
+    },
     get SCAVENGE() {
         return '🦉';
     },
@@ -135,7 +151,7 @@ var speech = {
         return '⚰️'
     },
     get WITHDRAW() {
-        return '🏧'
+        return '💰'
     }
 }
 

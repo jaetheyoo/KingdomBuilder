@@ -3,7 +3,7 @@ var base = require('role.base');
 var roleRemoteTransfer = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, village) {
         if (base.run(creep, village) == -1){
             return;
         }
@@ -28,9 +28,15 @@ var roleRemoteTransfer = {
                 }
             } else {
                 let mySourceObject = Game.getObjectById(village.creeps[creep.name].mySource);
+                // cant' see source, move to room
+                if (mySourceObject == null) {
+                    creep.emote('remoteTransporter', speech.REMOTEMOVING);
+                    creep.moveTo(Game.flags[village.getMyRemoteRoom(creep)], {visualizePathStyle: {stroke: '#ffffff'}});
+                    return;
+                }
                 creep.moveTo(mySourceObject);
-                if (mySourceObject.room) {
-                    let containerId = village.getDropHarvestLocation(creepName, remoteRoomName);
+                if (mySourceObject && mySourceObject.room) {
+                    let containerId = village.getDropHarvestLocation(creep.name, village.creeps[creep.name].remoteRoom);
                     if (containerId) {
                         creep.memory.pickupContainer = containerId;
                         creep.withdrawMove(creep.memory.pickupContainer);
@@ -50,13 +56,15 @@ var roleRemoteTransfer = {
                 } else {
                     delete creep.memory.dropoffLink;
                 }
-            } else if (creep.room == village.roomName && village.hasLinks()) {
+            } else if (creep.room.name == village.roomName && village.hasLinks()) {
                 let fromLinkIds = village.getFromLinks();
-                let closestLink = creep.room.findClosestByRange(FIND_MY_STRUCTURES, {
+                //console.log('FROM LINKS: ' + fromLinkIds + ' | ' + fromLinkIds.length);
+                let closestLink = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: function(o) {
-                        fromLinkIds.includes(o.id);
+                        return fromLinkIds.includes(o.id) || o.structureType == STRUCTURE_CONTAINER;
                     }
                 })
+                //console.log("CLOSEST LINK: " + closestLink);
                 if (closestLink) {
                     creep.memory.dropoffLink = closestLink.id;
                     creep.transferMove(closestLink);

@@ -29,7 +29,7 @@ var roleScavenger = {
             creep.emote('scavenger', speech.WITHDRAW)
             let miningContainers = village.getDropContainers()
                 .filter(x => x.store.energy > 0)
-                .sort((x,y) => y.store[RESOURCE_ENERGY] - x.store[RESOURCE_ENERGY]);
+                .sort((x,y) => x && y ? y.store[RESOURCE_ENERGY] - x.store[RESOURCE_ENERGY] : -1);
             //console.log('Scavenger mining containers for withdraw: ' + miningContainers)
             if (miningContainers.length > 0) {
                 creep.withdrawMove(miningContainers[0]);

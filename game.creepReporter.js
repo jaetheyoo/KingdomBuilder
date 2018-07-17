@@ -1,11 +1,13 @@
 var CreepReport = require('game.creepReport');
 var roleBuilder = require('myBuilder'); // needs debugging
+var roleRemoteClaimer = require('myRemoteClaimer');
 var roleDropHarvester = require('myDropHarvester'); // needs debugging
 var roleHarvester = require('myHarvester'); // needs debugging
 var roleLinkMaintainer = require('myLinkMaintainer'); // needs debugging
 var roleRepairer = require('myRepairer'); // needs debugging
 var roleRemoteDropHarvester = require('myRemoteDropHarvester'); // needs debugging
 var roleRemoteRepairer = require('myRemoteRepairer')
+var roleRemoteBodyguard = require('myRemoteBodyguard')
 var roleRemoteTransporter = require('myRemoteTransporter') // needs debugging
 var roleScavenger = require('myScavenger'); // needs debugging
 var roleUpgrader = require('myUpgrader'); // needs debugging
@@ -28,13 +30,13 @@ var CreepReporter = function(creeps, debug, village) {
         let creepRole = creepReport.report(creep, village);
         village.debugMessage.append(`\t\t [CreepReporter] ${creepName} is running role ${creepRole}`);
 
-        //try {
+        try {
             switch (creepRole) {
                 case 'builder':
                     roleBuilder.run(creep, village);
                     break;
-                case 'claimer':
-                    roleClaimer.run(creep);
+                case 'remoteClaimer':
+                    roleRemoteClaimer.run(creep, village);
                     break;
                 case 'dropHarvester':
                     roleDropHarvester.run(creep, village);
@@ -51,6 +53,9 @@ var CreepReporter = function(creeps, debug, village) {
                 case 'remoteDropHarvester':
                     roleRemoteDropHarvester.run(creep,village);
                     break;
+                case 'remoteBodyguard':
+                    roleRemoteBodyguard.run(creep,village);
+                    break;                    
                 case 'remoteHarvester':
                     roleRemoteHarvester.run(creep,village);
                     break;
@@ -73,9 +78,9 @@ var CreepReporter = function(creeps, debug, village) {
                     roleUpgrader.run(creep, village);
                     break;
             }
-        //} catch (err) {
-        //    console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] ${err.message}`);
-        //}
+        } catch (err) {
+            console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] ${err.message}`);
+        }
     });
     return creepReport;
 }

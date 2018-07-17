@@ -28,33 +28,42 @@ var roleRemoteRepairer = {
                 village.debugMessage.append(`\t\t\t\t[REFILL]: withdrawing from ${target.name ? target.name : target.structureType + ' with id: ' + target.id}`);
                 creep.withdrawMove(target);
             } else {
-                creep.moveTo(village.flags['refuelWaitingZone']);
+                creep.moveTo(village.flags['refuelWaitingZone'], {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else {
             creep.emote('remoteRepairer', speech.REPAIR)
             let myRoomName = village.creeps[creep.name].myRemoteRoom;
+            // console.log(creep.name + ' > ' + myRoomName)
             village.debugMessage.append(`\t\t\t\t[REPAIR]: remote room set to ${myRoomName}`);
 
             if (!Game.rooms[myRoomName] || creep.room.name != myRoomName) {
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: currently in ${ creep.room.name}; moving to ${myRoomName}`);
-                creep.moveTo(Game.flags[myRoomName]);
+                creep.moveTo(Game.flags[myRoomName], {visualizePathStyle: {stroke: '#ffffff'}});
+                return;
             }
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object){
-                    return (object.structureType == STRUCTURE_ROAD && object.hits/object.hitsMax <= .9) ||
-                    (object.structureType != STRUCTURE_ROAD && object.hits < object.hitsMax && object.hits < 150000)||
-                    (object.structureType == STRUCTURE_CONTAINER && object.hits < object.hitsMax && object.hits < 230000);
+                    return (object.structureType == STRUCTURE_CONTAINER && object.hits < object.hitsMax && object.hits < 175000);
                 } 
             });
+            
+            if (!target) {
+                target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: function(object){
+                        return (object.structureType == STRUCTURE_ROAD && object.hits/object.hitsMax <= .9) ||
+                    (object.structureType != STRUCTURE_ROAD && object.hits < object.hitsMax && object.hits < 150000);
+                    } 
+                });
+            }
             
             if(target) {
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: repairing ${target.structureType} with id ${target.id}`);
                 if(creep.repair(target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target);
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             } else {
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: found nothing to repair`);
-                creep.moveTo(Game.flags[myRoomName]);
+                creep.moveTo(Game.flags[myRoomName], {visualizePathStyle: {stroke: '#ffffff'}});
                 village.setShouldNotRepair(creep.room);
             }
         }

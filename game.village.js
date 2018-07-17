@@ -7,11 +7,8 @@ var CreepConfig = require('game.creepConfig');
 class Village {
     constructor(villageName, roomName, spawnNames, controllerId, debug) {
         this.villageName = villageName;
-        this.memoryAddr = Memory.Villages[villageName];
         this.roomName = roomName;
-        this.remoteRooms = {};
         this.spawnNames = spawnNames;
-        this.room = Game.rooms[roomName];
         this.spawns = [];
         for (let mySpawnName in this.spawnNames) {
             let mySpawn = Game.spawns[this.spawnNames[mySpawnName]];
@@ -20,13 +17,9 @@ class Village {
             }
         }
         this.level = 1;
-        this.creeps = {};
-        this.sources = {};
         this.remoteCreeps = {};
-        this.structures = {};
         this.flags = {};
         this.controllerId = controllerId;
-        this.controller = Game.structures[controllerId];
         this.spawnQueue = [];
         
         this.debugMessage = new DebugMessage();
@@ -57,15 +50,46 @@ class Village {
         }
         
         this.registerFlags();
-        this.registerRemoteRooms();
-        this.registerSources();
         this.registerLevel();
-        this.registerCreeps();
-        this.registerStructures();
+    }
+    
+    get memoryAddr() {
+        return Memory.Villages[this.villageName];
+    }
+
+    get room() {
+        return Game.rooms[this.roomName];
+    }
+
+    get controller() {
+        return Game.structures[this.controllerId];
+    }
+
+    get creeps() {
+        return Memory.Villages[this.villageName].creeps;
+    }
+
+    get sources() {
+        return Memory.Villages[this.villageName].sources;
+    }
+
+    get remoteRooms() {
+        return Memory.Villages[this.villageName].remoteRooms;
+    }
+
+    get structures() {
+        return Memory.Villages[this.villageName].structures;
     }
 
     canSpawn(creepBuild) {
-        return (!this.spawns.every(x=>x.spawning) && this.getAvailableEnergyForSpawning() >= creepBuild.cost);
+        //console.log(`CAN SPAWN: ${(this.spawns.find(x=>x.name && !Game.spawns[x.name].spawning)!=null && this.getAvailableEnergyForSpawning() >= creepBuild.cost)}`);
+        //console.log(`${this.spawns.find(function(x) {
+        //    console.log(x.name);
+        //    console.log(x.spawning);
+        //    return (x=>x.name && !x.spawning);
+        //})}`);
+        //console.log(`Do I have enough energy? ${this.getAvailableEnergyForSpawning()} - ${creepBuild.cost} = ${this.getAvailableEnergyForSpawning() >= creepBuild.cost}`)
+        return (this.spawns.find(x=>x.name && !Game.spawns[x.name].spawning)!=null && this.getAvailableEnergyForSpawning() >= creepBuild.cost);
     }
 
     /**
@@ -224,15 +248,17 @@ class Village {
                 //console.log("IN MEM: " + JSON.stringify(this.memoryAddr.sources[source].harvesters));
                 //console.log("IN HEAP: " + JSON.stringify(this.sources[source]));                
                 break;
-            case 'remoteRepairer':   
+            case 'remoteRepairer':
+            case 'remoteClaimer':
+            case 'remoteBodyguard':
                 myRoom = this.creeps[creepName].myRemoteRoom;
-                Memory.Villages[this.villageName].remoteRooms[myRoom].remoteRepairer--;
+                if (myRoom) {Memory.Villages[this.villageName].remoteRooms[myRoom][role]--;}
                 break;
             case 'remoteTransporter':
             case 'remoteDropHarvester':
                 // for each remote room, find a source
                 source = this.creeps[creepName].mySource;
-                Memory.Villages[this.villageName].remoteRooms[this.creeps[creepName].myRemoteRoom].remoteSources[source][role]--;
+                if (source) {Memory.Villages[this.villageName].remoteRooms[this.creeps[creepName].remoteRoom].remoteSources[source][role]--};
                 break;
         }
         //this.printStatus();
@@ -245,11 +271,16 @@ class Village {
      * @param {creepRole} role 
      */
     findRemoteSourceForRole(creepName, role) {
-        for (let room in this.remoteRooms) {                    
-            for (let source in room.remoteSources) {
-                if(source[role] < 1) {
+        console.log(`>     FINDING REMOTE SOURCE FOR ${creepName}`)
+        for (let room in this.remoteRooms) {
+            console.log('>>     ROOM: ' + room);
+            for (let source in this.remoteRooms[room].remoteSources) {
+                console.log('>>>    Source: ' + source);
+                if(this.remoteRooms[room].remoteSources[source][role] < 1) {
                     this.remoteRooms[room].remoteSources[source][role]++;
                     this.creeps[creepName].remoteRoom = room;
+                    console.log('>>>>   SET ROOM TO: ' + room);
+                    console.log('>>>>   SET SOURCE TO: ' + source);
                     return source;
                 }
             }
@@ -304,22 +335,25 @@ class Village {
     getDropHarvestLocation(creepName, remoteRoomName) {
         // find the nearest container to my source
         // if you can't find one, return null
+        //console.log('>>>>>>>>' + creepName)
         let mySource = this.getSource(creepName);
         let villageSources = this.sources;
         let isRemoteRoom = false;
         if (remoteRoomName) {
             isRemoteRoom = true;
-            villageSources = this.remoteRooms[remoteRoomName].sources;
+            //console.log(remoteRoomName)
+            villageSources = this.remoteRooms[remoteRoomName].remoteSources;
         }
         //console.log('DROP MINING SOURCE FOR ' + creepName + ' | '+ mySource);
+        //console.log(Object.keys(villageSources))
         if(!villageSources[mySource.id].container) {
             let containers = mySource.pos.findInRange(FIND_STRUCTURES, 1,  {filter: {structureType: STRUCTURE_CONTAINER}});
             if (containers.length > 0) {
                 villageSources[mySource.id].container = containers[0].id;
-                if (isRemoteRoom) {
+                if (!isRemoteRoom) {
                     this.memoryAddr.sources[mySource.id].container = containers[0].id;
                 } else {
-                    this.memoryAddr.remoteRooms[remoteRoomName].sources[mySource.id].container = containers[0].id;
+                    this.memoryAddr.remoteRooms[remoteRoomName].remoteSources[mySource.id].container = containers[0].id;
                 }
             }
         }
@@ -419,6 +453,9 @@ class Village {
      * @param {string} creepName 
      */
     getSource(creepName) {
+        //console.log('GETSOUCE ' + creepName)
+        //console.log('WHETDFKLS     ' + Object.keys(this.creeps[creepName]))
+        //console.log(`WHETDFKLS     ${this.creeps[creepName].mySource}`)
         return Game.getObjectById(this.creeps[creepName].mySource);
     }
 
@@ -432,7 +469,7 @@ class Village {
 
     isStale(ticks) {
         // TODO: decrease stale timer according to stimulus (ie. in war)
-        if (!ticks || Game.time - ticks > 5) {
+        if (!ticks || Game.time - ticks > 500) {
             return true;
         } else {
             return false;
@@ -444,19 +481,21 @@ class Village {
     }
 
     operateLinks() {
-        for (let fromLink in this.structures.links.fromLinks) {
+        this.structures.links.fromLinks.forEach( fromLink => {
             let fromLinkObj = Game.structures[fromLink];
+            //console.log(fromLinkObj)
             let toLink = this.structures.links.toLinks.find(x => Game.structures[x].energy <= 400); // TODO: find a way to not hardcode this number
-            if (fromLinkObj && toLink) {
-                let energyToSend = toLink.energyCapacity - toLink.energy;
+            let toLinkObj = Game.structures[toLink];
+            if (fromLinkObj && toLinkObj) {
+                let energyToSend = toLinkObj.energyCapacity - toLinkObj.energy;
                 if (fromLinkObj.energy < energyToSend) {
                     energyToSend = fromLink.energy;
                 }
                 if (energyToSend >= 400) {
-                    fromLinkObj.transferEnergy(toLink,energyToSend);
+                    fromLinkObj.transferEnergy(toLinkObj,energyToSend);
                 }
             }
-        }
+        })
     }
     
     operateTowers() {
@@ -471,6 +510,7 @@ class Village {
                 var closestHostile = towerObj.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 if(closestHostile) {
                     towerObj.attack(closestHostile);
+                    return;
                 }
                 if(closestDamagedStructure) {
                     towerObj.repair(closestDamagedStructure);
@@ -484,20 +524,25 @@ class Village {
      * @param {creepBuild} creepBuild 
      */
     registerCreep(creepBuild, myCreepName) {
+        console.log('REGISTERING CREEP: ' + myCreepName + ' | ' + creepBuild.roleName);
+        //console.log('IN MEM BEFORE: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        //console.log('IN HEAP BEFORE: ' + this.creeps[myCreepName]);
         this.creeps[myCreepName] = creepBuild.memoryConfig; // TODO: is this necessary?
-        this.memoryAddr.creeps[myCreepName] = creepBuild.memoryConfig;
+        //console.log('IN MEM AFTER HEAP CHNG: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        //console.log('IN HEAP AFTER HEAP CHNG: ' + this.creeps[myCreepName]);
         Memory.Villages[this.villageName].creeps[myCreepName] = creepBuild.memoryConfig;
-        console.log('REGISTERING CREEP: ' + myCreepName);
+        //console.log('IN MEM AFTER MEM CHNG: ' + Memory.Villages[this.villageName].creeps[myCreepName]);
+        //console.log('IN HEAP AFTER MEM CHNG: ' + this.creeps[myCreepName]);
         let mySource;
         let foundSource = false;
         let myRoom;
-        let roleName = creepBuild.roleName; 
+        let roleName = creepBuild.roleName;
         switch (roleName) {
             case 'harvester':
                 for (let source in this.sources) {
                     if (this.sources[source][roleName] < this.sources[source].harvestersAmount) {
                         mySource = source;
-                        this.sources[source][roleName] = this.sources[source][roleName] + 1;
+                        this.sources[source][roleName]++;
                         break;
                     }
                 }
@@ -506,34 +551,57 @@ class Village {
             case 'dropHarvester':
                 for (let source in this.sources) {
                     console.log('SOURCE : ' + source + '|' + this.sources[source][roleName])
-                    if (this.sources[source][roleName] < 1) {
+                    if (this.sources[source][roleName] == 0) {
                         console.log("FOUND A SOURCE: " + source);
                         mySource = source;
-                        this.sources[source][roleName] = this.sources[source][roleName] + 1;
+                        this.sources[source][roleName] = this.sources[source][roleName]++;
                         // creepBuild.memoryConfig = {'role': 'dropHarvester', 'mySource': mySource}
                         Memory.Villages[this.villageName].creeps[myCreepName] = {'role': 'dropHarvester', 'mySource': mySource};
                         this.creeps[myCreepName] = {'role': 'dropHarvester', 'mySource': mySource}; // TODO: is this necessary?
                         break;
+                    } else if (this.sources[source][roleName] < 0) {
+                        this.sources[source][roleName] == 0;
+                    }
+                }
+                if (mySource==null) {
+                    for (let source in this.sources) {
+                        console.log('SOURCE : ' + source + '|' + this.sources[source][roleName])
+                        if (this.sources[source][roleName] == 0) {
+                            console.log("FOUND A SOURCE: " + source);
+                            mySource = source;
+                            this.sources[source][roleName] = this.sources[source][roleName]++;
+                            // creepBuild.memoryConfig = {'role': 'dropHarvester', 'mySource': mySource}
+                            Memory.Villages[this.villageName].creeps[myCreepName] = {'role': 'dropHarvester', 'mySource': mySource};
+                            this.creeps[myCreepName] = {'role': 'dropHarvester', 'mySource': mySource}; // TODO: is this necessary?
+                            break;
+                        } else if (this.sources[source][roleName] < 0) {
+                            this.sources[source][roleName] == 0;
+                        }
                     }
                 }
                 this.memoryAddr.creeps[creepBuild.name].mySource = mySource;
                 break;
             case 'remoteRepairer':
+            case 'remoteClaimer':
+            case 'remoteBodyguard':
                 for(let room in this.remoteRooms) {
-                    if (this.remoteRooms[room].remoteRepairer < 1) {
+                    console.log( room + ' | ' + this.remoteRooms[room][roleName]);
+                    if (this.remoteRooms[room][roleName] < 1) {
                         myRoom = room;
-                        this.remoteRooms[room].remoteRepairer++;
+                        this.remoteRooms[room][roleName]++;
                         break;
                     }
                 }
+                console.log('SET TO: ' + myRoom + ' | ' + this.remoteRooms[myRoom][roleName]);
                 this.memoryAddr.creeps[creepBuild.name].myRemoteRoom = myRoom;
                 break;
             case 'remoteTransporter':
             case 'remoteDropHarvester':
                 // for each remote room, find a source
-                mySource = this.findRemoteSourceForRole(creepBuild.name, role)
+                mySource = this.findRemoteSourceForRole(creepBuild.name, roleName)
+                console.log('FINISHING REGISTRATION: SET MYSOURCE TO ' + mySource);
                 if (mySource && Game.getObjectById(mySource)) {
-                    this.memoryAddr.creeps[creepBuild.name].mySource = mySource;
+                    this.creeps[creepBuild.name].mySource = mySource;
                 }
                 break;
         }
@@ -628,11 +696,11 @@ class Village {
             let shouldRepairTime = memRoomAddr.shouldRepairTime;
             //console.log(room + ' | ' + this.isStale(shouldRepairTime))
             if (this.isStale(shouldRepairTime)) {
-                let containerThreshold = 150000 + this.Level * 12000;
-                let roadThreshold = .6 + this.Level + .05;
+                let containerThreshold = 150000 + this.level * 10000;
+                let roadThreshold = .5 + this.level + .05;
                 //let roadThreshold = 1;
-                let wallThreshold = 10000 + 10000 * this.Level * this.Level;
-                let rampartThreshold = 10000 + 10000 * this.Level * this.Level;
+                let wallThreshold = 10000 + 10000 * this.level * this.level;
+                let rampartThreshold = 10000 + 10000 * this.level * this.level;
                 let structureThreshold = .8;
                 
                 let shouldRepair = false;
@@ -644,6 +712,10 @@ class Village {
                 if (structures.length) {
                     let repairTarget = _.find(structures, function (s) {
                         let type = s.structureType;
+                        //console.log('>          ' + type);
+                        //console.log('>          ' + s.hits);
+                        //console.log('>          ' + containerThreshold)
+                        //console.log((type == STRUCTURE_CONTAINER && s.hits < containerThreshold));
                         return ((type == STRUCTURE_CONTAINER && s.hits < containerThreshold) ||
                             (type == STRUCTURE_ROAD && s.hits < roadThreshold * s.hitsMax) ||
                             (type == STRUCTURE_WALL && s.hits < wallThreshold) ||
@@ -656,6 +728,7 @@ class Village {
                         );
                     });
                     if (repairTarget) {
+                        console.log("GOTTA REPAIR " + room)
                         shouldRepair = true;
                     } else {
                         shouldRepair = false;
@@ -671,6 +744,8 @@ class Village {
 
                 
                 return shouldRepair;
+            } else {
+                return memRoomAddr.shouldRepair;
             }
         }
     }
@@ -678,22 +753,28 @@ class Village {
     spawnCreep() {
         //this.debugMessage.append(`\t ${this.villageName} PREPARING TO SPAWN -- Spawn Queue: ${this.spawnQueue}`);
 
-        //console.log("PREPARING TO SPAWN: " + this.spawnQueue)
         // TODO: depending on spawning priority, allow skipping forward in the queue
         if (this.spawnQueue.length > 0) {
+            // console.log(this.villageName + " > PREPARING TO SPAWN: " + this.spawnQueue)
             let creepToSpawn = this.spawnQueue.peek();
             let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning(), this.getAvailableEnergyForSpawning());
+            // console.log(creepBuild.body + " | " + creepBuild.name)
             if (this.canSpawn(creepBuild)) {
                 //this.debugMessage.append(`\t\t ${this.villageName} ${creepBuild.body} | ${creepBuild.name}`);
 
-                console.log(creepBuild.body + " | " + creepBuild.name)
                 for (let spawn in this.spawns) {
-                    console.log(spawn + ' in ' + this.spawnNames);
+                    // console.log(spawn + ' in ' + this.spawnNames);
+                    // console.log('LALA: ' + this.spawns[spawn])
+                    // console.log(Game.spawns[this.spawns[spawn].name]);
+                    if (!this.spawns[spawn].name) {
+                        break;
+                    }
+                    //console.log(spawn + ' in ' + this.spawnNames);
                     let myCreepName = creepBuild.name;
                     let spawnMessage = this.spawns[spawn].spawnCreep(creepBuild.body, myCreepName);
-                    console.log("SPANWED " + myCreepName + ' with status ' + spawnMessage);
+                    //console.log("SPAWNED " + myCreepName + ' with status ' + spawnMessage);
 
-                    //this.debugMessage.append(`\t\t SPAWN MESSAGE: ${spawnMessage}`);
+                    this.debugMessage.append(`\t\t SPAWN MESSAGE: ${spawnMessage}`);
                     if (spawnMessage === OK) {
                         console.log('SUCCESSFULLY SPAWNED: ' + myCreepName);
                         this.registerCreep(creepBuild, myCreepName);
@@ -704,7 +785,7 @@ class Village {
                         
                     } else {
                         console.log('SPAWN ERROR: ' + spawnMessage);
-                        //return -1;
+                        return -1;
                     }
                 }
             } else {

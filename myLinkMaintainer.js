@@ -18,17 +18,25 @@ var roleLinkMaintainer = {
          * Moves energy to tower
          * 
          */
-
+        creep.emote('linkMaintainer', speech.IDLE);
         if (village.hasLinks()) { // TODO: add stuff to do when TOLINKS are empty
             let toLinkIds = village.getToLinks();
             for(let i in toLinkIds) {
                 let toLink = Game.getObjectById(toLinkIds[i]);
                 if (toLink && toLink.energy > 0) {
                     if (creep.carry.energy == 0) {
+                        creep.emote('linkMaintainer', speech.WITHDRAW);
                         creep.withdrawMove(toLink);
                         return;
                     } else {
-                        creep.transferMove(creep.room.storage);
+                        creep.emote('linkMaintainer', speech.TRANSFER);
+                        let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                            filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
+                        });
+                        if (!transferTarget) {
+                            transferTarget = village.room.storage;
+                        }
+                        creep.transferMove(transferTarget);
                         return
                     }
                 }
