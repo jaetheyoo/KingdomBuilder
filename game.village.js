@@ -354,6 +354,57 @@ class Village {
         return dropContainers;
     }
 
+    getMineralExtractionContainerId() {
+        if(!this.memoryAddr.mineralExtractionContainer) {
+            let extractorId = this.getMineralExtractorId();
+            if (!extractorId) {
+                return;
+            }
+
+            let containers = Game.getObjectById(extractorId).pos.findInRange(FIND_STRUCTURES, 1, {
+                filter: {structureType: STRUCTURE_CONTAINER}});
+            if(!containers.length) {
+                return;
+            }
+
+            this.memoryAddr.mineralExtractionContainer = containers[0].id;
+        }
+        return this.memoryAddr.mineralExtractionContainer;
+    }
+
+    getMineralExtractorId() { // TODO: remote rooms
+        if (!this.memoryAddr.mineralExtractor) {
+            let mineralId = this.getMineralsById();
+            if (!mineralId) {
+                return;
+            }
+
+            let structures = Game.getObjectById(mineralId).pos.lookFor(LOOK_STRUCTURES);
+            if (!structures.length) {
+                return; 
+            }
+            
+            let extractor;
+            if (structures.length == 1) {
+                if (!structures[0].structureType == STRUCTURE_EXTRACTOR) {
+                    return;
+                }
+                extractor = structures[0];
+            } else {
+                extractor = structures.find(x => x.structureType == STRUCTURE_EXTRACTOR);
+                if (!extractor.length) {
+                    return;
+                }
+                extractor = extractor[0];
+            }
+
+            console.log(extractor)
+            this.memoryAddr.mineralExtractor = extractor.id;
+        }
+        
+        return this.memoryAddr.mineralExtractor;
+    }
+
     /**
      * Returns the container obj for a drop harvester
      * @param {string} creepName 
@@ -439,6 +490,15 @@ class Village {
             }
         }
         return memRoomAddr;
+    }
+    /**
+     * TODO: if I have an extractor
+     *      check if extractor has mins left
+     *      bonus: ramp up or down based on how many mins/refresh time
+     * @param {*} role 
+     */
+    getNeededMineralRole(role) {
+        return 0;
     }
     
     getNeededRemoteRole(role) {
@@ -704,6 +764,17 @@ class Village {
             memRoomAddr['shouldRepair'] = false;
             memRoomAddr['shouldRepairTime'] = Game.time;    
         }
+    }
+
+    getMineralsById() {
+        if (!this.memoryAddr.minerals) {
+            let minerals = this.room.find(FIND_MINERALS);
+            if (!minerals.length) {
+                return null;
+            }
+            this.memoryAddr.minerals = minerals[0].id;
+        }
+        return this.memoryAddr.minerals;
     }
 
     setShouldRepair(room) {

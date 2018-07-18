@@ -11,6 +11,7 @@ var roleRemoteBodyguard = require('myRemoteBodyguard')
 var roleRemoteTransporter = require('myRemoteTransporter') // needs debugging
 var roleScavenger = require('myScavenger'); // needs debugging
 var roleUpgrader = require('myUpgrader'); // needs debugging
+var roleMineralHarvester = require('myMineralHarvester'); // needs debugging
 
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
@@ -76,6 +77,9 @@ var CreepReporter = function(creeps, debug, village) {
                     break;
                 case 'upgrader':
                     roleUpgrader.run(creep, village);
+                    break;
+                case 'mineralHarvester':
+                    roleMineralHarvester.run(creep, village);
                     break;
             }
         } catch (err) {

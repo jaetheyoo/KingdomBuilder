@@ -74,8 +74,8 @@ class CreepReport {
             "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
-            //"mineralDropHarvester": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
-            //"mineralTransporter": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            //"mineralHarvester": { "priority": 1, "count": 0, "scalingFactor": 0},
+            //"mineralTransporter": { "priority": 1, "count": 0, "scalingFactor": 0},
             "remoteBodyguard": { "priority": 1, "count": 0, "scalingFactor": 0},
             "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
             "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
@@ -166,6 +166,10 @@ class CreepReport {
                 case ('remoteRepairer'):
                 case ('remoteTransporter'):
                     adjustedCount = village.getNeededRemoteRole(role);
+                    break;
+                case ('mineralHarvester'):
+                case ('mineralTransporter'):
+                    adjustedCount = village.getNeededMineralRole(role);
                     break;
             }
             //console.log(`\t\t [CreepReport] Required for role ${role}: ${config[role].count}`);

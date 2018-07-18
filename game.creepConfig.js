@@ -152,6 +152,22 @@ class CreepConfig {
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+            case 'mineralHarvester':
+                switch (this.villageLevel) {
+                    case 1:
+                        return [WORK,WORK,WORK,MOVE,MOVE];
+                    case 2:
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+                    case 3:
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+                    case 4:
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+                    case 5:
+                        return [WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+                    case 6:
+                        return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE];
+                }
+                return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
             case 'remoteRepairer':
                 switch (this.villageLevel) {
                     case 1:
