@@ -30,7 +30,7 @@ var roleScavenger = {
             let miningContainers = village.getDropContainers();
             //console.log(creep.name + ' | '+miningContainers);
             if (miningContainers.length > 1) {
-                miningContainers = miningContainers.filter(x => x.store.energy > 0)
+                miningContainers = miningContainers.filter(x => x.store.energy > 100)
                 .sort((x,y) =>y.store[RESOURCE_ENERGY] - x.store[RESOURCE_ENERGY]);
             } 
             //console.log('Scavenger mining containers for withdraw: ' + miningContainers)

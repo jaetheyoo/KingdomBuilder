@@ -24,7 +24,7 @@ var speech = {
                 roleEmote = '⛏️';
                  break;
             case 'dropHarvester':
-                roleEmote = '👨‍🔧';
+                roleEmote = '👩‍🌾';
                 break;
             case 'meleeDefender':
                 roleEmote = '🛡️';
@@ -36,7 +36,7 @@ var speech = {
                 roleEmote = '🚚';
                  break;
             case 'remoteRepairer':
-                roleEmote = '📡'
+                roleEmote = '🛰️';
                 break;
             case 'repairer':
                 roleEmote =  '🏗️';

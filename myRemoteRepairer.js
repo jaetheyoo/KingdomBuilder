@@ -20,15 +20,15 @@ var roleRemoteRepairer = {
                         s.store[RESOURCE_ENERGY] >= creep.carryCapacity);
                 }
             });
-            if (!target && village.spawns[0].energy >= creep.carryCapacity) {
+            if (!target && !creep.scavenge(true) && village.spawns[0].energy >= creep.carryCapacity) {
                 target = village.spawns[0];
                 village.debugMessage.append(`\t\t\t\t[REFILL]: found no places to fill up, moving to home village spawn: ${target.name}`);
             }
             if (target) {
                 village.debugMessage.append(`\t\t\t\t[REFILL]: withdrawing from ${target.name ? target.name : target.structureType + ' with id: ' + target.id}`);
                 creep.withdrawMove(target);
-            } else {
-                creep.moveTo(village.flags['refuelWaitingZone'], {visualizePathStyle: {stroke: '#ffffff'}});
+            } else  {
+                //creep.moveTo(village.flags['refuelWaitingZone'], {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else {
             creep.emote('remoteRepairer', speech.REPAIR)
@@ -62,6 +62,12 @@ var roleRemoteRepairer = {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             } else {
+                let constructionSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+                if (constructionSite) {
+                    creep.memory.buildTarget = constructionSite.id;
+                    creep.buildMove(constructionSite.id);
+                    return;
+                }
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: found nothing to repair`);
                 creep.moveTo(Game.flags[myRoomName], {visualizePathStyle: {stroke: '#ffffff'}});
                 village.setShouldNotRepair(creep.room);

@@ -42,12 +42,12 @@ class CreepReport {
             "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
             "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "remoteBodyguard": { "priority": 1, "count": 0, "scalingFactor": 0},
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
             "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
-            "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 2000}
+            "upgrader": { "priority": 1, "count": 3, "scalingFactor": 2000}
         };
     }
 
@@ -60,10 +60,28 @@ class CreepReport {
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "remoteBodyguard": { "priority": 1, "count": 0, "scalingFactor": 0},
             "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
-            "scavenger": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 3, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 3, "scalingFactor": 2000}
+            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
+        };
+    }
+    
+    configLevel6() {
+        return {
+            "dropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
+            "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
+            "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
+            //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            //"mineralDropHarvester": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            //"mineralTransporter": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            "remoteBodyguard": { "priority": 1, "count": 0, "scalingFactor": 0},
+            "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
+            "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
+            "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
+            "builder": { "priority": 2, "count": 3, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
         };
     }
 
@@ -103,7 +121,7 @@ class CreepReport {
 
     process(village) {
         //village.debugMessage.append(`\t [CreepReport] BEGIN processing for ${village.villageName}`);
-
+        //console.log(`\t [CreepReport] BEGIN processing for ${village.villageName} lv ${village.level}`);
         let config;
         switch (this.level) {
             case 1:
@@ -120,6 +138,9 @@ class CreepReport {
                 break;
             case 5: 
                 config = this.configLevel5();
+                break;
+            case 6: 
+                config = this.configLevel6();
                 break;
         }
         
@@ -147,10 +168,12 @@ class CreepReport {
                     adjustedCount = village.getNeededRemoteRole(role);
                     break;
             }
+            //console.log(`\t\t [CreepReport] Required for role ${role}: ${config[role].count}`);
+            //console.log(`\t\t [CreepReport] Have: ${that.counts[role]}`);            
             //village.debugMessage.append(`\t\t [CreepReport] Required for role ${config[role]}: ${config[role].count}`);
             //village.debugMessage.append(`\t\t [CreepReport] Have: ${that.counts[role]}`);
             if (!that.counts[role] || that.counts[role] < adjustedCount) { // TODO: scale up and down
-                // console.log("--> We have 0 or fewer than necessary of role " + role);
+                //console.log("--> We have 0 or fewer than necessary of role " + role);
                 let creepCount = that.counts[role] ? adjustedCount - that.counts[role] : adjustedCount;
                 _.times(creepCount, function() {
                     spawnQueue.push(role);

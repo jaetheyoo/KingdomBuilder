@@ -6,6 +6,10 @@ var roleRemoteBodyguard = {
     run: function(creep, village) {
         
         let flag = Game.flags[village.creeps[creep.name].myRemoteRoom];
+        if (!flag) {
+            return;
+        }
+        
         if (!flag.room || !creep.pos.isEqualTo(flag.pos)) {
             creep.emote('meleeBodyguard',speech.REMOTEMOVING);
             creep.moveTo(flag);

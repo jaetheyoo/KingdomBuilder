@@ -6,11 +6,14 @@ class CreepConfig {
         this.body = this.getBody();
         this.cost = this.getMinimumCost();
         if (this.cost > availableEnergy) {
-            while (this.cost > availableEnergy && this.villageLevel > 1) {
-                this.villageLevel--;
-                this.body = this.getBody();
-                this.cost = this.getMinimumCost();
-            }
+            this.villageLevel--;
+            this.body = this.getBody();
+            this.cost = this.getMinimumCost();
+            //while (this.cost > availableEnergy && this.villageLevel > 1) { // do this only in the case of crashes
+            //    this.villageLevel--;
+            //    this.body = this.getBody();
+            //    this.cost = this.getMinimumCost();
+            //}
         } else if (this.cost < .2 * maxEnergy) {
             this.villageLevel++;
             this.body = this.getBody();
@@ -97,6 +100,8 @@ class CreepConfig {
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                     case 5:
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+                    case 6:
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
             case 'upgrader':
@@ -110,9 +115,11 @@ class CreepConfig {
                     case 4:
                         return [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                     case 5:
-                        return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
+                        return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+                    case 6:
+                        return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
-                return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
+                return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'builder':
                 switch (this.villageLevel) {
                     case 1:
@@ -124,6 +131,8 @@ class CreepConfig {
                     case 4:
                         return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                     case 5:
+                        return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
+                    case 6:
                         return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
@@ -139,6 +148,8 @@ class CreepConfig {
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                     case 5:
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+                    case 6:
+                        return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
             case 'remoteRepairer':
@@ -152,6 +163,8 @@ class CreepConfig {
                     case 4:
                         return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                     case 5:
+                        return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+                    case 6:
                         return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];   
@@ -167,6 +180,8 @@ class CreepConfig {
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE]
                     case 5:
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+                    case 6:
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
                 }
                 return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE]
             case 'remoteTransporter':
@@ -181,6 +196,8 @@ class CreepConfig {
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                     case 5:
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
+                    case 6:
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
                 return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'scavenger':
@@ -194,36 +211,39 @@ class CreepConfig {
                     case 4:
                         return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
                     case 5:
-                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+                    case 6:
+                        return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
                 }
-                return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+                return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
             case 'remoteClaimer':
                 switch (this.villageLevel) {
                     case 1:
                         return [CLAIM,CLAIM,MOVE];
                     case 2:
-                        return [CLAIM,CLAIM,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE];
                     case 3:
-                        return [CLAIM,CLAIM,MOVE,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE];
                     case 4:
-                        return [CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE,MOVE];
                     case 5:
-                        return [CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE];
+                        return [CLAIM,CLAIM,MOVE,MOVE,MOVE];
                 }
-                return [CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE];
+                return [CLAIM,CLAIM,MOVE,MOVE,MOVE];
             case 'remoteBodyguard':
                 switch (this.villageLevel) {
                     case 1:
-                        return [ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE];
+                        return [MOVE,ATTACK,ATTACK,ATTACK,ATTACK,MOVE];
                     case 2:
-                        return [ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE];
+                        return [MOVE,ATTACK,ATTACK,ATTACK,ATTACK,MOVE];
                     case 3:
-                        return [ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE];
+                        return [MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE];
                     case 4:
-                        return [ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE];
+                        return [TOUGH,TOUGH,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE];
                     case 5:
-                        return [TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
+                        return [TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE];
                 }
+                return [TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE];
             case 'meleeDefender':
                 switch (this.villageLevel) {
                     case 1:

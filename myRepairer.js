@@ -24,7 +24,7 @@ var roleRepairer = {
             });
             //console.log(target)
             if(target) {
-                village.setShouldRepair(creep.room.name)
+                // village.setShouldRepair(creep.room.name)
                 if(creep.repair(target) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target);
                 }

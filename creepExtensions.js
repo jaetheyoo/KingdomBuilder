@@ -13,7 +13,7 @@ Creep.prototype.nearbyEnemies = function(range = 10) {
  * look for dropped resources, then tombstones, then drop containers
  * last ditch, look for storages
  */
-Creep.prototype.scavenge = function() { // TEST: functionality
+Creep.prototype.scavenge = function(onlyEnergy) { // TEST: functionality
     let findTargets = [FIND_DROPPED_RESOURCES, FIND_TOMBSTONES];
     let findFilters = [
         {
@@ -23,6 +23,16 @@ Creep.prototype.scavenge = function() { // TEST: functionality
             filter: structure => structure.store ? structure.store[RESOURCE_ENERGY] >= 100 || Object.keys(structure.store).length > 1 : false
         },
     ];
+    if (onlyEnergy) {
+        findFilters = [
+        {
+            filter: object => object.resourceType == RESOURCE_ENERGY && object.amount >= 100
+        },
+        {
+            filter: structure => structure.store[RESOURCE_ENERGY] >= 100
+        },
+        ];
+    }
     // console.log(this.name + ' | scavenging');
     for (let i in findTargets) {
         let target = this.pos.findClosestByRange(findTargets[i], findFilters[i]);
@@ -39,7 +49,7 @@ Creep.prototype.scavenge = function() { // TEST: functionality
                     // console.log(this.name + ' | ' + target);
                     let minerals = Object.keys(target.store);
                     let resourceType = RESOURCE_ENERGY;
-                    if (minerals.length > 1) {
+                    if (!onlyEnergy && minerals.length > 1) {
                         resourceType = minerals[1];
                     }
                     this.withdraw(target, resourceType);
@@ -59,10 +69,17 @@ Creep.prototype.scavenge = function() { // TEST: functionality
  * @param {gameObject} transferTarget 
  * @param {resourceEnum} resourceType 
  */
-Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_ENERGY) {
+Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_ENERGY, opts) {
     if (!transferTarget) {
         return;
     }
+    if (!opts) {
+        opts = {visualizePathStyle: {stroke: '#ffffff'}}
+    }
+    if (!resourceType) {
+        resourceType = RESOURCE_ENERGY;
+    }
+    
     let store = transferTarget.store;
     if (store) {
         let carryKeys = Object.keys(this.carry);
@@ -74,7 +91,7 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
     let status = this.transfer(transferTarget, resourceType);
     switch(status) {
         case (ERR_NOT_IN_RANGE):
-            this.moveTo(transferTarget, {visualizePathStyle: {stroke: '#ffffff'}});
+            this.moveTo(transferTarget, opts);
             break;
         case (ERR_FULL):
             break;

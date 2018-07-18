@@ -19,7 +19,7 @@ var roleBuilder = {
          * 
          *      do I have a project I was building? 
          *          Y > continue working on that
-         *      do I need to repair something?
+         *      do I need to repair something? // moved this lower down the priority totem
          *          Y > repair
          *      is there something to build?
          *          Y > store construction site in memory
@@ -45,17 +45,18 @@ var roleBuilder = {
                 creep.buildMove(buildTarget);
                 //return;
             }
-            //console.log('SHOULD REPAIR: ' + creep.name);
-            if (village.shouldRepair(creep.room.name)) {
-                village.creeps[creep.name].role = 'repairer';
-                return;
-            }
+
             let constructionSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
             if (constructionSite) {
                 creep.memory.buildTarget = constructionSite.id;
                 creep.buildMove(constructionSite.id);
                 return;
             } else {
+                //console.log('SHOULD REPAIR: ' + creep.name);
+                if (village.shouldRepair(creep.room.name)) {
+                    village.creeps[creep.name].role = 'repairer';
+                    return;
+                }
                 
                 let myCreepRemoteRoom = creep.room.name;
                 if (creep.memory.remoteRoom) {
