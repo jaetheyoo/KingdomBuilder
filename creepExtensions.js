@@ -88,6 +88,7 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
         }
     }
     
+    this.transfer(transferTarget, RESOURCE_ENERGY);
     let status = this.transfer(transferTarget, resourceType);
     switch(status) {
         case (ERR_NOT_IN_RANGE):
@@ -104,7 +105,7 @@ Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_
     if(!withdrawTarget) {
         throw new Error(`ERROR: ${this.name} failed on prototype WITHDRAWMOVE due to withdrawTarget being undefined`);
     }
-    
+    this.withdraw(withdrawTarget, RESOURCE_ENERGY);
     let status = this.withdraw(withdrawTarget, resourceType);
     switch(status) {
         case (ERR_NOT_IN_RANGE):

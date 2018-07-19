@@ -11,9 +11,9 @@ var roleMineralTransporter = {
         // move to mySource, find the nearest container. // TODO resources on the ground
         // pick up, then move to nearest FROM link. If no FROM links, move to storage
 
-        if (creep.carry.energy == 0) {
+        if (_.sum(creep.carry) == 0) {
             creep.memory.pickingUp = true;
-        } else if (creep.carry.energy == creep.carryCapacity) {
+        } else if (_.sum(creep.carry) == creep.carryCapacity) {
             creep.memory.pickingUp = false;
         }
 
@@ -26,7 +26,8 @@ var roleMineralTransporter = {
             }
         } else {
             creep.emote('mineralTransporter',speech.TRANSPORT);
-            creep.transferMove(village.room.storage, null, {ignoreCreeps: true});
+            let minerals = Game.getObjectById(village.getMineralsById());
+            creep.transferMove(village.room.storage, minerals.mineralType, {ignoreCreeps: true});
         }
     }
 };
