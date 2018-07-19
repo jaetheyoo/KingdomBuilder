@@ -1,9 +1,9 @@
 /*
-from base: 1486
-to dude: 
-
-
-
+Cost for 1 remote room, 1 source : 4465
+Cost for 1 remote room, 2 source: 6315
+15000 per source
+net 10535 for 1 source room
+23685 for 2 source room
 */
 Game.spawns['Spawn1'].spawnCreep([MOVE],'bob',{memory:{role:'extends'}})
 Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'bob',{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
