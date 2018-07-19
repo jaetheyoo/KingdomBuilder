@@ -9,11 +9,12 @@ class CreepConfig {
             this.villageLevel--;
             this.body = this.getBody();
             this.cost = this.getMinimumCost();
-            //while (this.cost > availableEnergy && this.villageLevel > 1) { // do this only in the case of crashes
-            //    this.villageLevel--;
-            //    this.body = this.getBody();
-            //    this.cost = this.getMinimumCost();
-            //}
+            
+            while (roleName == 'scavenger' && this.cost > availableEnergy && this.villageLevel > 1) { // do this only in the case of crashes
+                this.villageLevel--;
+                this.body = this.getBody();
+                this.cost = this.getMinimumCost();
+            }
         } else if (this.cost < .2 * maxEnergy) {
             this.villageLevel++;
             this.body = this.getBody();

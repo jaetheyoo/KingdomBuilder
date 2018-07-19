@@ -434,7 +434,6 @@ class Village {
         let isRemoteRoom = false;
         if (remoteRoomName) {
             isRemoteRoom = true;
-            //console.log(remoteRoomName)
             villageSources = this.remoteRooms[remoteRoomName].remoteSources;
         }
         //console.log('DROP MINING SOURCE FOR ' + creepName + ' | '+ mySource);
@@ -505,15 +504,6 @@ class Village {
             }
         }
         return memRoomAddr;
-    }
-    /**
-     * TODO: if I have an extractor
-     *      check if extractor has mins left
-     *      bonus: ramp up or down based on how many mins/refresh time
-     * @param {*} role 
-     */
-    getNeededMineralRole(role) {
-        return 0;
     }
     
     getNeededRemoteRole(role) {

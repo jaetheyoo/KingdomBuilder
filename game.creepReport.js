@@ -47,7 +47,7 @@ class CreepReport {
             "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
             "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 3, "scalingFactor": 2000}
+            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 5000, "max":5}
         };
     }
 
@@ -63,25 +63,25 @@ class CreepReport {
             "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 3, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
+            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 10000, "max":5}
         };
     }
     
     configLevel6() {
         return {
-            "dropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
-            "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
-            "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
-            "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
+            "remoteDropHarvester": { "priority": 3.5, "count": 0, "scalingFactor": 0},
+            "remoteRepairer": { "priority": 5, "count": 0, "scalingFactor": 0},
+            "remoteTransporter": { "priority": 3, "count": 0, "scalingFactor": 0},
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
-            "mineralHarvester": { "priority": 1, "count": 1, "scalingFactor": 0},
+            "mineralHarvester": { "priority": 1.1, "count": 1, "scalingFactor": 0},
             "mineralTransporter": { "priority": 1, "count": 1, "scalingFactor": 0},
-            "remoteBodyguard": { "priority": 1, "count": 0, "scalingFactor": 0},
-            "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
-            "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
-            "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
-            "builder": { "priority": 2, "count": 3, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 4, "scalingFactor": 2000}
+            "remoteBodyguard": { "priority": 1.4, "count": 0, "scalingFactor": 0},
+            "remoteClaimer": { "priority": 1.5, "count": 0, "scalingFactor": 0},
+            "scavenger": { "priority": 6, "count": 3, "scalingFactor": 0},
+            "linkMaintainer": { "priority": 4, "count": 1, "scalingFactor": 0},
+            "builder": { "priority": 4, "count": 3, "scalingFactor": 0},
+            "upgrader": { "priority": 0.5, "count": 0, "scalingFactor": 25000, "max":4}
         };
     }
 
@@ -123,6 +123,7 @@ class CreepReport {
         //village.debugMessage.append(`\t [CreepReport] BEGIN processing for ${village.villageName}`);
         //console.log(`\t [CreepReport] BEGIN processing for ${village.villageName} lv ${village.level}`);
         let config;
+        //console.log(this.level)
         switch (this.level) {
             case 1:
                 config = this.configLevel1();
@@ -147,14 +148,19 @@ class CreepReport {
         // return the first role by priority that isn't filled out
         
         // for each role
-        //console.log(Object.keys(config));
         let priorityList = Object.keys(config).sort(function(a, b) {
-            return config[a].priority < config[b].priority;
+            if (config[a].priority < config[b].priority) {
+                return 1;
+            } else {
+                return -1;
+            }
         });
         let that = this;
+        //console.log(`\t\t [CreepReport] priority list: ${priorityList}`);
         //village.debugMessage.append(`\t\t [CreepReport] priority list: ${priorityList}`);
         var spawnQueue = [];
         //console.log("------STARTING")
+        var level = this.level;
         _.forEach(priorityList, function(role) {
             // Calculate differently for remote roles
             let adjustedCount = config[role].count;
@@ -171,6 +177,13 @@ class CreepReport {
                 case ('mineralTransporter'):
                     adjustedCount = village.getNeededMineralRole(role);
                     break;
+                case ('upgrader'):
+                    if (level >= 4) {
+                        // console.log(village.room.storage.store[RESOURCE_ENERGY])
+                        // console.log(Math.min(village.room.storage.store[RESOURCE_ENERGY]/config[role].scalingFactor, config[role].max))
+                        adjustedCount += Math.min(village.room.storage.store[RESOURCE_ENERGY]/config[role].scalingFactor, config[role].max);
+                    }
+
             }
             //console.log(`\t\t [CreepReport] Required for role ${role}: ${config[role].count}`);
             //console.log(`\t\t [CreepReport] Have: ${that.counts[role]}`);            

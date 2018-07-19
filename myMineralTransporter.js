@@ -27,7 +27,7 @@ var roleMineralTransporter = {
         } else {
             creep.emote('mineralTransporter',speech.TRANSPORT);
             let minerals = Game.getObjectById(village.getMineralsById());
-            creep.transferMove(village.room.storage, minerals.mineralType, {ignoreCreeps: true});
+            creep.transferMove(village.room.storage, minerals.mineralType);
         }
     }
 };

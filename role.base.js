@@ -35,7 +35,7 @@ module.exports = roleBase;
 //     creep.say('hello');
 //     roleScout.run(creep);
 // }else if(creep.memory.role == 'claimer') {
-//     creep.say('🚩');
+//     creep.say('ð©');
 //     roleClaimer.run(creep);
 // } else if (creep.pos.findInRange(FIND_HOSTILE_CREEPS,10).length) {
 //     creep.moveTo(Game.flags['DefenseWaiting']);
@@ -53,7 +53,7 @@ module.exports = roleBase;
 //     }
 
 //     if (creep.ticksToLive <= 10) {
-//         creep.say("💀 RIP");
+//         creep.say("ð RIP");
 //         creep.moveTo( Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#272626'}});
 //         Game.spawns['Spawn1'].recycleCreep(creep);
 //     }

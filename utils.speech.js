@@ -8,7 +8,7 @@
  */
 
 var speech = {
-    getRole(role) {
+    getRole(role) { 
         let roleEmote = '';
         switch (role) {
             case 'meleeBodyguard':

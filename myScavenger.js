@@ -37,8 +37,10 @@ var roleScavenger = {
             if (miningContainers.length > 0) {
                 creep.withdrawMove(miningContainers[0]);
             } else {
+                if (village.getAvailableEnergyForSpawning() < village.getMaximumEnergyForSpawning()/2) {
+                    creep.withdrawMove(village.room.storage);    
+                }
                 //console.log(creep.name + ' | No containers found' )
-                creep.withdrawMove(village.room.storage);
             }
         } else {
             creep.emote('scavenger', speech.DROPOFF);
