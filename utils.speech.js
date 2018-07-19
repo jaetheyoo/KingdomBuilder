@@ -56,10 +56,18 @@ var speech = {
             case 'linkMaintainer':
                 roleEmote = '🔗';
                 break;
+            case 'mineralTransporter':
+                roleEmote = '💍'
+                break;
+            case 'mineralHarvester':
+                roleEmote = '💎';
+                break;
         }
         return roleEmote;
     },
-    
+    get MINE() {
+        return '⚒️';
+    }, 
     get OLD() {
         return'👴🏻';
     },
