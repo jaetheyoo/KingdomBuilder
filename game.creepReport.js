@@ -167,10 +167,10 @@ class CreepReport {
                 case ('remoteTransporter'):
                     adjustedCount = village.getNeededRemoteRole(role);
                     break;
-                // case ('mineralHarvester'):
-                // case ('mineralTransporter'):
-                //     adjustedCount = village.getNeededMineralRole(role);
-                //     break;
+                case ('mineralHarvester'):
+                case ('mineralTransporter'):
+                    adjustedCount = village.getNeededMineralRole(role);
+                    break;
             }
             //console.log(`\t\t [CreepReport] Required for role ${role}: ${config[role].count}`);
             //console.log(`\t\t [CreepReport] Have: ${that.counts[role]}`);            

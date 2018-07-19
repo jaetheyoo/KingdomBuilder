@@ -163,11 +163,13 @@ class CreepConfig {
                     case 4:
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                     case 5:
-                        return [WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+                        return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE];
                     case 6:
-                        return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE];
+                        return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
-                return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE];
+                return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'mineralTransporter':
                 switch (this.villageLevel) {
                     case 1:
@@ -181,9 +183,9 @@ class CreepConfig {
                     case 5:
                         return [CARRY,CARRY,MOVE];
                     case 6:
-                        return [CARRY,CARRY,MOVE];
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
                 }
-                return [CARRY,CARRY,MOVE];
+                return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
             case 'remoteRepairer':
                 switch (this.villageLevel) {
                     case 1:

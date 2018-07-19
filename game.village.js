@@ -80,7 +80,22 @@ class Village {
     get structures() {
         return Memory.Villages[this.villageName].structures;
     }
-
+    getNeededMineralRole(role) {
+        let minerals = Game.getObjectById(this.getMineralsById());
+        if (!minerals || minerals.mineralAmount == 0) {
+            return 0;
+        }
+        let extractor = Game.getObjectById(this.getMineralExtractorId());
+        if (!extractor) {
+            return 0;
+        }
+        let mineralContainer = Game.getObjectById(this.getMineralExtractionContainerId());
+        if (!mineralContainer) {
+            return 0;
+        }
+        
+        return 1;
+    }
     canSpawn(creepBuild) {
         //console.log(`CAN SPAWN: ${(this.spawns.find(x=>x.name && !Game.spawns[x.name].spawning)!=null && this.getAvailableEnergyForSpawning() >= creepBuild.cost)}`);
         //console.log(`${this.spawns.find(function(x) {

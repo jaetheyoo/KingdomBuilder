@@ -113,7 +113,9 @@ var speech = {
     get REMOTEMOVING() {
         return '✈️';
     },
-    
+    get WAITING() {
+        return '⏳';
+    },
     get REMOTEBUILD() {
         return '✈️👷';
     },

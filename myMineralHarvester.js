@@ -20,6 +20,7 @@ var roleMineralHarvester = {
         let myMinerals = Game.getObjectById(village.getMineralsById());
         let dropLocation = Game.getObjectById(village.getMineralExtractionContainerId());
         if (creep.memory.cooldown) {
+            creep.emote('mineralHarvester', speech.WAITING + creep.memory.cooldown);
             creep.memory.cooldown--;
             return;
         }
