@@ -42,7 +42,7 @@ class CreepReport {
             "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
             "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
-            "remoteBodyguard": { "priority": 1, "count": 0, "scalingFactor": 0},
+            "remoteBodyguard": { "priority": 10, "count": 0, "scalingFactor": 0},
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
             "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
@@ -58,7 +58,7 @@ class CreepReport {
             "remoteRepairer": { "priority": 3, "count": 0, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
-            "remoteBodyguard": { "priority": 1, "count": 0, "scalingFactor": 0},
+            "remoteBodyguard": { "priority": 10, "count": 0, "scalingFactor": 0},
             "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
             "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
@@ -76,7 +76,7 @@ class CreepReport {
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "mineralHarvester": { "priority": 1.1, "count": 1, "scalingFactor": 0},
             "mineralTransporter": { "priority": 1, "count": 1, "scalingFactor": 0},
-            "remoteBodyguard": { "priority": 1.4, "count": 0, "scalingFactor": 0},
+            "remoteBodyguard": { "priority": 10, "count": 0, "scalingFactor": 0},
             "remoteClaimer": { "priority": 1.5, "count": 0, "scalingFactor": 0},
             "scavenger": { "priority": 6, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 4, "count": 1, "scalingFactor": 0},
@@ -183,7 +183,7 @@ class CreepReport {
                         // console.log(Math.min(village.room.storage.store[RESOURCE_ENERGY]/config[role].scalingFactor, config[role].max))
                         adjustedCount += Math.min(village.room.storage.store[RESOURCE_ENERGY]/config[role].scalingFactor, config[role].max);
                     }
-
+                    break;
             }
             //console.log(`\t\t [CreepReport] Required for role ${role}: ${config[role].count}`);
             //console.log(`\t\t [CreepReport] Have: ${that.counts[role]}`);            

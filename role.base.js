@@ -6,12 +6,19 @@ let roleBase = {
     fight: function(creep) {
         return 0;
     },
-    flight : function(creep, hideoutFlag) {
-        let flag = Game.flags[hideoutFlag];
+    flight : function(creep, village) {
+        let flag = Game.flags[village.getHideoutFlag()];
         if (!flag) {
             throw new Error(`${creep.name}-role.base: flight() ERROR: no hideoutFlag`);
         }
         if (creep.isNearEnemy()) {
+            let myRemoteRoom = village.creeps[creep.name].remoteRoom ? village.creeps[creep.name].remoteRoom : village.creeps[creep.name].myRemoteRoom;
+            if (myRemoteRoom) {
+                let remoteRoom = village.remoteRooms[myRemoteRoom];
+                if (remoteRoom) {
+                    remoteRoom.underAttack = true;
+                }
+            }
             creep.say(speech.RUN);
             creep.moveTo(flag);
             return -1;
@@ -20,7 +27,7 @@ let roleBase = {
         }
     },
     run: function(creep, village) {
-        return creep.memory.protocol === 'fight' ? this.fight(creep) : this.flight(creep, village.getHideoutFlag());
+        return creep.memory.protocol === 'fight' ? this.fight(creep) : this.flight(creep, village);
     }
 };
 

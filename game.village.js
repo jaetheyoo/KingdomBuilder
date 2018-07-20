@@ -121,14 +121,12 @@ class Village {
     }
     
     initFlags() {
-        let that = this;
         this.memoryAddr.flags = {};
     }
 
     initRemoteRooms() {
         // initialize an empty object with keys that will be manually inserted
         //FEATURE: automate this process
-        let that = this;
         this.memoryAddr.remoteRooms = {};
     }
     
@@ -512,8 +510,15 @@ class Village {
         let neededRemoteRole = 0;
         //console.log(this.villageName + ' GETTING REMOTE ROLES')
         switch (role) {
-            case 'remoteRepairer':
             case 'remoteBodyguard':
+                for (let room in this.remoteRooms) {
+                    let myRoom = this.remoteRooms[room];
+                    if (role in myRoom && myRoom.underAttack) {
+                        neededRemoteRole++;
+                    }
+                }
+                break;
+            case 'remoteRepairer':
             case 'remoteClaimer':
                 for (let room in this.remoteRooms) {
                     //if (this.remoteRooms[room][role] == 0) {
@@ -686,9 +691,20 @@ class Village {
                 }
                 this.creeps[myCreepName].mySource = mySource;
                 break;
+            case 'remoteBodyguard':
+                for(let room in this.remoteRooms) {
+                    console.log( '\t' + room + ' | ' + this.remoteRooms[room][roleName]);
+                    if (this.remoteRooms[room][roleName] < 1 && this.remoteRooms[room].underAttack) {
+                        myRoom = room;
+                        this.remoteRooms[room][roleName]++;
+                        this.creeps[myCreepName].myRemoteRoom = myRoom;
+                        console.log('\tSET TO: ' + myRoom + ' | ' + this.remoteRooms[myRoom][roleName]);
+                        return;
+                    }
+                }
+                break;
             case 'remoteRepairer':
             case 'remoteClaimer':
-            case 'remoteBodyguard':
                 for(let room in this.remoteRooms) {
                     console.log( '\t' + room + ' | ' + this.remoteRooms[room][roleName]);
                     if (this.remoteRooms[room][roleName] < 1) {

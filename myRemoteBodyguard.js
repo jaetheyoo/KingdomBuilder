@@ -4,8 +4,8 @@ var base = require('role.base');
 var roleRemoteBodyguard = {
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        
-        let flag = Game.flags[village.creeps[creep.name].myRemoteRoom];
+        let remoteRoom = village.creeps[creep.name].myRemoteRoom;
+        let flag = Game.flags[remoteRoom];
         if (!flag) {
             return;
         }
@@ -23,6 +23,7 @@ var roleRemoteBodyguard = {
             }
         } else {
             creep.emote('meleeBodyguard', speech.PATROL);
+            village.remoteRooms[remoteRoom].underAttack = false;
         }
     }
 }
