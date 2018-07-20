@@ -3,24 +3,33 @@ let speech = require ('utils.speech');
 let roleBase = {
     /** @param {Creep} creep **/
     /** @description returns a status code of -1 if behavior overrides default, else 0 */
-    fight: function(creep) {
-        return 0;
-    },
-    flight : function(creep, village) {
+    flee: function(creep, village) {
         let flag = Game.flags[village.getHideoutFlag()];
         if (!flag) {
             throw new Error(`${creep.name}-role.base: flight() ERROR: no hideoutFlag`);
         }
-        if (creep.isNearEnemy()) {
-            let myRemoteRoom = village.creeps[creep.name].remoteRoom ? village.creeps[creep.name].remoteRoom : village.creeps[creep.name].myRemoteRoom;
-            if (myRemoteRoom) {
-                let remoteRoom = village.remoteRooms[myRemoteRoom];
-                if (remoteRoom) {
-                    remoteRoom.underAttack = true;
-                }
+        creep.say(speech.RUN);
+        creep.moveTo(flag);
+    },
+    fight: function(creep) {
+        return 0;
+    },
+    flight : function(creep, village) {
+        let remoteRoom = village.creeps[creep.name].remoteRoom ? village.creeps[creep.name].remoteRoom : village.creeps[creep.name].myRemoteRoom;
+        let remoteRoomObj;
+        if (remoteRoom) {
+            remoteRoomObj = village.remoteRooms[remoteRoom];
+            if (remoteRoomObj && village.remoteRooms[remoteRoom].underAttack) {
+                this.flee(creep, village);
+                return -1;
             }
-            creep.say(speech.RUN);
-            creep.moveTo(flag);
+        }
+        
+        if (creep.isNearEnemy()) {
+            if (remoteRoom) {
+                remoteRoom.underAttack = true;
+            }
+            this.flee(creep, village);
             return -1;
         } else {
             return 0;
@@ -42,7 +51,7 @@ module.exports = roleBase;
 //     creep.say('hello');
 //     roleScout.run(creep);
 // }else if(creep.memory.role == 'claimer') {
-//     creep.say('ð©');
+//     creep.say('Ã°ÂÂÂ©');
 //     roleClaimer.run(creep);
 // } else if (creep.pos.findInRange(FIND_HOSTILE_CREEPS,10).length) {
 //     creep.moveTo(Game.flags['DefenseWaiting']);
@@ -60,7 +69,7 @@ module.exports = roleBase;
 //     }
 
 //     if (creep.ticksToLive <= 10) {
-//         creep.say("ð RIP");
+//         creep.say("Ã°ÂÂÂ RIP");
 //         creep.moveTo( Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#272626'}});
 //         Game.spawns['Spawn1'].recycleCreep(creep);
 //     }

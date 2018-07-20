@@ -69,6 +69,9 @@ class Village {
         return Memory.Villages[this.villageName].creeps;
     }
 
+    get market() {
+        return Memory.Villages[this.villageName].market;
+    }
     get sources() {
         return Memory.Villages[this.villageName].sources;
     }
@@ -96,6 +99,27 @@ class Village {
         
         return 1;
     }
+    
+    get terminal() {
+        return this.room.terminal;
+    }
+
+    getStorageAmount(resourceType) {
+        let keys = Object.keys(this.room.storage.store);
+        if(!keys.includes(resourceType)) {
+            return 0;
+        }
+        return this.room.storage.store[resourceType];
+    }
+
+    getTerminalAmount(resourceType) {
+        let keys = Object.keys(this.terminal.store);
+        if(!keys.includes(resourceType)) {
+            return 0;
+        }
+        return this.terminal.store[resourceType];
+    }
+
     canSpawn(creepBuild) {
         //console.log(`CAN SPAWN: ${(this.spawns.find(x=>x.name && !Game.spawns[x.name].spawning)!=null && this.getAvailableEnergyForSpawning() >= creepBuild.cost)}`);
         //console.log(`${this.spawns.find(function(x) {

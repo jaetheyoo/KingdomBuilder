@@ -1,7 +1,7 @@
 let speech = require ('utils.speech');
 
 // TODO: make this more efficient by using the village to scan
-Creep.prototype.isNearEnemy = function(range = 10) {
+Creep.prototype.isNearEnemy = function(range = 15) {
     return this.pos.findInRange(FIND_HOSTILE_CREEPS, range).length > 0;
 }
 
@@ -95,7 +95,7 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
             this.moveTo(transferTarget, opts);
             break;
         case (ERR_FULL):
-            break;
+            return ERR_FULL;
         case (ERR_INVALID_TARGET):
             throw new Error(`ERROR: ${this.name} failed on prototype TRANSFERMOVE due to error code ${status}`);
     }
@@ -105,8 +105,10 @@ Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_
     if(!withdrawTarget) {
         throw new Error(`ERROR: ${this.name} failed on prototype WITHDRAWMOVE due to withdrawTarget being undefined`);
     }
+    //console.log(this.name + ' : ' + resourceType)
     this.withdraw(withdrawTarget, RESOURCE_ENERGY);
     let status = this.withdraw(withdrawTarget, resourceType);
+    //console.log(status)
     switch(status) {
         case (ERR_NOT_IN_RANGE):
             this.moveTo(withdrawTarget, {visualizePathStyle: {stroke: '#ffffff'}});

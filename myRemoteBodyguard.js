@@ -10,6 +10,18 @@ var roleRemoteBodyguard = {
             return;
         }
         
+        if (creep.memory.attackTarget) {
+            creep.emote('meleeBodyguard',speech.ATTACKING);
+            let enemy = Game.getObjectById(attackTarget);
+            if (enemy) {
+                creep.attack(enemy);
+                creep.moveTo(enemy);
+                return;    
+            } else {
+                delete creep.memory.attackTarget;
+            }
+        }
+        
         if (!flag.room || !creep.pos.isEqualTo(flag.pos)) {
             creep.emote('meleeBodyguard',speech.REMOTEMOVING);
             creep.moveTo(flag);
@@ -17,6 +29,7 @@ var roleRemoteBodyguard = {
         
         let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if(target) {
+            creep.memory.attackTarget = target.id;
             creep.emote('meleeBodyguard',speech.ATTACKING);
             if(creep.attack(target) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);

@@ -18,29 +18,66 @@ var roleLinkMaintainer = {
          * Moves energy to tower
          * 
          */
-        creep.emote('linkMaintainer', speech.IDLE);
-        if (village.hasLinks()) { // TODO: add stuff to do when TOLINKS are empty
+        if (creep.memory.transferTarget && _.sum(creep.carry) == 0) {
+            creep.memory.transferTarget = null;
+        }
+
+        if (!creep.memory.transferTarget && village.hasLinks()) { // TODO: add stuff to do when TOLINKS are empty
             let toLinkIds = village.getToLinks();
             for(let i in toLinkIds) {
                 let toLink = Game.getObjectById(toLinkIds[i]);
                 if (toLink && toLink.energy > 0) {
-                    if (creep.carry.energy == 0) {
+                    if (_.sum(creep.carry) == 0) {
                         creep.emote('linkMaintainer', speech.WITHDRAW);
                         creep.withdrawMove(toLink);
                         return;
                     } else {
-                        creep.emote('linkMaintainer', speech.TRANSFER);
                         let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                             filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
                         });
                         if (!transferTarget) {
                             transferTarget = village.room.storage;
                         }
-                        creep.transferMove(transferTarget);
-                        return
+                        creep.memory.transferTarget = transferTarget.id;
                     }
                 }
             }
+        }
+
+        // fill market quotas if not busy with links
+        if (!creep.memory.transferTarget && village.market && village.market.quotas) {
+            let quotas = village.market.quotas;
+            for(quota in quotas) {
+                //console.log(`QUOTA: ${quota}`);
+                let resourceType = quota;
+                let terminalAmount = village.getTerminalAmount(resourceType);
+                let storageAmount = village.getStorageAmount(resourceType);
+                //console.log(terminalAmount);
+                //console.log(storageAmount);
+                if (terminalAmount >= quotas[quota] || storageAmount == 0) {
+                    continue;
+                }
+                if (_.sum(creep.carry) == 0) {
+                    creep.emote('linkMaintainer',speech.MARKET);
+                    creep.withdrawMove(village.room.storage, resourceType);
+                    return;
+                } else {
+                    creep.memory.transferTarget = village.terminal.id;
+                    break;
+                }
+            }
+        }
+
+        if(creep.memory.transferTarget) {
+            creep.emote('linkMaintainer', speech.TRANSFER);
+            status = creep.transferMove(Game.getObjectById(creep.memory.transferTarget));
+            switch(status) {
+                case (ERR_FULL):
+                    creep.memory.transferTarget = null;
+                    break;
+            }
+        } else {
+            creep.emote('linkMaintainer', speech.IDLE);
         }
     }
 };

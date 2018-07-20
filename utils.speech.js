@@ -106,6 +106,9 @@ var speech = {
         return '🚧';
     },
     
+    get MARKET() {
+        return '💱';
+    },
     get MOVING() {
         return '🚕';
     },
