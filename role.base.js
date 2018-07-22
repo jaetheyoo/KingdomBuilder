@@ -8,6 +8,7 @@ let roleBase = {
         if (!flag) {
             throw new Error(`${creep.name}-role.base: flight() ERROR: no hideoutFlag`);
         }
+        
         creep.say(speech.RUN);
         creep.moveTo(flag);
     },
@@ -15,19 +16,26 @@ let roleBase = {
         return 0;
     },
     flight : function(creep, village) {
+        if (creep.hits < creep.hitsMax * .6) {
+            creep.suicide();
+            return;
+        }
         let remoteRoom = village.creeps[creep.name].remoteRoom ? village.creeps[creep.name].remoteRoom : village.creeps[creep.name].myRemoteRoom;
-        let remoteRoomObj;
+        if (!remoteRoom) {
+            if (creep._move) {
+                remoteRoom = creep._move.room;
+            }
+        }
         if (remoteRoom) {
-            remoteRoomObj = village.remoteRooms[remoteRoom];
-            if (remoteRoomObj && village.remoteRooms[remoteRoom].underAttack) {
+            if (village.remoteRooms[remoteRoom].underAttack) {
                 this.flee(creep, village);
                 return -1;
             }
         }
-        
+
         if (creep.isNearEnemy()) {
             if (remoteRoom) {
-                remoteRoom.underAttack = true;
+                Memory.Villages[village.villageName].remoteRooms[remoteRoom].underAttack = true;
             }
             this.flee(creep, village);
             return -1;
@@ -51,7 +59,7 @@ module.exports = roleBase;
 //     creep.say('hello');
 //     roleScout.run(creep);
 // }else if(creep.memory.role == 'claimer') {
-//     creep.say('Ã°ÂÂÂ©');
+//     creep.say('ÃÂ°ÃÂÃÂÃÂ©');
 //     roleClaimer.run(creep);
 // } else if (creep.pos.findInRange(FIND_HOSTILE_CREEPS,10).length) {
 //     creep.moveTo(Game.flags['DefenseWaiting']);
@@ -69,7 +77,7 @@ module.exports = roleBase;
 //     }
 
 //     if (creep.ticksToLive <= 10) {
-//         creep.say("Ã°ÂÂÂ RIP");
+//         creep.say("ÃÂ°ÃÂÃÂÃÂ RIP");
 //         creep.moveTo( Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#272626'}});
 //         Game.spawns['Spawn1'].recycleCreep(creep);
 //     }

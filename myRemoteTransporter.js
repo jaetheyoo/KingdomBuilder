@@ -31,7 +31,7 @@ var roleRemoteTransfer = {
                 // cant' see source, move to room
                 if (mySourceObject == null) {
                     creep.emote('remoteTransporter', speech.REMOTEMOVING);
-                    creep.moveTo(Game.flags[village.getMyRemoteRoom(creep)], {visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.moveTo(Game.flags[village.getMyRemoteRoomName(creep)], {visualizePathStyle: {stroke: '#ffffff'}});
                     return;
                 }
                 creep.moveTo(mySourceObject);

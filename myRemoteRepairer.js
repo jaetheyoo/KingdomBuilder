@@ -57,6 +57,7 @@ var roleRemoteRepairer = {
             }
             
             if(target) {
+                // creep.park(target.pos);
                 village.debugMessage.append(`\t\t\t\t[REPAIR]: repairing ${target.structureType} with id ${target.id}`);
                 if(creep.repair(target) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});

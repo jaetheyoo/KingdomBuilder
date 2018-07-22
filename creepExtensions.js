@@ -120,6 +120,55 @@ Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_
 }
 
 /**
+ * Moves in range of a target position, and finds a spot off the road to work
+ * @param {RoomPos} targetPos 
+ */
+Creep.prototype.park = function(targetPos, range = 3) {
+    if (!creep.pos.inRangeTo(targetPos, range)) {
+        creep.moveTo(targetPos);
+        creep.memory.parked = false;
+        delete creep.memory.parkingSpot;
+        return;
+    }
+
+    if (creep.memory.parked) {
+        return;
+    }
+
+    if (creep.memory.parkingSpot) {
+        let parkingSpot = new RoomPosition(creep.memory.parkingSpot.x, creep.memory.parkingSpot.y, targetPos.roomName);
+        if (creep.pos.isEqual(parkingSpot)) {
+            creep.memory.parked = true;
+            return;
+        }
+
+        creep.moveTo(parkingSpot);
+        return;
+    }
+
+    let structures = creep.pos.lookFor(LOOK_STRUCTURES);
+    if (!structures.includes(x => x.structureType == STRUCTURE_ROAD)) {
+        creep.memory.parked = true;
+        return;
+    }
+
+    for(let x = -range; x <= range; x++) {
+        for (let y = -range; y <= range; y++) {
+            let pos = new RoomPosition(targetPos.x + x, targetPos.y + y, targetPos.roomName);
+            if (Game.map.getTerrainAt(pos) == 'wall') {
+                continue;
+            }
+            let pStructures = pos.lookFor(LOOK_STRUCTURES);
+            if (pStructures) {
+
+            }
+        }
+    }
+
+
+}
+
+/**
  * 
  * @param {constructionSiteId} buildTarget 
  */

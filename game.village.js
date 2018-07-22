@@ -2,6 +2,7 @@ require('utils.extensions');
 var DebugMessage = require('game.debugMessage');
 var CreepReporter = require('game.creepReporter');
 var CreepConfig = require('game.creepConfig');
+var speech = require('utils.speech');
 
 // TODO: Do we really need to keep track of structures?
 class Village {
@@ -52,14 +53,6 @@ class Village {
         this.registerFlags();
         this.registerLevel();
     }
-    
-    get memoryAddr() {
-        return Memory.Villages[this.villageName];
-    }
-
-    get room() {
-        return Game.rooms[this.roomName];
-    }
 
     get controller() {
         return Game.structures[this.controllerId];
@@ -69,20 +62,38 @@ class Village {
         return Memory.Villages[this.villageName].creeps;
     }
 
+    get labs() {
+        return Memory.Villages[this.villageName].structures.labs;
+    }
+
     get market() {
         return Memory.Villages[this.villageName].market;
     }
-    get sources() {
-        return Memory.Villages[this.villageName].sources;
+    
+    get memoryAddr() {
+        return Memory.Villages[this.villageName];
     }
 
     get remoteRooms() {
         return Memory.Villages[this.villageName].remoteRooms;
     }
 
+    get room() {
+        return Game.rooms[this.roomName];
+    }
+
+    get sources() {
+        return Memory.Villages[this.villageName].sources;
+    }
+
     get structures() {
         return Memory.Villages[this.villageName].structures;
     }
+
+    get terminal() {
+        return this.room.terminal;
+    }
+
     getNeededMineralRole(role) {
         let minerals = Game.getObjectById(this.getMineralsById());
         if (!minerals || minerals.mineralAmount == 0) {
@@ -99,10 +110,15 @@ class Village {
         
         return 1;
     }
-    
-    get terminal() {
-        return this.room.terminal;
+
+    getRemoteSourceArrivalTime(remoteRoomName, remoteSourceId) {
+        let arrivalTime = this.remoteRooms[remoteRoomName].remoteSources[remoteSourceId].arrivalTime;
+        if (!arrivalTime) {
+            return -1;
+        }
+        return arrivalTime;
     }
+
 
     getStorageAmount(resourceType) {
         let keys = Object.keys(this.room.storage.store);
@@ -118,6 +134,35 @@ class Village {
             return 0;
         }
         return this.terminal.store[resourceType];
+    }
+
+    getMarketReport() {
+        let allOrders = Game.market.getAllOrders();
+        let resources = {'O':[],'H':[],'K':[],'L':[],'Z':[],'U':[],'X':[],'G':[],'GO':[],'OH':[],'GH2O':[]};
+        allOrders.forEach(o => {if(o.type == ORDER_SELL && resources[o.resourceType]) { resources[o.resourceType].push(o)}});
+
+        for ( let res in resources) {
+            let sortedOrders = resources[res].sort((x,y) => this.calculateMarketPricePerUnit(x) - this.calculateMarketPricePerUnit(y));
+            console.log(`Market Orders for ${res}`)
+            for (let i = 0; i < 3; i++ ){
+                let orderToPrint = sortedOrders[i];
+                if (!orderToPrint) {break;};
+                console.log (`\tPPU: ${this.calculateMarketPricePerUnit(orderToPrint)}`);
+                console.log(`\t${JSON.stringify(orderToPrint)}`);
+            }
+        }
+    }
+
+    /**
+     * Calculates the transaction rate per unit resource
+     * @param {Order} order 
+     * @param {string} room 
+     */
+    calculateMarketPricePerUnit(order) {
+        let energyToCredConv = .03;
+        let tCost = Game.market.calcTransactionCost(order.remainingAmount, order.roomName, this.roomName) * energyToCredConv;
+        let oCost = order.remainingAmount* order.price;
+        return (tCost + oCost) / order.remainingAmount;
     }
 
     canSpawn(creepBuild) {
@@ -269,9 +314,14 @@ class Village {
                 return;
             }
             if (spawnObj.spawning) {
-                if (!this.creeps[spawnObj.spawning.name]) {
-                    this.registerCreep(spawnObj.spawning.name);
+                let spawningCreepName = spawnObj.spawning.name;
+                if (!this.creeps[spawningCreepName]) {
+                    this.registerCreep(spawningCreepName);
                     this.spawnQueue.shift();
+                }else {
+                    new RoomVisual(this.roomName)
+                        .rect(spawnObj.pos.x + 1.3,spawnObj.pos.y - .8, 4, 1.2, {fill:'#000',stroke:'#fff'})
+                        .text(`${speech.getRole(this.creeps[spawningCreepName].role)}: ${Math.floor(100*(spawnObj.spawning.needTime-spawnObj.spawning.remainingTime)/spawnObj.spawning.needTime)}%`, spawnObj.pos.x + 3, spawnObj.pos.y, {color: 'white', font: 0.7});    
                 }
             } else {
                 this.spawnCreep(s); // turn this into a prototype    
@@ -587,7 +637,7 @@ class Village {
         }
     }
     
-    getMyRemoteRoom(creep) {
+    getMyRemoteRoomName(creep) {
         return this.creeps[creep.name].remoteRoom;
     }
 
@@ -654,7 +704,7 @@ class Village {
                 var closestHostile = towerObj.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 if(closestHostile) {
                     towerObj.attack(closestHostile);
-                    return;
+                    continue;
                 }
                 if(closestDamagedStructure) {
                     towerObj.repair(closestDamagedStructure);
@@ -833,6 +883,10 @@ class Village {
             memRoomAddr['shouldRepair'] = true;
             memRoomAddr['shouldRepairTime'] = Game.time;    
         }
+    }
+    
+    setRemoteSourceArrivalTime(myRemoteRoom,mySourceId, ticksToLive) {
+        this.remoteRooms[myRemoteRoom].remoteSources[mySourceId].arrivalTime = ticksToLive;
     }
 
     /**
