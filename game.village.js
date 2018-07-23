@@ -138,8 +138,14 @@ class Village {
 
     getMarketReport() {
         let allOrders = Game.market.getAllOrders();
-        let resources = {'O':[],'H':[],'K':[],'L':[],'Z':[],'U':[],'X':[],'G':[],'GO':[],'OH':[],'GH2O':[]};
-        allOrders.forEach(o => {if(o.type == ORDER_SELL && resources[o.resourceType]) { resources[o.resourceType].push(o)}});
+        let resources = {'O':[],'H':[],'K':[],'L':[],'Z':[],'U':[],'X':[]}; //,'G':[],'GO':[],'OH':[],'GH2O':[]};
+        let resourcesBuy = {'O':[],'H':[],'K':[],'L':[],'Z':[],'U':[],'X':[]}; //,'G':[],'GO':[],'OH':[],'GH2O':[]};
+        allOrders.forEach(o => {
+            if(o.type == ORDER_SELL && resources[o.resourceType]) { 
+                resources[o.resourceType].push(o);
+            } else if (o.type == ORDER_BUY && resourcesBuy[o.resourceType])
+                resourcesBuy[o.resourceType].push(o);
+        });
 
         for ( let res in resources) {
             let sortedOrders = resources[res].sort((x,y) => this.calculateMarketPricePerUnit(x) - this.calculateMarketPricePerUnit(y));
@@ -149,6 +155,17 @@ class Village {
                 if (!orderToPrint) {break;};
                 console.log (`\tPPU: ${this.calculateMarketPricePerUnit(orderToPrint)}`);
                 console.log(`\t${JSON.stringify(orderToPrint)}`);
+            }
+        }
+        
+        for ( let res in resourcesBuy) {
+            let sortedOrders = resourcesBuy[res].sort((x,y) =>this.calculateMarketBuyPricePerUnit(y) -  this.calculateMarketBuyPricePerUnit(x));
+            console.log(`\tBuying Orders for ${res}`)
+            for (let i = 0; i < 3; i++ ){
+                let orderToPrint = sortedOrders[i];
+                if (!orderToPrint) {break;};
+                console.log (`\t\tPPU: ${this.calculateMarketBuyPricePerUnit(orderToPrint)}`);
+                console.log(`\t\t${JSON.stringify(orderToPrint)}`);
             }
         }
     }
@@ -163,6 +180,13 @@ class Village {
         let tCost = Game.market.calcTransactionCost(order.remainingAmount, order.roomName, this.roomName) * energyToCredConv;
         let oCost = order.remainingAmount* order.price;
         return (tCost + oCost) / order.remainingAmount;
+    }
+    
+    calculateMarketBuyPricePerUnit(order) {
+        let energyToCredConv = .03;
+        let tCost = Game.market.calcTransactionCost(order.remainingAmount, order.roomName, this.roomName) * energyToCredConv;
+        let oCost = order.remainingAmount* order.price;
+        return (oCost - tCost) / order.remainingAmount;
     }
 
     canSpawn(creepBuild) {
