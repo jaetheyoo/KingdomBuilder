@@ -1,5 +1,6 @@
 var speech = require('utils.speech')
 var base = require('role.base');
+var roleRepairer = require('myRepairer'); // needs debugging
 
 var roleBuilder = {
     /** @param {Creep} creep 
@@ -46,7 +47,7 @@ var roleBuilder = {
                 //return;
             }
 
-            let constructionSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+            let constructionSite = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES);
             if (constructionSite) {
                 creep.memory.buildTarget = constructionSite.id;
                 creep.buildMove(constructionSite.id);
@@ -55,11 +56,13 @@ var roleBuilder = {
                 //console.log('SHOULD REPAIR: ' + creep.name);
                 if (village.shouldRepair(creep.room.name)) {
                     village.creeps[creep.name].role = 'repairer';
+                    roleRepairer.run(creep, village);
                     return;
                 }
                 
                 let myCreepRemoteRoom = creep.room.name;
                 if (creep.memory.remoteRoom) {
+                    //console.log(creep.name + '|' + creep.memory.remoteRoom);
                     if (creep.room.name != creep.memory.remoteRoom) {
                         creep.moveTo(Game.flags[creep.memory.remoteRoom], {visualizePathStyle: {stroke: '#ffffff'}});
                         return;
@@ -69,17 +72,18 @@ var roleBuilder = {
                 let remoteRoom = village.getNextRemoteRoomName(myCreepRemoteRoom);
                 
                 
-                // console.log(creep.name + '| moveTo' + remoteRoom + '| Current room: ' + creep.room.name);
+                //console.log(creep.name + '| moveTo' + remoteRoom + '| Current room: ' + creep.room.name);
                 if (remoteRoom) {
                     creep.memory.remoteRoom = remoteRoom;
                     creep.moveTo(Game.flags[remoteRoom], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
         } else {
+            //console.log(creep.name);
             creep.emote('builder', speech.REFILL)
 
             if (village.inRemoteRoom(creep.room.name)) {
-                //console.log("GOTTA GET OUTA HERE")
+                //console.log(creep.name + " GOTTA GET OUTA HERE")
                 creep.moveTo(village.spawns[0]) // TODO: is it worth looking for a container in the curent room?
             } else {
                 let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {

@@ -6,7 +6,7 @@ net 10535 for 1 source room
 23685 for 2 source room
 */
 Game.spawns['Spawn1'].spawnCreep([MOVE],'bob',{memory:{role:'extends'}})
-Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'bob',{memory:{role:'meleeBodyGuard', guardPostFlag: 'snipeFlag'}})
+Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'bob',{memory:{role:'manualAttack', attackFlag: 'attack'}})
 
 Game.spawns['Spawn1'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE],'bob',{memory:{role:'extends'}})
 Game.spawns['Spawn1'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE],'r1',{memory:{role:'remoteBuilder',searchFlag:'Room2Spawn'}})

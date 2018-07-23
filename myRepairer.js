@@ -12,6 +12,10 @@ var roleRepairer = {
         if(creep.carry.energy == 0) {
             village.creeps[creep.name].role = 'builder';
         } else {
+            if (!village.shouldRepair(creep.room.name)) {
+                village.creeps[creep.name].role = 'builder';
+                return;
+            }
             creep.emote('repairer', speech.REPAIR);
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object){

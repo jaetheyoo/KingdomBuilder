@@ -175,7 +175,24 @@ class Village {
         //console.log(`Do I have enough energy? ${this.getAvailableEnergyForSpawning()} - ${creepBuild.cost} = ${this.getAvailableEnergyForSpawning() >= creepBuild.cost}`)
         return (this.spawns.find(x=>x.name && !Game.spawns[x.name].spawning)!=null && this.getAvailableEnergyForSpawning() >= creepBuild.cost);
     }
-
+    
+    makeConstructionSites() {
+        let structureType = STRUCTURE_ROAD;
+        let flags = this.room.find(FIND_FLAGS);
+        let regexes = [{regex: /v3road/, structureType: STRUCTURE_ROAD}, {regex: /v3extension/, structureType: STRUCTURE_EXTENSION},{regex: /v3terminal/, structureType: STRUCTURE_TERMINAL}]
+        regexes.forEach( r => {
+            let regex = r.regex;
+            let type = r.structureType;
+            flags.forEach(f => {
+                if (regex.test(f.name)) {
+                    if (this.room.createConstructionSite(f.pos, f.structureType)==0) {
+                        f.remove();
+                    };
+                }
+            })
+        })
+    }
+    
     /**
      * One-time only memory initialization for villages
      */
@@ -270,11 +287,13 @@ class Village {
                 break;
             case 4: // start harvesting minerals and boosting and using links for remote mining
                 if (this.controller.level >= 5 && Object.keys(this.creeps).length>= 15) {
+                    this.makeConstructionSites();
                     this.levelUp();
                 }
                 break;
             case 5: // focus on defense and helping economy of smaller colonies 
                 if (this.controller.level >= 6 && Object.keys(this.creeps).length >= 17) {
+                    this.makeConstructionSites();
                     this.levelUp();
                 }
                 break;
@@ -592,8 +611,19 @@ class Village {
                     }
                 }
                 break;
-            case 'remoteRepairer':
             case 'remoteClaimer':
+                for (let room in this.remoteRooms) {
+                    //if (this.remoteRooms[room][role] == 0) {
+                    if (role in this.remoteRooms[room]) {
+                        let myController = Game.getObjectById(this.remoteRooms[room].remoteController);
+                        if (myController && (!myController.reservation || myController.reservation.ticksToEnd <=4500)) {
+                            neededRemoteRole++;
+                        }
+                    }
+                    //}
+                }
+                break;
+            case 'remoteRepairer':
                 for (let room in this.remoteRooms) {
                     //if (this.remoteRooms[room][role] == 0) {
                     if (role in this.remoteRooms[room]) {
@@ -871,17 +901,24 @@ class Village {
         }
         return this.memoryAddr.minerals;
     }
-
-    setShouldRepair(room) {
+    
+    getShouldRepair(room) {
+        if (!memRoomAddr) {
+                    Memory.Villages[this.villageName]['shouldRepair'] = shouldRepair;
+                    Memory.Villages[this.villageName]['shouldRepairTime'] = Game.time;
+                } else {
+                    memRoomAddr['shouldRepair'] = shouldRepair;
+                    memRoomAddr['shouldRepairTime'] = Game.time;
+                }
+    }
+    
+    getShouldRepair(room) {
         if (room==this.roomName) {
-            Memory.Villages[this.villageName]['shouldRepair'] = true;
-            Memory.Villages[this.villageName]['shouldRepairTime'] = Game.time;
-            return;
+            return Memory.Villages[this.villageName]['shouldRepair'];
         }
         let memRoomAddr = this.getMemAddr(room);
         if (memRoomAddr) {
-            memRoomAddr['shouldRepair'] = true;
-            memRoomAddr['shouldRepairTime'] = Game.time;    
+            return memRoomAddr['shouldRepair'];
         }
     }
     

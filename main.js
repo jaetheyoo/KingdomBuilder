@@ -48,6 +48,7 @@ module.exports.loop = function () {
 
 
     */
+    
     _Game.upkeep(Villages);
     for (let village in Villages) {
         try {
@@ -59,6 +60,35 @@ module.exports.loop = function () {
         if(debug) {
             Villages[village].debugMessage.log();
         }
+        
+    }
+    //Villages.village2.getMarketReport();
+    
+    let myCreepName = 'bob';
+    let myCreep = Game.creeps['bob'];
+    if (myCreep) {
+        Game.creeps['bob'].moveTo(Game.flags[Game.creeps['bob'].memory.attackFlag], {visualizePathStyle: {stroke: '#ffffff'}})
+        
+        
+        let target = myCreep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if(target) {
+            myCreep.attack(target)
+            myCreep.moveTo(target)
+        }
+        
+    }
+    
+    myCreepName = 'blob';
+    myCreep = Game.creeps['blob'];
+    if (myCreep) {
+        Game.creeps['blob'].moveTo(Game.flags[Game.creeps['blob'].memory.attackFlag], {visualizePathStyle: {stroke: '#ffffff'}})
+        
+        
+        let target = myCreep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if(target) {
+            myCreep.attack(target)
+            myCreep.moveTo(target)
+        }    
     }
 }
 

@@ -12,10 +12,10 @@ var roleRemoteDropHarvester = {
         // if my location isn't equal to my drop location
         // move there
         // else harvest
-
+        let mySource = village.getSource(creep.name);
         if (!creep.memory.atSource) {
-            let mySource = village.getSource(creep.name);
             let myRemoteRoom = village.getMyRemoteRoomName(creep);
+
             // cant' see source, move to room
             if (mySource == null) {
                 creep.emote('remoteDropHarvester', speech.REMOTEMOVING + '?');

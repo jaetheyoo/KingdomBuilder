@@ -52,7 +52,7 @@ var roleLinkMaintainer = {
             creep.emote('linkMaintainer', speech.TRANSPORT);
             let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                 filter: structure => ((structure.structureType == STRUCTURE_TOWER || structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_LAB) && structure.energy < structure.energyCapacity) ||
-                    (structure.structureType == STRUCTURE_TERMINAL && structure.energy < 50000)
+                    (structure.structureType == STRUCTURE_TERMINAL && structure.store.energy < 50000)
             });
             if (!transferTarget) {
                 transferTarget = village.room.storage;
