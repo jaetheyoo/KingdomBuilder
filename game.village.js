@@ -905,6 +905,9 @@ class Village {
             for (let t2 in t2ComponentLabs) {
                 if (t2ComponentLabs[t2]!= null) {
                     let lab = Game.getObjectById(t2ComponentLabs[t2]);
+                    if (!lab) {
+                        continue;
+                    }
                     if (lab.cooldown > 0) {
                         continue;
                     }

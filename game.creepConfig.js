@@ -105,6 +105,22 @@ class CreepConfig {
                         return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE];
+            case 'labManager':
+                switch (this.villageLevel) {
+                    case 1:
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
+                    case 2:
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
+                    case 3:
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
+                    case 4:
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
+                    case 5:
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
+                    case 6:
+                        return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
+                }
+                return [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE];
             case 'upgrader':
                 switch (this.villageLevel) {
                     case 1:

@@ -37,6 +37,7 @@ var roleLabManager = {
         //     }
         // }
         if (creep.memory.fillMineralAmount > 0) {
+            creep.emote('labManager', speech.WITHDRAW);
             let mineralAmount = creep.memory.fillMineralAmount;
             let withdrawTarget = Game.getObjectById(creep.memory.withdrawTarget);
             let mineralType = creep.memory.fillMineralType;
@@ -47,6 +48,7 @@ var roleLabManager = {
             readyToTransport = (_.sum(creep.carry) == creep.carryCapacity) ||
                 creep.carry[mineralType] < 0;
             if (readyToTransport) {
+                creep.emote('labManager', speech.TRANSPORT);
                 let transferTarget = Game.getObjectById(creep.memory.transferTarget);
                 if (creep.transferMove(transferTarget,mineralType) == 0) {
                     delete creep.memory.fillMineralAmount;

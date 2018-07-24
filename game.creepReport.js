@@ -64,7 +64,8 @@ class CreepReport {
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 1, "scalingFactor": 0},
             "upgrader": { "priority": 1, "count": 2, "scalingFactor": 10000, "max":5},
-            "defenseContractor": { "priority": 1, "count": 1}
+            "defenseContractor": { "priority": 1, "count": 1},
+            "labManager":  { "priority": 1, "count": 1}
         };
     }
     
@@ -83,7 +84,8 @@ class CreepReport {
             "linkMaintainer": { "priority": 6, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 4, "count": 1, "scalingFactor": 0},
             "upgrader": { "priority": 0.5, "count": 0, "scalingFactor": 25000, "max":5},
-            "defenseContractor": { "priority": 1, "count": 1}
+            "defenseContractor": { "priority": 1, "count": 1},
+            "labManager":  { "priority": 1, "count": 1}
         };
     }
 
