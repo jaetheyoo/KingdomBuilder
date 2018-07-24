@@ -94,6 +94,10 @@ class Village {
         return this.room.terminal;
     }
 
+    get storage() {
+        return this.room.storage;
+    }
+
     getNeededMineralRole(role) {
         let minerals = Game.getObjectById(this.getMineralsById());
         if (!minerals || minerals.mineralAmount == 0) {
@@ -136,10 +140,59 @@ class Village {
         return this.terminal.store[resourceType];
     }
 
-    getMarketReport() {
+    manageMarket(isPurchasing = false) {
+        if (this.terminal.cooldown > 0) {
+            return;
+        }
+
         let allOrders = Game.market.getAllOrders();
-        let resources = {'O':[],'H':[],'K':[],'L':[],'Z':[],'U':[],'X':[]}; //,'G':[],'GO':[],'OH':[],'GH2O':[]};
-        let resourcesBuy = {'O':[],'H':[],'K':[],'L':[],'Z':[],'U':[],'X':[]}; //,'G':[],'GO':[],'OH':[],'GH2O':[]};
+        let prices = {'O':0.077,'H':[0.150],'K':[.131],'L':[.081],'Z':[.129],'U':[.145],'X':[.211],
+            "G":[0.486],
+            "UH2O":[0.556],
+            "UHO2":[0.466],
+            "ZH2O":[0.54],
+            "ZHO2":[0.450],
+            "KH2O":[0.542],
+            "KHO2":[0.452],
+            "LH2O":[0.492],
+            "LHO2":[0.402],
+            "GH2O":[0.897],
+            "GHO2":[0.807],
+            "XUH2O":[0.767],
+            "XUHO2":[0.677],
+            "XLH2O":[0.703],
+            "XLHO2":[0.613],
+            "XKH2O":[0.753],
+            "XKHO2":[0.663],
+            "XZH2O":[0.751],
+            "XZHO2":[0.661],
+            "XGH2O":[1.108],
+            "XGHO2":[1.018]};
+        let resources = {'O':[],'H':[],'K':[],'L':[],'Z':[],'U':[],'X':[],
+            "G":[],
+            "UH2O":[],
+            "UHO2":[],
+            "ZH2O":[],
+            "ZHO2":[],
+            "KH2O":[],
+            "KHO2":[],
+            "LH2O":[],
+            "LHO2":[],
+            "GH2O":[],
+            "GHO2":[],
+            "XUH2O":[],
+            "XUHO2":[],
+            "XLH2O":[],
+            "XLHO2":[],
+            "XKH2O":[],
+            "XKHO2":[],
+            "XZH2O":[],
+            "XZHO2":[],
+            "XGH2O":[],
+            "XGHO2":[]};
+        let resourcesBuy = {'O':[],'H':[],'K':[],'L':[],'Z':[],'U':[],'X':[],
+            "G":[]};
+        
         allOrders.forEach(o => {
             if(o.type == ORDER_SELL && resources[o.resourceType]) { 
                 resources[o.resourceType].push(o);
@@ -147,26 +200,90 @@ class Village {
                 resourcesBuy[o.resourceType].push(o);
         });
 
-        for ( let res in resources) {
-            let sortedOrders = resources[res].sort((x,y) => this.calculateMarketPricePerUnit(x) - this.calculateMarketPricePerUnit(y));
-            console.log(`Market Orders for ${res}`)
-            for (let i = 0; i < 3; i++ ){
-                let orderToPrint = sortedOrders[i];
-                if (!orderToPrint) {break;};
-                console.log (`\tPPU: ${this.calculateMarketPricePerUnit(orderToPrint)}`);
-                console.log(`\t${JSON.stringify(orderToPrint)}`);
+        if (Memory.market.budget > 0) {
+            // SELL ORDERS -- I buy minerals for credits
+            for ( let res in resources) {
+                let sortedOrders = resources[res].sort((x,y) => this.calculateMarketPricePerUnit(x) - this.calculateMarketPricePerUnit(y));
+                if (sortedOrders.length < 1) {
+                    continue;
+                }
+                let cheapestOption = sortedOrders[0];
+                let cheapestEPPU = this.calculateMarketPricePerUnit(cheapestOption);
+                let marketAvg = prices[res];
+                let targetDiscount = Memory.market.markdown;
+                let targetMarkdownFromMarketAvg = marketAvg * (1 - targetDiscount);
+                //console.log (`Cheapest Sell Order for ${res}: ${cheapestEPPU} EPPU against ${targetMarkdownFromMarketAvg} Market Avg with ${targetDiscount} markdown`);
+                //console.log (`\tReal price: ${cheapestOption.price} | Market Avg: ${marketAvg}`);
+                //console.log (`\t${JSON.stringify(cheapestOption)}`)
+                if (cheapestEPPU <= targetMarkdownFromMarketAvg) {
+                    let amount = Memory.market.budget/cheapestOption.price;
+                    if (amount > cheapestOption.remainingAmount) {
+                        amount = cheapestOption.remainingAmount;
+                    }
+                    if (amount < 100) { // not worth small purchases
+                        continue;
+                    }
+                    console.log(`Currently budgeted: ${Memory.market.budget} out of 20000`);
+                    console.log(`\t\tPurchasing ${amount} ${res} at ${cheapestOption.id} using terminal in room ${this.roomName}`);
+                    if (isPurchasing) {
+                        let status = Game.market.deal(cheapestOption.id,amount,this.roomName);
+                        if (status == 0) {
+                            Memory.market.budget -= amount*cheapestOption.price;
+                            // made a successful purchase? bring markdown back down to 20%
+                            Memory.market.markdown = .20;
+                            return;
+                        }
+                    };
+                }
             }
         }
-        
-        for ( let res in resourcesBuy) {
-            let sortedOrders = resourcesBuy[res].sort((x,y) =>this.calculateMarketBuyPricePerUnit(y) -  this.calculateMarketBuyPricePerUnit(x));
-            console.log(`\tBuying Orders for ${res}`)
-            for (let i = 0; i < 3; i++ ){
-                let orderToPrint = sortedOrders[i];
-                if (!orderToPrint) {break;};
-                console.log (`\t\tPPU: ${this.calculateMarketBuyPricePerUnit(orderToPrint)}`);
-                console.log(`\t\t${JSON.stringify(orderToPrint)}`);
+
+        // BUY ORDERS -- I sell minerals for credits
+        for (let res in resourcesBuy) {
+            let sortedOrders = resourcesBuy[res].sort((x,y) => this.calculateMarketBuyPricePerUnit(y) - this.calculateMarketBuyPricePerUnit(x));
+            if (sortedOrders.length < 1) {
+                continue;
             }
+            let mostExpensiveOption = sortedOrders[0];
+            let mostExpensiveEPPU = this.calculateMarketBuyPricePerUnit(mostExpensiveOption);
+            let marketAvg = prices[res];
+            let targetMarkup = Memory.market.markup;
+            let targetMarkUpFromMarketAvg = marketAvg * (1 + targetMarkup);
+            //console.log (`Most Expensive Buy Order for ${res}: ${mostExpensiveEPPU} EPPU against ${targetMarkUpFromMarketAvg} Market Avg with ${targetMarkup} markup`);
+            //console.log (`\tReal price: ${mostExpensiveOption.price} | Market Avg: ${marketAvg}`);
+            //console.log (`\t${JSON.stringify(mostExpensiveOption)}`)
+            if (mostExpensiveEPPU >= targetMarkUpFromMarketAvg) {
+                let amount = this.terminal.store[res];
+                if (!amount || amount < 100) {
+                    console.log (`\t Not enough ${res} in terminal: looking for ${mostExpensiveOption.remainingAmount}`);
+                    continue;
+                }
+
+                if (amount > mostExpensiveOption.remainingAmount) {
+                    amount = mostExpensiveOption.remainingAmount;
+                }
+
+                if (isPurchasing) {
+                    console.log(`\t\tSelling ${amount} ${res} at ${mostExpensiveOption.id} using terminal in room ${this.roomName}`);
+                    let status = Game.market.deal(mostExpensiveOption.id,amount,this.roomName);
+                    if (status == 0) {
+                        Memory.market.budget += amount*mostExpensiveOption.price;
+                        // made a successful purchase? bring markdown back down to 20%
+                        Memory.market.markup = .15;
+                        return;
+                    }
+                };
+            }
+        }
+
+        // no deals found, make margins a little smaller
+        if (Memory.market.markdown > 0.15) {
+            Memory.market.markdown -= 0.01;
+        }
+
+        // no deals found, make margins a little smaller
+        if (Memory.market.markup > -0.05) {
+            Memory.market.markup -= .01;
         }
     }
 
@@ -177,14 +294,18 @@ class Village {
      */
     calculateMarketPricePerUnit(order) {
         let energyToCredConv = .03;
+        // gross cost in credits to complete an order
         let tCost = Game.market.calcTransactionCost(order.remainingAmount, order.roomName, this.roomName) * energyToCredConv;
-        let oCost = order.remainingAmount* order.price;
+        // gross cost to purchase all units
+        let oCost = order.remainingAmount * order.price;
         return (tCost + oCost) / order.remainingAmount;
     }
     
     calculateMarketBuyPricePerUnit(order) {
         let energyToCredConv = .03;
+        // gross cost in credits to complete an order
         let tCost = Game.market.calcTransactionCost(order.remainingAmount, order.roomName, this.roomName) * energyToCredConv;
+        // gross revenue
         let oCost = order.remainingAmount* order.price;
         return (oCost - tCost) / order.remainingAmount;
     }
@@ -247,7 +368,17 @@ class Village {
             that.memoryAddr['sources'][s.id] = {harvester: 0, harvestersAmount: 3, dropHarvester: 0}; // todo: analyze sources for harvestersAmount
         });
     }
-
+    hasLabs() {
+        let labs = this.structures.labs;
+        if (!labs) {
+            return false;
+        } 
+        if (Object.keys(labs).length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     hasLinks() {
         let links = this.structures.links;
         if (!links) {
@@ -636,17 +767,6 @@ class Village {
                 }
                 break;
             case 'remoteClaimer':
-                for (let room in this.remoteRooms) {
-                    //if (this.remoteRooms[room][role] == 0) {
-                    if (role in this.remoteRooms[room]) {
-                        let myController = Game.getObjectById(this.remoteRooms[room].remoteController);
-                        if (myController && (!myController.reservation || myController.reservation.ticksToEnd <=4500)) {
-                            neededRemoteRole++;
-                        }
-                    }
-                    //}
-                }
-                break;
             case 'remoteRepairer':
                 for (let room in this.remoteRooms) {
                     //if (this.remoteRooms[room][role] == 0) {
@@ -726,6 +846,98 @@ class Village {
     operateStructures() {
         this.operateLinks();
         this.operateTowers();
+        this.operateLabs();
+    }
+
+    operateLabs() {
+        let labs = this.labs;
+        let baseComponentLabs = {X:{},O:{},H:{},K:{},L:{},U:{}};
+        let t1ComponentLabs = {OH:{},GO:{}};
+        let t2ComponentLabs = {GHO2:{}};
+        let t3ComponentLabs = {};
+        if (labs) {
+            for (let lab in labs) {
+                switch (labs[lab].boost) {
+                    case 'GHO2':
+                        //console.log("Reaction lab for GHO2: " + lab);
+                        t2ComponentLabs.GHO2 = lab;
+                        break;
+                    case 'GO': 
+                        //console.log("Reaction lab for GO: " + lab);
+                        t1ComponentLabs.GO = lab;
+                        break;                   
+                    case 'OH': 
+                        //console.log("Reaction lab for OH: " + lab);
+                        t1ComponentLabs.OH = lab;
+                        break;
+                    case 'H':
+                        //console.log("Reaction lab for H: " + lab);
+                        baseComponentLabs.H = lab;
+                        break;
+                    case 'O':
+                        //console.log("Reaction lab for O: " + lab);
+                        baseComponentLabs.O = lab;
+                        break;                        
+                }
+            }
+            for (let t1 in t1ComponentLabs) {
+                if (t1ComponentLabs[t1]!= null) {
+                    let components = this.getComponentsForReaction(t1);
+                    if (!components) {
+                        continue;
+                    }
+                    let haveComponents = components.every(x => {
+                        if (baseComponentLabs[x] == null) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    });
+                    if (haveComponents) {
+                        let lab1 = Game.getObjectById(baseComponentLabs[components[0]]);
+                        let lab2 = Game.getObjectById(baseComponentLabs[components[1]]);
+                        if (lab1 && lab2) {
+                            Game.getObjectById(t1ComponentLabs[t1]).runReaction(lab1, lab2);
+                        }
+                    }
+                }
+            }
+            for (let t2 in t2ComponentLabs) {
+                if (t2ComponentLabs[t2]!= null) {
+                    let lab = Game.getObjectById(t2ComponentLabs[t2]);
+                    if (lab.cooldown > 0) {
+                        continue;
+                    }
+                    let components = this.getComponentsForReaction(t2);
+                    if (!components) {
+                        continue;
+                    }
+                    let haveComponents = components.every(x => {
+                        if (t1ComponentLabs[x] == null) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    });
+                    if (haveComponents) {
+                        let lab1 = Game.getObjectById(t1ComponentLabs[components[0]]);
+                        let lab2 = Game.getObjectById(t1ComponentLabs[components[1]]);
+                        if (lab1 && lab2) {
+                            Game.getObjectById(t2ComponentLabs[t2]).runReaction(lab1, lab2);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    getComponentsForReaction(compound) {
+        switch (compound) {
+            case 'OH':
+                return ['O','H']; 
+            case 'GHO2':
+                return ['GO','OH'];
+        }
     }
 
     operateLinks() {

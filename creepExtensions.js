@@ -99,15 +99,24 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
         case (ERR_INVALID_TARGET):
             throw new Error(`ERROR: ${this.name} failed on prototype TRANSFERMOVE due to error code ${status}`);
     }
+    return 0;
 }
 
-Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_ENERGY) {
+Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_ENERGY, amount = null) {
+
     if(!withdrawTarget) {
         throw new Error(`ERROR: ${this.name} failed on prototype WITHDRAWMOVE due to withdrawTarget being undefined`);
     }
     //console.log(this.name + ' : ' + resourceType)
-    this.withdraw(withdrawTarget, RESOURCE_ENERGY);
-    let status = this.withdraw(withdrawTarget, resourceType);
+    let status;
+    if (!amount) {
+        //this.withdraw(withdrawTarget, RESOURCE_ENERGY);
+        status = this.withdraw(withdrawTarget, resourceType);
+    } else {
+        //this.withdraw(withdrawTarget, RESOURCE_ENERGY, amount);
+        status = this.withdraw(withdrawTarget, resourceType, amount);
+    }
+
     //console.log(status)
     switch(status) {
         case (ERR_NOT_IN_RANGE):

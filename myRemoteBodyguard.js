@@ -19,10 +19,12 @@ var roleRemoteBodyguard = {
             if (enemy) {
                 if (creep.rangedAttack(enemy)==ERR_NOT_IN_RANGE) {
                     creep.moveTo(enemy);
-                } else {
+                } else if (enemy.getActiveBodyparts(ATTACK) > 0) {
                     let ret = PathFinder.search(creep.pos, {pos: enemy.pos, range: 3}, {flee:true});
                     let nextPos = ret.path[0];
                     creep.move(creep.pos.getDirectionTo(nextPos));
+                } else {
+                    creep.moveTo(enemy);
                 }
                 return;    
             } else {

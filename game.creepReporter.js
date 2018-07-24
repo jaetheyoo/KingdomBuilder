@@ -13,6 +13,7 @@ var roleScavenger = require('myScavenger'); // needs debugging
 var roleUpgrader = require('myUpgrader'); // needs debugging
 var roleMineralHarvester = require('myMineralHarvester'); // needs debugging
 var roleMineralTransporter = require('myMineralTransporter'); // needs debugging
+var roleLabManager = require('myLabManager'); // needs debugging
 
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
@@ -84,6 +85,9 @@ var CreepReporter = function(creeps, debug, village) {
                     break;
                 case 'mineralTransporter':
                     roleMineralTransporter.run(creep, village);
+                    break;
+                case 'labManager': 
+                    roleLabManager.run(creep,village);
                     break;
             }
         } catch (err) {

@@ -5,6 +5,56 @@ Cost for 1 remote room, 2 source: 6315
 net 10535 for 1 source room
 23685 for 2 source room
 */
+
+let myCreepName = 'bob';
+    let myCreep = Game.creeps['bob'];
+    if (myCreep) {
+        Game.creeps['bob'].moveTo(Game.flags[Game.creeps['bob'].memory.myFlag], {visualizePathStyle: {stroke: '#ffffff'}})
+
+
+        let target = myCreep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if (target && myCreep.pos.isNearTo(target.pos)) {
+            myCreep.attack(target);
+            if (myCreep.pos.y < 48) {
+                myCreep.moveTo(target);
+            }
+            return;
+        }
+        
+        if (myCreep.hits < myCreep.hitsMax) {
+            myCreep.heal(myCreep);
+        }
+        
+        if (target) {
+            if (myCreep.rangedAttack(target)==ERR_NOT_IN_RANGE) {
+                myCreep.moveTo(target);
+            } else if (target.getActiveBodyparts(ATTACK) > 1) {
+                    let ret = PathFinder.search(myCreep.pos, {pos: target.pos, range: 3}, {flee:true});
+                    let nextPos = ret.path[0];
+                    myCreep.move(myCreep.pos.getDirectionTo(nextPos));
+            } else {
+                myCreep.attack(target);
+                myCreep.moveTo(target);
+            }
+        }
+        
+
+    }
+
+
+
+Game.spawns['Spawn3'].spawnCreep([CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],'labManager')
+Game.creeps['labManager'].drop(RESOURCE_ENERGY)
+
+// spawns bob
+Game.spawns['Spawn3'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
+// spawns blob
+Game.spawns['Spawn3'].spawnCreep([RANGED_ATTACK,RANGED_ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
+
+
+Game.rooms['W53N45'].terminal.send('O', 15489, 'W54N48','transfer res');
+
+
 Game.spawns['Spawn1'].spawnCreep([MOVE],'bob',{memory:{role:'extends'}})
 Game.spawns['Spawn1'].spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE],'bob',{memory:{role:'manualAttack', attackFlag: 'attack'}})
 
