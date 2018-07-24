@@ -11,6 +11,9 @@ var speech = {
     getRole(role) { 
         let roleEmote = '';
         switch (role) {
+            case 'defenseContractor':
+                roleEmote =  '🏯️';
+                break;
             case 'meleeBodyguard':
                 roleEmote =  '🛡️';
                 break;

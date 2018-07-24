@@ -14,7 +14,7 @@ var roleUpgrader = require('myUpgrader'); // needs debugging
 var roleMineralHarvester = require('myMineralHarvester'); // needs debugging
 var roleMineralTransporter = require('myMineralTransporter'); // needs debugging
 var roleLabManager = require('myLabManager'); // needs debugging
-
+var roleDefenseContractor = require('myDefenseContractor');
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
  */
@@ -35,6 +35,9 @@ var CreepReporter = function(creeps, debug, village) {
 
         try {
             switch (creepRole) {
+                case 'defenseContractor':
+                    roleDefenseContractor.run(creep,village);
+                    break;
                 case 'builder':
                     roleBuilder.run(creep, village);
                     break;

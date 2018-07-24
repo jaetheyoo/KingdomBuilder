@@ -63,7 +63,8 @@ class CreepReport {
             "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 1, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 10000, "max":5}
+            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 10000, "max":5},
+            "defenseContractor": { "priority": 1, "count": 1}
         };
     }
     
@@ -81,7 +82,8 @@ class CreepReport {
             "scavenger": { "priority": 6, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 6, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 4, "count": 1, "scalingFactor": 0},
-            "upgrader": { "priority": 0.5, "count": 0, "scalingFactor": 25000, "max":5}
+            "upgrader": { "priority": 0.5, "count": 0, "scalingFactor": 25000, "max":5},
+            "defenseContractor": { "priority": 1, "count": 1}
         };
     }
 
@@ -165,6 +167,9 @@ class CreepReport {
             // Calculate differently for remote roles
             let adjustedCount = config[role].count;
             switch (role) {
+                case 'builder':
+                    // TODO: ramp up with more construction sites
+                    break;
                 // TODO: add other conditions, like war or crash
                 // TODO: when a village levels up, commission more builders temporarily
                 case 'remoteBodyguard':
