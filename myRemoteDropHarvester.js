@@ -5,6 +5,20 @@ var roleRemoteDropHarvester = {
         if (BASE_CREEP.run(creep, village) == -1){
             creep.memory.atSource = false;
             return; 
+        // }
+        // this.creep = creep;
+
+        // switch(creep.memory.task) {
+        //     case TASK.MOVING:
+        //         let moveTarget = this.getMoveTarget();
+        //         if (moveTarget) {
+        //             creep.moveTo(moveTarget);
+        //         } else {
+        //             TASK.FAILED;
+        //         }
+        //         break;
+        //     case TASK.HARVESTING:
+                
         }
         // if my location isn't equal to my drop location
         // move there
@@ -19,6 +33,7 @@ var roleRemoteDropHarvester = {
                 creep.moveTo(Game.flags[myRemoteRoom], {visualizePathStyle: {stroke: '#ffffff'}});
                 return;
             }
+
             let dropLocation = village.getDropHarvestLocation(creep.name, myRemoteRoom);
             //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>     ' + creep.name + '|'+ myRemoteRoom + '|' +Game.getObjectById(dropLocation))
             if (dropLocation && !creep.pos.isEqualTo(Game.getObjectById(dropLocation).pos)) {
@@ -40,9 +55,13 @@ var roleRemoteDropHarvester = {
             }
             creep.memory.atSource = true;
         }
-        
+
         creep.emote('remoteDropHarvester', CREEP_SPEECH.HARVEST);
         creep.harvest(mySource); // TEST: is this the right mem addr?
+
+        // if (creep.canRepair() && mySource.isEmpty()) {
+
+        // }
     }
 };
 

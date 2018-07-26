@@ -7,6 +7,10 @@ Creep.prototype.nearbyEnemies = function(range = 10) {
     return this.pos.findInRange(FIND_HOSTILE_CREEPS, range);
 }
 
+Creep.prototype.canRepair = function() {
+    //return this.getActiveBodyParts.
+}
+
 /**
  * look for dropped resources, then tombstones, then drop containers
  * last ditch, look for storages
@@ -211,3 +215,23 @@ Creep.prototype.buildMove = function(buildTarget) {
 Creep.prototype.emote = function(role, message) {    
     return this.say(CREEP_SPEECH.getRole(role)+(message ? message : ''))
 }
+
+Object.defineProperties(Creep, {
+    journal: {
+        get() {
+            if (!this.memory.journal) {
+                this.memory.journal = [];
+            }
+            return this.memory.journal;
+        }
+    },
+    task: {
+        get() {
+            return this.memory.task;
+        },
+        set(value) {
+            this.journal.push(this.memory.task);
+            this.memory.task = value;
+        }
+    }
+})

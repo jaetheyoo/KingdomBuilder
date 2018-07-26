@@ -1,0 +1,4 @@
+TASK = {
+    MOVING: 1,
+    HARVESTING: 2
+}

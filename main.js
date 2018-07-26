@@ -1,15 +1,22 @@
-require('creepExtensions')
+/** EXTENSIONS */
+require('creepExtensions');
+
+/** GLOBALS */
 BASE_CREEP = require('role.base');
 CREEP_SPEECH = require('utils.speech');
-var Village = require('game.village')
-var DebugMessage = require('game.debugMessage')
+TASK = require('game.tasks')
+
+/** INITIALIZATION */
+var Village = require('game.village');
+var DebugMessage = require('game.debugMessage');
 var _Game = require('./game');
 var debug = false; 
 
 var Villages = {};
 
 _Game.init(Villages, debug);
- 
+
+/** MAIN LOOP */
 module.exports.loop = function () {
     /*
     main loop:
@@ -62,7 +69,6 @@ module.exports.loop = function () {
         if(debug) {
             Villages[village].debugMessage.log();
         }
-        
     }
     
     Villages.village3.manageMarket(true);
@@ -110,7 +116,7 @@ module.exports.loop = function () {
             Game.creeps['bob'].moveTo(Game.flags[Game.creeps['bob'].memory.myFlag], {visualizePathStyle: {stroke: '#ffffff'}})
         }
     } else {
-        Game.spawns['Spawn3'].spawnCreep([RANGED_ATTACK,RANGED_ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
+        //Game.spawns['Spawn3'].spawnCreep([RANGED_ATTACK,RANGED_ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
     }
     
     myCreepName = 'blob';
@@ -144,7 +150,7 @@ module.exports.loop = function () {
             }
         }
     } else {
-        Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,],'blob', {memory:{drainFlag:'a', healFlag: 'h'}})
+        //Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,HEAL,HEAL,HEAL,HEAL,HEAL,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,],'blob', {memory:{drainFlag:'a', healFlag: 'h'}})
     }
 }
 
