@@ -28,27 +28,29 @@ var roleUpgrader = {
                     return;
                 }
             }
-            
-            creep.moveTo(village.controller, {visualizePathStyle: {stroke: '#ffffff'}});
-            if(creep.upgradeController(village.controller) == ERR_NOT_IN_RANGE) {
+            if (!creep.pos.inRangeTo(village.controller,1)) {
                 creep.moveTo(village.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             }
+            creep.upgradeController(village.controller);
         } else {
             creep.emote('upgrader', speech.REFILL)
 
             // TODO: create a generic find target method that finds structures by type
-            
-            var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return ((structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] >= creep.carryCapacity);
-                }
-            });
-            if(target) {
-                creep.withdrawMove(target);
+            if (village.storage && village.storage.store[RESOURCE_ENERGY] >= creep.carryCapacity) {
+                creep.withdrawMove(village.storage, RESOURCE_ENERGY);
             } else {
-                target = village.spawns.find(x=>x.energy > 0);
-                if (target) {
+                let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return ((structure.structureType == STRUCTURE_CONTAINER) && structure.store[RESOURCE_ENERGY] >= creep.carryCapacity);
+                    }
+                });
+                if(target) {
                     creep.withdrawMove(target);
+                } else {
+                    target = village.spawns.find(x=>x.energy > 0);
+                    if (target) {
+                        creep.withdrawMove(target);
+                    }
                 }
             }
         }

@@ -40,14 +40,25 @@ let myCreepName = 'bob';
         
 
     }
+Game.spawns['Spawn3'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
 
 
 
 Game.spawns['Spawn3'].spawnCreep([CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],'labManager')
 Game.creeps['labManager'].drop(RESOURCE_ENERGY)
 
-// spawns bob
-Game.spawns['Spawn3'].spawnCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
+// spawns war drainer 
+Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+    ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL
+    ],'warDrainer', {memory:{getBoosted:'XGHO2', attackFlag: 'attack', healFlag: 'heal'}})
+    
+// spawns war drainer 
+Game.spawns['Spawn3'].spawnCreep([TOUGH,TOUGH,TOUGH,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+    HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL
+    ],'warDrainer', {memory:{getBoosted:'XGHO2', attackFlag: 'attack', healFlag: 'heal'}})
+    
 // spawns blob
 Game.spawns['Spawn3'].spawnCreep([RANGED_ATTACK,RANGED_ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
 

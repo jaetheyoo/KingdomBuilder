@@ -36,6 +36,7 @@ var roleLabManager = {
         //         creep.transferMove(lab, 'energy');
         //     }
         // }
+        
         if (creep.memory.fillMineralAmount > 0) {
             creep.emote('labManager', speech.WITHDRAW);
             let mineralAmount = creep.memory.fillMineralAmount;
@@ -44,53 +45,112 @@ var roleLabManager = {
             if (withdrawTarget.store[mineralType] < mineralAmount) {
                 mineralAmount = withdrawTarget.store[mineralType];
             }
-            let readyToTransport = false;
-            readyToTransport = (_.sum(creep.carry) == creep.carryCapacity) ||
-                creep.carry[mineralType] < 0;
-            if (readyToTransport) {
-                creep.emote('labManager', speech.TRANSPORT);
-                let transferTarget = Game.getObjectById(creep.memory.transferTarget);
-                if (creep.transferMove(transferTarget,mineralType) == 0) {
-                    delete creep.memory.fillMineralAmount;
+            if (mineralAmount == 0) {
+                delete creep.memory.fillMineralAmount;
+            } else {
+                let readyToTransport = false;
+                readyToTransport = (_.sum(creep.carry) == creep.carryCapacity) ||
+                    creep.carry[mineralType] > 0;
+                if (readyToTransport) {
+                    creep.emote('labManager', speech.TRANSPORT); 
+                    let transferTarget = Game.getObjectById(creep.memory.transferTarget);
+                    //console.log(transferTarget + ' | ' +mineralType)
+                    if (creep.transferMove(transferTarget,mineralType) == 0) {
+                        delete creep.memory.fillMineralAmount;
+                        return;
+                    } else {
+                        return;
+                    }
+                } else {
+                    creep.withdrawMove(withdrawTarget,mineralType);
                     return;
                 }
-            } else {
-                creep.withdrawMove(withdrawTarget,mineralType);
-                return;
             }
+        }
+
+        if (creep.memory.dumpMineralAmount > 0) {
+            creep.emote('labManager', speech.WITHDRAW);
+            let dumpMineralAmount = creep.memory.dumpMineralAmount;
+            let dumpMineralTarget = Game.getObjectById(creep.memory.dumpMineralTarget);
+            let dumpMineralType = creep.memory.dumpMineralType;
+            
+            if (dumpMineralTarget.mineralAmount < dumpMineralAmount) {
+                dumpMineralAmount = dumpMineralTarget.mineralAmount;
+            }
+            if (dumpMineralAmount == 0) {
+                delete creep.memory.dumpMineralAmount;
+            } else {
+                let readyToTransport = false;
+                readyToTransport = (_.sum(creep.carry) == creep.carryCapacity) ||
+                    creep.carry[dumpMineralType] >= dumpMineralAmount;
+                if (readyToTransport) {
+                    creep.emote('labManager', speech.TRANSPORT); 
+                    let transferTarget = village.terminal;
+                    if (creep.transferMove(transferTarget,dumpMineralType) == 0) {
+                        delete creep.memory.dumpMineralAmount;
+                        return;
+                    } else {
+                        return;    
+                    }
+                } else {
+                    creep.withdrawMove(dumpMineralTarget,dumpMineralType);
+                    return;
+                }
+            }
+        }
+        
+        if (_.sum(creep.carry) > 0) {
+            creep.transferMove(village.terminal);
+            return;
         }
 
         // get a new assignment
         if (village.hasLabs()) {
             let labs = village.labs;
-            for (let i in labs) {
-                let lab = Game.getObjectById(i);
-                // if (lab.energy == 0) {
-                //     creep.memory.fillEnergyTarget = labs[i];
-                //     creep.memory.fillEnergyAmount = 2000;
-                //     return;
-                // }
-                if (lab.mineralAmount >= 1000) {
-                    continue;
+            let reactionLabs = labs.reactionLabs;
+            let reagentLabs = labs.reagentLabs;
+            if (reactionLabs && reagentLabs){
+                let reactionMin = labs.reaction
+                if (reactionMin) {
+                    // put excess reaction into term
+                    reactionLabs.forEach(l => {
+                        let labObj = Game.getObjectById(l);
+                        if ((labObj.mineralType && labObj.mineralType != reactionMin) || labObj.mineralAmount >= 200) {
+                            creep.memory.dumpMineralAmount = 200;
+                            creep.memory.dumpMineralType = labObj.mineralType;
+                            creep.memory.dumpMineralTarget = l;
+                            return;
+                        }
+                    });
                 }
-                let myBoost = labs[i].boost;
-                if (myBoost) {
-                    // if (lab.mineralAmount > 0 && lab.mineralType != myBoost) {
-                    //     creep.memory.emptyMineralType = lab.mineralType;
-                    //     creep.memory.emptyMineralAmount = lab.mineralCapacity;
-                    //     return;
-                    // }
+                
+                // fill reagents
+                for (lab in reagentLabs) {
+                    let labObj = Game.getObjectById(lab);
+                    let myMin = reagentLabs[lab];
+                    if (labObj.mineralType && labObj.mineralType != myMin) {
+                        creep.memory.dumpMineralAmount = 200;
+                        creep.memory.dumpMineralType = labObj.mineralType;
+                        creep.memory.dumpMineralTarget = lab;
+                        return;
+                    }
+                    
+                    if (labObj.mineralAmount >= 1800) {
+                        continue;
+                    }
+                    
                     let target;
-                    if (village.storage.store[myBoost] > 200) {
+                    if (village.storage.store[myMin] > 0) {
                         target = village.storage;
-                    } else if (village.terminal.store[myBoost] > 200) {
+                    } else if (village.terminal.store[myMin] > 0) {
                         target = village.terminal;
                     }
                     if (target) {
-                        creep.memory.fillMineralType = myBoost;
+                        creep.memory.fillMineralType = myMin;
                         creep.memory.fillMineralAmount = 200;//Math.max(lab.mineralCapacity - lab.mineralAmount);
                         creep.memory.withdrawTarget = target.id;
-                        creep.memory.transferTarget = i;
+                        creep.memory.transferTarget = lab;
+                        return;
                     }
                 }
             }

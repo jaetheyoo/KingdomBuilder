@@ -8,6 +8,56 @@ var roleLinkMaintainer = {
         if (base.run(creep, village) == -1){
             return;
         }
+        
+        if (village.villageName == 'village2') {
+            creep.moveTo(Game.flags['linkManagerFlag']);
+        }
+        
+        const storage = creep.room.storage;
+        const terminal = creep.room.terminal;
+        const minimumTerminalAmount = 50000;
+        const maximumTerminalAmount = minimumTerminalAmount + creep.carryCapacity;
+        
+        let mineralsToMove = creep.memory.movingMinerals;
+        if (mineralsToMove) {
+            console.log(creep.name + '|' + mineralsToMove)
+            if (_.sum(creep.carry) == 0) {
+                if (!storage.store[mineralsToMove] || terminal.store[mineralsToMove] >= minimumTerminalAmount) {
+                    delete creep.memory.movingMinerals;
+                    return;
+                }
+                creep.withdrawMove(storage, mineralsToMove);
+                return;
+            } else {
+                if (creep.transferMove(terminal, mineralsToMove)==0) {
+                    console.log('done')
+                    if (!storage.store[mineralsToMove] || terminal.store[mineralsToMove] >= minimumTerminalAmount) {
+                        delete creep.memory.movingMinerals;
+                        return;
+                    } else {
+                        return;
+                    }
+                }
+            }
+        }
+        
+        let excessMinerals = creep.memory.excessMinerals;
+        if (excessMinerals) {
+            if (_.sum(creep.carry) == 0) {
+                creep.withdrawMove(terminal, excessMinerals);
+                return;
+            } else {
+                if (creep.transferMove(storage, excessMinerals) == 0) {
+                    if (!terminal.store[excessMinerals] || terminal.store[excessMinerals] <= maximumTerminalAmount) {
+                        delete creep.memory.excessMinerals;
+                        return;
+                    } else {
+                        return;
+                    }
+                }
+            }
+        }
+        
         //console.log(creep.name)
         /**
          * Is there energy in the link?
@@ -34,8 +84,7 @@ var roleLinkMaintainer = {
                             filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
                         });
                         if (!transferTarget) {
-                            transferTarget = village.room.storage;
-                             
+                            transferTarget = storage;
                         }
                         creep.transferMove(transferTarget);
                         return;
@@ -44,9 +93,23 @@ var roleLinkMaintainer = {
             }
         }
         
+        for (let min in storage.store) {
+            if (!terminal.store[min] || terminal.store[min] < minimumTerminalAmount) {
+                creep.memory.movingMinerals = min;
+                return;
+            }
+        }
+        
+        for (let min in terminal.store) {
+            if (terminal.store[min] > maximumTerminalAmount) {
+                creep.memory.excessMinerals = min;
+                return;
+            }
+        }
+        
         if (_.sum(creep.carry) == 0) {
             creep.emote('linkMaintainer', speech.WITHDRAW);
-            creep.withdrawMove(village.room.storage);
+            creep.withdrawMove(storage);
             return;
         } else {
             creep.emote('linkMaintainer', speech.TRANSPORT);
@@ -55,7 +118,7 @@ var roleLinkMaintainer = {
                     (structure.structureType == STRUCTURE_TERMINAL && structure.store.energy < 50000)
             });
             if (!transferTarget) {
-                transferTarget = village.room.storage;
+                transferTarget = storage;
             }
             creep.transferMove(transferTarget);
         }

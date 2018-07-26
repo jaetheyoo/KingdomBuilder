@@ -53,6 +53,13 @@ var roleBuilder = {
                 creep.buildMove(constructionSite.id);
                 return;
             } else {
+                let rampart = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: x => x.structureType == STRUCTURE_RAMPART && x.hits < 5000});
+                if (rampart) {
+                    creep.repair(rampart);
+                    creep.moveTo(rampart);
+                    return;
+                }
                 //console.log('SHOULD REPAIR: ' + creep.name);
                 if (village.shouldRepair(creep.room.name)) {
                     village.creeps[creep.name].role = 'repairer';

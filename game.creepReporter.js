@@ -15,6 +15,8 @@ var roleMineralHarvester = require('myMineralHarvester'); // needs debugging
 var roleMineralTransporter = require('myMineralTransporter'); // needs debugging
 var roleLabManager = require('myLabManager'); // needs debugging
 var roleDefenseContractor = require('myDefenseContractor');
+var warDrainer = require('warDrainer');
+
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
  */
@@ -34,7 +36,11 @@ var CreepReporter = function(creeps, debug, village) {
         village.debugMessage.append(`\t\t [CreepReporter] ${creepName} is running role ${creepRole}`);
 
         try {
+            //let start = Game.cpu.getUsed();
             switch (creepRole) {
+                case 'warDrainer':
+                    warDrainer.run(creep,village);
+                    break;
                 case 'defenseContractor':
                     roleDefenseContractor.run(creep,village);
                     break;
@@ -93,6 +99,9 @@ var CreepReporter = function(creeps, debug, village) {
                     roleLabManager.run(creep,village);
                     break;
             }
+            //let end = Game.cpu.getUsed();
+            //let total = end - start;
+            //console.log(`For creep ${creepName}, ${creepRole}: CPU used is ${total}`)
         } catch (err) {
             console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] ${err.message}`);
         }

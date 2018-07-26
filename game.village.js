@@ -146,7 +146,7 @@ class Village {
         }
 
         let allOrders = Game.market.getAllOrders();
-        let prices = {'O':0.077,'H':[0.150],'K':[.131],'L':[.081],'Z':[.129],'U':[.145],'X':[.211],
+        let prices = {'O':0.077,'H':[0.150],'K':[.131],'L':[.081],'Z':[.125],'U':[.145],'X':[.211],
             "G":[0.486],
             "UH2O":[0.556],
             "UHO2":[0.466],
@@ -255,7 +255,7 @@ class Village {
             if (mostExpensiveEPPU >= targetMarkUpFromMarketAvg) {
                 let amount = this.terminal.store[res];
                 if (!amount || amount < 100) {
-                    console.log (`\t Not enough ${res} in terminal: looking for ${mostExpensiveOption.remainingAmount}`);
+                    //console.log (`\t Not enough ${res} in terminal: looking for ${mostExpensiveOption.remainingAmount}`);
                     continue;
                 }
 
@@ -851,95 +851,23 @@ class Village {
 
     operateLabs() {
         let labs = this.labs;
-        let baseComponentLabs = {X:{},O:{},H:{},K:{},L:{},U:{}};
-        let t1ComponentLabs = {OH:{},GO:{}};
-        let t2ComponentLabs = {GHO2:{}};
-        let t3ComponentLabs = {};
-        if (labs) {
-            for (let lab in labs) {
-                switch (labs[lab].boost) {
-                    case 'GHO2':
-                        //console.log("Reaction lab for GHO2: " + lab);
-                        t2ComponentLabs.GHO2 = lab;
-                        break;
-                    case 'GO': 
-                        //console.log("Reaction lab for GO: " + lab);
-                        t1ComponentLabs.GO = lab;
-                        break;                   
-                    case 'OH': 
-                        //console.log("Reaction lab for OH: " + lab);
-                        t1ComponentLabs.OH = lab;
-                        break;
-                    case 'H':
-                        //console.log("Reaction lab for H: " + lab);
-                        baseComponentLabs.H = lab;
-                        break;
-                    case 'O':
-                        //console.log("Reaction lab for O: " + lab);
-                        baseComponentLabs.O = lab;
-                        break;                        
+        let reagentLabs = labs.reagentLabs;
+        let reactionLabs = labs.reactionLabs;
+        
+        if (reagentLabs && reactionLabs) {
+            let keys = Object.keys(reagentLabs);
+            
+            if (!labs.reaction || labs.reset && (reagentLabs[keys[0]] && reagentLabs[keys[1]])) {
+                if (REACTIONS[reagentLabs[keys[0]]]) {
+                    labs.reaction = REACTIONS[reagentLabs[keys[0]]][reagentLabs[keys[1]]];    
                 }
+                this.labs.reset = false;
             }
-            for (let t1 in t1ComponentLabs) {
-                if (t1ComponentLabs[t1]!= null) {
-                    let components = this.getComponentsForReaction(t1);
-                    if (!components) {
-                        continue;
-                    }
-                    let haveComponents = components.every(x => {
-                        if (baseComponentLabs[x] == null) {
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    });
-                    if (haveComponents) {
-                        let lab1 = Game.getObjectById(baseComponentLabs[components[0]]);
-                        let lab2 = Game.getObjectById(baseComponentLabs[components[1]]);
-                        if (lab1 && lab2) {
-                            Game.getObjectById(t1ComponentLabs[t1]).runReaction(lab1, lab2);
-                        }
-                    }
-                }
+            if (labs.reaction) {
+                reactionLabs.forEach(l => {
+                    Game.getObjectById(l).runReaction(Game.getObjectById(keys[0]),Game.getObjectById(keys[1]));
+                });    
             }
-            for (let t2 in t2ComponentLabs) {
-                if (t2ComponentLabs[t2]!= null) {
-                    let lab = Game.getObjectById(t2ComponentLabs[t2]);
-                    if (!lab) {
-                        continue;
-                    }
-                    if (lab.cooldown > 0) {
-                        continue;
-                    }
-                    let components = this.getComponentsForReaction(t2);
-                    if (!components) {
-                        continue;
-                    }
-                    let haveComponents = components.every(x => {
-                        if (t1ComponentLabs[x] == null) {
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    });
-                    if (haveComponents) {
-                        let lab1 = Game.getObjectById(t1ComponentLabs[components[0]]);
-                        let lab2 = Game.getObjectById(t1ComponentLabs[components[1]]);
-                        if (lab1 && lab2) {
-                            Game.getObjectById(t2ComponentLabs[t2]).runReaction(lab1, lab2);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    getComponentsForReaction(compound) {
-        switch (compound) {
-            case 'OH':
-                return ['O','H']; 
-            case 'GHO2':
-                return ['GO','OH'];
         }
     }
 

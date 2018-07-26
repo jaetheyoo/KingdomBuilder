@@ -17,10 +17,10 @@ Creep.prototype.scavenge = function(onlyEnergy) { // TEST: functionality
     let findTargets = [FIND_DROPPED_RESOURCES, FIND_TOMBSTONES];
     let findFilters = [
         {
-            filter: object => object.resourceType == RESOURCE_ENERGY && object.amount >= 100 || object.resourceType != RESOURCE_ENERGY
+            filter: object => object.resourceType == RESOURCE_ENERGY && object.amount >= 200 || object.resourceType != RESOURCE_ENERGY
         },
         {
-            filter: structure => structure.store ? structure.store[RESOURCE_ENERGY] >= 100 || Object.keys(structure.store).length > 1 : false
+            filter: structure => structure.store ? structure.store[RESOURCE_ENERGY] >= 200 || Object.keys(structure.store).length > 1 : false
         },
     ];
     if (onlyEnergy) {
@@ -71,7 +71,7 @@ Creep.prototype.scavenge = function(onlyEnergy) { // TEST: functionality
  */
 Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_ENERGY, opts) {
     if (!transferTarget) {
-        return;
+        return -1;
     }
     if (!opts) {
         opts = {visualizePathStyle: {stroke: '#ffffff'}}
@@ -91,6 +91,8 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
     this.transfer(transferTarget, RESOURCE_ENERGY);
     let status = this.transfer(transferTarget, resourceType);
     switch(status) {
+        case 0:
+            return 0;
         case (ERR_NOT_IN_RANGE):
             this.moveTo(transferTarget, opts);
             break;
@@ -99,7 +101,7 @@ Creep.prototype.transferMove = function(transferTarget, resourceType = RESOURCE_
         case (ERR_INVALID_TARGET):
             throw new Error(`ERROR: ${this.name} failed on prototype TRANSFERMOVE due to error code ${status}`);
     }
-    return 0;
+    return -1;
 }
 
 Creep.prototype.withdrawMove = function(withdrawTarget, resourceType = RESOURCE_ENERGY, amount = null) {

@@ -149,10 +149,8 @@ var init = function initVillage(Villages, debug) {
         };
     } 
     
-    
-    
     // if recompiled, create new Village objects reading from memory
-    var village1 = new Village("village1",Memory.Villages.village1.room,Memory.Villages.village1.spawns,Memory.Villages.village1.controller,  debug);
+    var village1 = new Village("village1",Memory.Villages.village1.room,Memory.Villages.village1.spawns,Memory.Villages.village1.controller, debug);
     var village2 = new Village("village2",Memory.Villages.village2.room,Memory.Villages.village2.spawns,Memory.Villages.village2.controller, debug);
     var village3 = new Village("village3",Memory.Villages.village3.room,Memory.Villages.village3.spawns,Memory.Villages.village3.controller, debug);
 

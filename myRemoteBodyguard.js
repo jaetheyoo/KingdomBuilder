@@ -4,6 +4,19 @@ var base = require('role.base');
 var roleRemoteBodyguard = {
     /** @param {Creep} creep **/
     run: function(creep, village) {
+        if (creep.getActiveBodyparts(HEAL) > 0) {
+            let healTarget = creep.pos.findInRange(FIND_MY_CREEPS, {
+                filter: function(object) {
+                    return object.hits < object.hitsMax;
+            }});
+                    
+            if(healTarget) {
+                if(creep.heal(healTarget) == ERR_NOT_IN_RANGE) {
+                    creep.rangedHeal(healTarget);
+                }
+            }
+        }
+        
         let remoteRoom = creep.memory.newRemoteRoom;
         if (!remoteRoom) {
             remoteRoom = village.creeps[creep.name].myRemoteRoom;
@@ -12,7 +25,7 @@ var roleRemoteBodyguard = {
         if (!flag) {
             return;
         }
-        
+                
         if (creep.memory.attackTarget) {
             creep.emote('remoteBodyguard',speech.ATTACKING);
             let enemy = Game.getObjectById(creep.memory.attackTarget);
@@ -26,10 +39,12 @@ var roleRemoteBodyguard = {
                 } else {
                     creep.moveTo(enemy);
                 }
-                return;    
+                creep.attack(enemy);
+                return;
             } else {
                 delete creep.memory.attackTarget;
             }
+            
         }
 
         if (!flag.room || !creep.pos.isEqualTo(flag.pos)) {
