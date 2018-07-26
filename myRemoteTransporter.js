@@ -1,10 +1,10 @@
-var speech = require('utils.speech')
-var base = require('role.base');
+
+
 var roleRemoteTransfer = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
 
@@ -18,7 +18,7 @@ var roleRemoteTransfer = {
         }
 
         if (creep.memory.pickingUp) {
-            creep.emote('remoteTransporter',speech.REMOTETRAVEL)
+            creep.emote('remoteTransporter',CREEP_SPEECH.REMOTETRAVEL)
             if (creep.memory.pickupContainer) {
                 let containerObj = Game.getObjectById(creep.memory.pickupContainer);
                 if (containerObj) {
@@ -30,7 +30,7 @@ var roleRemoteTransfer = {
                 let mySourceObject = Game.getObjectById(village.creeps[creep.name].mySource);
                 // cant' see source, move to room
                 if (mySourceObject == null) {
-                    creep.emote('remoteTransporter', speech.REMOTEMOVING);
+                    creep.emote('remoteTransporter', CREEP_SPEECH.REMOTEMOVING);
                     creep.moveTo(Game.flags[village.getMyRemoteRoomName(creep)], {visualizePathStyle: {stroke: '#ffffff'}});
                     return;
                 }
@@ -46,7 +46,7 @@ var roleRemoteTransfer = {
                 }
             }
         } else {
-            creep.emote('remoteTransporter',speech.TRANSPORT);
+            creep.emote('remoteTransporter',CREEP_SPEECH.TRANSPORT);
 
             if (creep.memory.dropoffLink) {
                 let linkObj = Game.getObjectById(creep.memory.dropoffLink);

@@ -1,4 +1,6 @@
 require('creepExtensions')
+BASE_CREEP = require('role.base');
+CREEP_SPEECH = require('utils.speech');
 var Village = require('game.village')
 var DebugMessage = require('game.debugMessage')
 var _Game = require('./game');

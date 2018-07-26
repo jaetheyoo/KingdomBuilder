@@ -2,7 +2,6 @@ require('utils.extensions');
 var DebugMessage = require('game.debugMessage');
 var CreepReporter = require('game.creepReporter');
 var CreepConfig = require('game.creepConfig');
-var speech = require('utils.speech');
 
 // TODO: Do we really need to keep track of structures?
 class Village {
@@ -495,7 +494,7 @@ class Village {
                 }else {
                     new RoomVisual(this.roomName)
                         .rect(spawnObj.pos.x + 1.3,spawnObj.pos.y - .8, 4, 1.2, {fill:'#000',stroke:'#fff'})
-                        .text(`${speech.getRole(this.creeps[spawningCreepName].role)}: ${Math.floor(100*(spawnObj.spawning.needTime-spawnObj.spawning.remainingTime)/spawnObj.spawning.needTime)}%`, spawnObj.pos.x + 3, spawnObj.pos.y, {color: 'white', font: 0.7});    
+                        .text(`${CREEP_SPEECH.getRole(this.creeps[spawningCreepName].role)}: ${Math.floor(100*(spawnObj.spawning.needTime-spawnObj.spawning.remainingTime)/spawnObj.spawning.needTime)}%`, spawnObj.pos.x + 3, spawnObj.pos.y, {color: 'white', font: 0.7});    
                 }
             } else {
                 this.spawnCreep(s); // turn this into a prototype    

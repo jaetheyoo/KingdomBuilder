@@ -1,11 +1,8 @@
-var speech = require('utils.speech')
-var base = require('role.base');
-
 var roleLabManager = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
         //console.log(creep.name)
@@ -38,7 +35,7 @@ var roleLabManager = {
         // }
         
         if (creep.memory.fillMineralAmount > 0) {
-            creep.emote('labManager', speech.WITHDRAW);
+            creep.emote('labManager', CREEP_SPEECH.WITHDRAW);
             let mineralAmount = creep.memory.fillMineralAmount;
             let withdrawTarget = Game.getObjectById(creep.memory.withdrawTarget);
             let mineralType = creep.memory.fillMineralType;
@@ -52,7 +49,7 @@ var roleLabManager = {
                 readyToTransport = (_.sum(creep.carry) == creep.carryCapacity) ||
                     creep.carry[mineralType] > 0;
                 if (readyToTransport) {
-                    creep.emote('labManager', speech.TRANSPORT); 
+                    creep.emote('labManager', CREEP_SPEECH.TRANSPORT); 
                     let transferTarget = Game.getObjectById(creep.memory.transferTarget);
                     //console.log(transferTarget + ' | ' +mineralType)
                     if (creep.transferMove(transferTarget,mineralType) == 0) {
@@ -69,7 +66,7 @@ var roleLabManager = {
         }
 
         if (creep.memory.dumpMineralAmount > 0) {
-            creep.emote('labManager', speech.WITHDRAW);
+            creep.emote('labManager', CREEP_SPEECH.WITHDRAW);
             let dumpMineralAmount = creep.memory.dumpMineralAmount;
             let dumpMineralTarget = Game.getObjectById(creep.memory.dumpMineralTarget);
             let dumpMineralType = creep.memory.dumpMineralType;
@@ -84,7 +81,7 @@ var roleLabManager = {
                 readyToTransport = (_.sum(creep.carry) == creep.carryCapacity) ||
                     creep.carry[dumpMineralType] >= dumpMineralAmount;
                 if (readyToTransport) {
-                    creep.emote('labManager', speech.TRANSPORT); 
+                    creep.emote('labManager', CREEP_SPEECH.TRANSPORT); 
                     let transferTarget = village.terminal;
                     if (creep.transferMove(transferTarget,dumpMineralType) == 0) {
                         delete creep.memory.dumpMineralAmount;

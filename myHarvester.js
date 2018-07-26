@@ -1,11 +1,8 @@
-var speech = require('utils.speech')
-var base = require('role.base');
-
 var roleHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
         // walk miner
@@ -19,13 +16,13 @@ var roleHarvester = {
         }
         
         if (creep.memory.harvesting) {
-            creep.emote('harvester', speech.HARVEST)
+            creep.emote('harvester', CREEP_SPEECH.HARVEST)
             // go to source
             if(creep.harvest(mySource) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(mySource, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         } else {
-            creep.emote('harvester', speech.DROPOFF)
+            creep.emote('harvester', CREEP_SPEECH.DROPOFF)
             // go to dropoff location
             // TODO: if CPU is an issue, access these in memory
             let target = village.getEmptySpawn();

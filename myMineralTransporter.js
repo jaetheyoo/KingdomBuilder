@@ -1,10 +1,8 @@
-var speech = require('utils.speech')
-var base = require('role.base');
 var roleMineralTransporter = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
 
@@ -18,14 +16,14 @@ var roleMineralTransporter = {
         }
 
         if (creep.memory.pickingUp) {
-            creep.emote('mineralTransporter',speech.MOVING)
+            creep.emote('mineralTransporter',CREEP_SPEECH.MOVING)
             let minerals = Game.getObjectById(village.getMineralsById());
             let pickupContainer = Game.getObjectById(village.getMineralExtractionContainerId());
             if (minerals && pickupContainer) {
                 creep.withdrawMove(pickupContainer, minerals.mineralType);
             }
         } else {
-            creep.emote('mineralTransporter',speech.TRANSPORT);
+            creep.emote('mineralTransporter',CREEP_SPEECH.TRANSPORT);
             let minerals = Game.getObjectById(village.getMineralsById());
             creep.transferMove(village.room.storage, minerals.mineralType);
         }

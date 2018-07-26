@@ -1,11 +1,8 @@
-var speech = require('utils.speech')
-var base = require('role.base');
-
 var roleMineralHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
         
@@ -20,18 +17,18 @@ var roleMineralHarvester = {
         let myMinerals = Game.getObjectById(village.getMineralsById());
         let dropLocation = Game.getObjectById(village.getMineralExtractionContainerId());
         if (creep.memory.cooldown) {
-            creep.emote('mineralHarvester', speech.WAITING + creep.memory.cooldown);
+            creep.emote('mineralHarvester', CREEP_SPEECH.WAITING + creep.memory.cooldown);
             creep.memory.cooldown--;
             return;
         }
 
         if (!creep.pos.isEqualTo(dropLocation.pos)) {
-            creep.emote('mineralHarvester', speech.MOVE);
+            creep.emote('mineralHarvester', CREEP_SPEECH.MOVE);
             creep.moveTo(dropLocation);
             return;
         } 
         
-        creep.emote('mineralHarvester', speech.MINE);
+        creep.emote('mineralHarvester', CREEP_SPEECH.MINE);
         creep.harvest(myMinerals) ; // TEST: is this the right mem addr?
         creep.memory.cooldown = 5;
     }

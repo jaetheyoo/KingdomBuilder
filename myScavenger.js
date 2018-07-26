@@ -1,9 +1,9 @@
-var speech = require('utils.speech')
-var base = require('role.base');
+
+
 
 var roleScavenger = {
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
 
@@ -26,7 +26,7 @@ var roleScavenger = {
             if (creep.scavenge()) { 
                 return;
             }
-            creep.emote('scavenger', speech.WITHDRAW)
+            creep.emote('scavenger', CREEP_SPEECH.WITHDRAW)
             let miningContainers = village.getDropContainers();
             //console.log(creep.name + ' | '+miningContainers);
             if (miningContainers.length > 1) {
@@ -43,7 +43,7 @@ var roleScavenger = {
                 //console.log(creep.name + ' | No containers found' )
             }
         } else {
-            creep.emote('scavenger', speech.DROPOFF);
+            creep.emote('scavenger', CREEP_SPEECH.DROPOFF);
             if (Object.keys(creep.carry).length > 1) {
                 let storage = village.room.storage;
                 if (storage) {

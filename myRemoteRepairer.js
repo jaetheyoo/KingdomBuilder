@@ -1,18 +1,18 @@
-var speech = require('utils.speech')
-var base = require('role.base');
+
+
 
 var roleRemoteRepairer = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
 
         village.debugMessage.append(`\t\t\t${creep.name} is running role RemoteReporter`);
 
         if(creep.carry.energy == 0) {
-            creep.emote('remoteRepairer', speech.REFILL)
+            creep.emote('remoteRepairer', CREEP_SPEECH.REFILL)
 
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (s) => {
@@ -31,7 +31,7 @@ var roleRemoteRepairer = {
                 //creep.moveTo(village.flags['refuelWaitingZone'], {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else {
-            creep.emote('remoteRepairer', speech.REPAIR)
+            creep.emote('remoteRepairer', CREEP_SPEECH.REPAIR)
             let myRoomName = village.creeps[creep.name].myRemoteRoom;
             // console.log(creep.name + ' > ' + myRoomName)
             village.debugMessage.append(`\t\t\t\t[REPAIR]: remote room set to ${myRoomName}`);

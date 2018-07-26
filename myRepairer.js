@@ -1,11 +1,11 @@
-var speech = require('utils.speech')
-var base = require('role.base');
+
+
 
 var roleRepairer = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
         
@@ -16,7 +16,7 @@ var roleRepairer = {
                 village.creeps[creep.name].role = 'builder';
                 return;
             }
-            creep.emote('repairer', speech.REPAIR);
+            creep.emote('repairer', CREEP_SPEECH.REPAIR);
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object){
                     //console.log(creep.room.name)

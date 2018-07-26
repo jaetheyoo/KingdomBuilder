@@ -1,5 +1,3 @@
-let speech = require ('utils.speech');
-
 // TODO: make this more efficient by using the village to scan
 Creep.prototype.isNearEnemy = function(range = 15) {
     return this.pos.findInRange(FIND_HOSTILE_CREEPS, range).length > 0;
@@ -39,12 +37,12 @@ Creep.prototype.scavenge = function(onlyEnergy) { // TEST: functionality
         if (target) {
             switch(parseInt(i)) {
                 case 0:
-                    this.emote('scavenger', speech.PICKUP);
+                    this.emote('scavenger', CREEP_SPEECH.PICKUP);
                     this.moveTo(target,  {visualizePathStyle: {stroke: '#ffffff'}});
                     this.pickup(target);
                     return true;
                 case 1:
-                    this.emote('scavenger', speech.RIP);
+                    this.emote('scavenger', CREEP_SPEECH.RIP);
                     this.moveTo(target,  {visualizePathStyle: {stroke: '#ffffff'}});
                     // console.log(this.name + ' | ' + target);
                     let minerals = Object.keys(target.store);
@@ -211,5 +209,5 @@ Creep.prototype.buildMove = function(buildTarget) {
  * @param {string} message 
  */
 Creep.prototype.emote = function(role, message) {    
-    return this.say(speech.getRole(role)+(message ? message : ''))
+    return this.say(CREEP_SPEECH.getRole(role)+(message ? message : ''))
 }

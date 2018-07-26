@@ -1,11 +1,8 @@
-var speech = require('utils.speech')
-var base = require('role.base');
-
 var roleLinkMaintainer = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
         
@@ -75,11 +72,11 @@ var roleLinkMaintainer = {
                 let toLink = Game.getObjectById(toLinkIds[i]);
                 if (toLink && toLink.energy > 0) {
                     if (_.sum(creep.carry) == 0) {
-                        creep.emote('linkMaintainer', speech.WITHDRAW);
+                        creep.emote('linkMaintainer', CREEP_SPEECH.WITHDRAW);
                         creep.withdrawMove(toLink);
                         return;
                     } else {
-                        creep.emote('linkMaintainer', speech.TRANSPORT);
+                        creep.emote('linkMaintainer', CREEP_SPEECH.TRANSPORT);
                         let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                             filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
                         });
@@ -108,11 +105,11 @@ var roleLinkMaintainer = {
         }
         
         if (_.sum(creep.carry) == 0) {
-            creep.emote('linkMaintainer', speech.WITHDRAW);
+            creep.emote('linkMaintainer', CREEP_SPEECH.WITHDRAW);
             creep.withdrawMove(storage);
             return;
         } else {
-            creep.emote('linkMaintainer', speech.TRANSPORT);
+            creep.emote('linkMaintainer', CREEP_SPEECH.TRANSPORT);
             let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                 filter: structure => ((structure.structureType == STRUCTURE_TOWER || structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_LAB) && structure.energy < structure.energyCapacity) ||
                     (structure.structureType == STRUCTURE_TERMINAL && structure.store.energy < 50000)

@@ -1,11 +1,10 @@
-var speech = require('utils.speech')
-var base = require('role.base');
+
 
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
         //console.log(`${creep.name} -- Upgrading: ${creep.memory.upgrading}`);
@@ -19,7 +18,7 @@ var roleUpgrader = {
         }
 
         if(creep.memory.upgrading) {
-            creep.emote('upgrader', speech.UPGRADE)
+            creep.emote('upgrader', CREEP_SPEECH.UPGRADE)
             const upgradeSpot = village.memoryAddr.flags['upgradeSpot'];
             if (upgradeSpot) {
                 const upgradeSpotFlag = Game.flags[upgradeSpot];
@@ -33,7 +32,7 @@ var roleUpgrader = {
             }
             creep.upgradeController(village.controller);
         } else {
-            creep.emote('upgrader', speech.REFILL)
+            creep.emote('upgrader', CREEP_SPEECH.REFILL)
 
             // TODO: create a generic find target method that finds structures by type
             if (village.storage && village.storage.store[RESOURCE_ENERGY] >= creep.carryCapacity) {

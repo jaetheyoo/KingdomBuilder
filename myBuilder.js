@@ -1,5 +1,3 @@
-var speech = require('utils.speech')
-var base = require('role.base');
 var roleRepairer = require('myRepairer'); // needs debugging
 
 var roleBuilder = {
@@ -7,7 +5,7 @@ var roleBuilder = {
      *  @param {Village} village 
      * **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
 
@@ -38,7 +36,7 @@ var roleBuilder = {
         }
 
         if (creep.memory.building) {
-            creep.emote('builder', speech.BUILD)
+            creep.emote('builder', CREEP_SPEECH.BUILD)
 
             let buildTarget = creep.memory.buildTarget;
         
@@ -87,7 +85,7 @@ var roleBuilder = {
             }
         } else {
             //console.log(creep.name);
-            creep.emote('builder', speech.REFILL)
+            creep.emote('builder', CREEP_SPEECH.REFILL)
 
             if (village.inRemoteRoom(creep.room.name)) {
                 //console.log(creep.name + " GOTTA GET OUTA HERE")

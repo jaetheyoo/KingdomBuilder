@@ -1,11 +1,8 @@
-var speech = require('utils.speech')
-var base = require('role.base');
-
 var roleRemoteDropHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             creep.memory.atSource = false;
             return; 
         }
@@ -18,14 +15,14 @@ var roleRemoteDropHarvester = {
 
             // cant' see source, move to room
             if (mySource == null) {
-                creep.emote('remoteDropHarvester', speech.REMOTEMOVING + '?');
+                creep.emote('remoteDropHarvester', CREEP_SPEECH.REMOTEMOVING + '?');
                 creep.moveTo(Game.flags[myRemoteRoom], {visualizePathStyle: {stroke: '#ffffff'}});
                 return;
             }
             let dropLocation = village.getDropHarvestLocation(creep.name, myRemoteRoom);
             //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>     ' + creep.name + '|'+ myRemoteRoom + '|' +Game.getObjectById(dropLocation))
             if (dropLocation && !creep.pos.isEqualTo(Game.getObjectById(dropLocation).pos)) {
-                creep.emote('remoteDropHarvester', speech.REMOTEMOVING);
+                creep.emote('remoteDropHarvester', CREEP_SPEECH.REMOTEMOVING);
                 creep.moveTo(Game.getObjectById(dropLocation).pos);
                 return;
             }
@@ -44,7 +41,7 @@ var roleRemoteDropHarvester = {
             creep.memory.atSource = true;
         }
         
-        creep.emote('remoteDropHarvester', speech.HARVEST);
+        creep.emote('remoteDropHarvester', CREEP_SPEECH.HARVEST);
         creep.harvest(mySource); // TEST: is this the right mem addr?
     }
 };

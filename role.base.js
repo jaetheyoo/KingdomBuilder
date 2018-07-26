@@ -1,5 +1,3 @@
-let speech = require ('utils.speech');
-
 let roleBase = {
     /** @param {Creep} creep **/
     /** @description returns a status code of -1 if behavior overrides default, else 0 */
@@ -9,7 +7,7 @@ let roleBase = {
             throw new Error(`${creep.name}-role.base: flight() ERROR: no hideoutFlag`);
         }
         
-        creep.say(speech.RUN);
+        creep.say(CREEP_SPEECH.RUN);
         creep.moveTo(flag);
     },
     fight: function(creep) {

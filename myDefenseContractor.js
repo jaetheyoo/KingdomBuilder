@@ -1,18 +1,15 @@
-var speech = require('utils.speech')
-var base = require('role.base');
-
 var roleDefenseContractor = {
 
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (base.run(creep, village) == -1){
+        if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
 
         village.debugMessage.append(`\t\t\t${creep.name} is running role Defense Contractor`);
 
         if(creep.carry.energy == 0) {
-            creep.emote('defenseContractor', speech.REFILL)
+            creep.emote('defenseContractor', CREEP_SPEECH.REFILL)
 
             if (!village.storage && !creep.scavenge(true) && village.spawns[0].energy >= creep.carryCapacity) {
                 target = village.spawns[0];
@@ -40,7 +37,7 @@ var roleDefenseContractor = {
             if (!creep.memory.thresold) {
                 creep.memory.thresold = 0;
             }
-            creep.emote('defenseContractor', speech.REPAIR)
+            creep.emote('defenseContractor', CREEP_SPEECH.REPAIR)
             let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function(object){
                     return (object.structureType == STRUCTURE_WALL && object.hits < object.hitsMax && object.hits < 100000 + creep.memory.thresold ||
