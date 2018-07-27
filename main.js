@@ -4,7 +4,8 @@ require('creepExtensions');
 /** GLOBALS */
 BASE_CREEP = require('role.base');
 CREEP_SPEECH = require('utils.speech');
-TASK = require('game.tasks')
+TASK = require('game.tasks');
+ALLIES = require('war.allies');
 
 /** INITIALIZATION */
 var Village = require('game.village');
@@ -57,7 +58,6 @@ module.exports.loop = function () {
 
 
     */
-    
     _Game.upkeep(Villages);
     for (let village in Villages) {
         try {
@@ -76,47 +76,29 @@ module.exports.loop = function () {
     let myCreepName = 'bob';
     let myCreep = Game.creeps['bob'];
     if (myCreep) {
-        if (false) {//if (myCreep.memory.attackTarget) {
-            let enemy = Game.getObjectById(myCreep.memory.attackTarget);
-            if (enemy) {
-                if (myCreep.rangedAttack(enemy)==ERR_NOT_IN_RANGE) {
-                    myCreep.moveTo(enemy);
-                } else if (enemy.getActiveBodyparts(ATTACK) > 0) {
-                    let ret = PathFinder.search(myCreep.pos, {pos: enemy.pos, range: 3}, {flee:true});
-                    let nextPos = ret.path[0];
-                    myCreep.move(creep.pos.getDirectionTo(nextPos));
-                } else {
-                    myCreep.moveTo(enemy);
-                }
-                return;    
-            } else {
-                delete myCreep.memory.attackTarget;
-            }
-        }
+        let target = myCreep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if (myCreep.hits < myCreep.hitsMax) {
             myCreep.heal(myCreep);
         }
-        
-        let target = myCreep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        
         if(target) {
-            if(myCreep.rangedAttack(target) == ERR_NOT_IN_RANGE) {
-                if (myCreep.rangedAttack(target)==ERR_NOT_IN_RANGE) {
-                    myCreep.moveTo(target);
-                } else if (target.getActiveBodyparts(ATTACK) > 0){
-                    let ret = PathFinder.search(creep.pos, {pos: enemy.pos, range: 3}, {flee:true});
-                    let nextPos = ret.path[0];
-                    myCreep.move(creep.pos.getDirectionTo(nextPos));
-                } else {
+            console.log(target.getActiveBodyparts(ATTACK))
+            if (target.getActiveBodyparts(ATTACK) > 0){
+                let ret = PathFinder.search(myCreep.pos, {pos: target.pos, range: 3}, {flee:true});
+                let nextPos = ret.path[0];
+                myCreep.move(myCreep.pos.getDirectionTo(nextPos));
+                return;
+            } else {
+                if (myCreep.rangedAttack(target)==ERR_NOT_IN_RANGE && myCreep.pos.y < 47) {
                     myCreep.moveTo(target);
                 }
             }
             myCreep.attack(target);
+            myCreep.rangedAttack(target);
         } else {
             Game.creeps['bob'].moveTo(Game.flags[Game.creeps['bob'].memory.myFlag], {visualizePathStyle: {stroke: '#ffffff'}})
         }
     } else {
-        //Game.spawns['Spawn3'].spawnCreep([RANGED_ATTACK,RANGED_ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
+        //Game.spawns['Spawn3'].spawnCreep([RANGED_ATTACK,RANGED_ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,ATTACK,ATTACK,HEAL],'bob', {memory:{myFlag:'b'}})
     }
     
     myCreepName = 'blob';

@@ -897,7 +897,10 @@ class Village {
                         structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART
                 }); // TODO: do I really want to do this?
         
-                var closestHostile = towerObj.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+                var closestHostile = towerObj.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
+                    filter: 
+                        x => !ALLIES.usernames.includes(x.owner.username)
+                });
                 if(closestHostile) {
                     towerObj.attack(closestHostile);
                     continue;

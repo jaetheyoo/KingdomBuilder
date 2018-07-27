@@ -16,6 +16,8 @@ var roleMineralTransporter = require('myMineralTransporter'); // needs debugging
 var roleLabManager = require('myLabManager'); // needs debugging
 var roleDefenseContractor = require('myDefenseContractor');
 var warDrainer = require('warDrainer');
+var warGuardianAngel = require('warGuardianAngel');
+var warSeigeBreaker = require('warSeigeBreaker');
 
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
@@ -98,6 +100,12 @@ var CreepReporter = function(creeps, debug, village) {
                 case 'labManager': 
                     roleLabManager.run(creep,village);
                     break;
+                case 'warSeigeBreaker': 
+                    warSeigeBreaker.run(creep,village);
+                    break;
+                case 'warGuardianAngel': 
+                    warGuardianAngel.run(creep,village);
+                    break;                                        
             }
             //let end = Game.cpu.getUsed();
             //let total = end - start;
