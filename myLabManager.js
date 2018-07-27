@@ -107,20 +107,6 @@ var roleLabManager = {
             let reactionLabs = labs.reactionLabs;
             let reagentLabs = labs.reagentLabs;
             if (reactionLabs && reagentLabs){
-                let reactionMin = labs.reaction
-                if (reactionMin) {
-                    // put excess reaction into term
-                    reactionLabs.forEach(l => {
-                        let labObj = Game.getObjectById(l);
-                        if ((labObj.mineralType && labObj.mineralType != reactionMin) || labObj.mineralAmount >= 200) {
-                            creep.memory.dumpMineralAmount = 200;
-                            creep.memory.dumpMineralType = labObj.mineralType;
-                            creep.memory.dumpMineralTarget = l;
-                            return;
-                        }
-                    });
-                }
-                
                 // fill reagents
                 for (lab in reagentLabs) {
                     let labObj = Game.getObjectById(lab);
@@ -149,6 +135,20 @@ var roleLabManager = {
                         creep.memory.transferTarget = lab;
                         return;
                     }
+                }
+                
+                let reactionMin = labs.reaction
+                if (reactionMin) {
+                    // put excess reaction into term
+                    reactionLabs.forEach(l => {
+                        let labObj = Game.getObjectById(l);
+                        if ((labObj.mineralType && labObj.mineralType != reactionMin) || labObj.mineralAmount >= 200) {
+                            creep.memory.dumpMineralAmount = 200;
+                            creep.memory.dumpMineralType = labObj.mineralType;
+                            creep.memory.dumpMineralTarget = l;
+                            return;
+                        }
+                    });
                 }
             }
         }

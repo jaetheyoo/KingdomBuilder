@@ -105,7 +105,7 @@ var CreepReporter = function(creeps, debug, village) {
                     break;
                 case 'warGuardianAngel': 
                     warGuardianAngel.run(creep,village);
-                    break;                                        
+                    break;    
             }
             //let end = Game.cpu.getUsed();
             //let total = end - start;

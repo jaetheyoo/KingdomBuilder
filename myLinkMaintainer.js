@@ -17,7 +17,7 @@ var roleLinkMaintainer = {
         
         let mineralsToMove = creep.memory.movingMinerals;
         if (mineralsToMove) {
-            console.log(creep.name + '|' + mineralsToMove)
+            //console.log(creep.name + '|' + mineralsToMove)
             if (_.sum(creep.carry) == 0) {
                 if (!storage.store[mineralsToMove] || terminal.store[mineralsToMove] >= minimumTerminalAmount) {
                     delete creep.memory.movingMinerals;
@@ -27,7 +27,6 @@ var roleLinkMaintainer = {
                 return;
             } else {
                 if (creep.transferMove(terminal, mineralsToMove)==0) {
-                    console.log('done')
                     if (!storage.store[mineralsToMove] || terminal.store[mineralsToMove] >= minimumTerminalAmount) {
                         delete creep.memory.movingMinerals;
                         return;

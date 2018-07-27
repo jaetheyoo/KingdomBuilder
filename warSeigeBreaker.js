@@ -14,7 +14,8 @@ var warSeigeBreaker = {
                         creep.moveTo(myLab);
                         return;
                     case OK:
-                        delete creep.memory.getBoosted[0];
+                        creep.memory.getBoosted.shift();
+                        delete creep.memory.lab;
                         return;
                     case ERR_NOT_ENOUGH_RESOURCES:
                         // Failed cause not enough minerals or energy
@@ -32,7 +33,7 @@ var warSeigeBreaker = {
                     }
                 }
                 // no lab found
-                delete creep.memory.getBoosted[0];
+                delete creep.memory.getBoosted;
             }
         }
 
@@ -48,6 +49,7 @@ var warSeigeBreaker = {
                 if (!target) {
                     // target has been destroyed
                     creep.memory.seigeMode = false;
+                    delete creep.memory.seigeTarget;
                     return;
                 }
                 creep.dismantle(target);
@@ -63,8 +65,15 @@ var warSeigeBreaker = {
                 }
             }
         } else {
+            if (creep.memory.attackTarget) {
+                let target = Game.getObjectById(creep.memory.attackTarget);
+                creep.moveto(target);
+                creep.attack(target);
+                return;
+            }
             let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
             if(target) {
+                creep.memory.attackTarget = target.id;
                 creep.moveto(target);
                 creep.attack(target);
             }

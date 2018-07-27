@@ -864,7 +864,9 @@ class Village {
             }
             if (labs.reaction) {
                 reactionLabs.forEach(l => {
-                    Game.getObjectById(l).runReaction(Game.getObjectById(keys[0]),Game.getObjectById(keys[1]));
+                    if (Game.getObjectById(l)){
+                        Game.getObjectById(l).runReaction(Game.getObjectById(keys[0]),Game.getObjectById(keys[1]));    
+                    }
                 });    
             }
         }
