@@ -1,6 +1,6 @@
 var warGuardianAngel = {
     // Game.spawns['Spawn3'].spawnCreep(['tough','tough','tough','tough','tough','tough','move','move','move','move','heal','heal','heal','heal','heal','heal','heal','heal'], 'GuardianAngel',{memory:{role: 'warGuardianAngel', getBoosted:['XGHO2','XZHO2','XLHO2'],mortalWard: 'SeigeBreaker'}});
-    // Game.spawns['Spawn1'].spawnCreep(['tough','tough','tough','tough','tough','tough','move','move','move','move','move','move','move','move','move','move','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','attack','attack','attack','attack','attack'] , 'SeigeBreaker',{memory:{role: 'warSeigeBreaker', getBoosted:['XGHO2','XZHO2','XZH2O'], seigeMode: true}});
+    // Game.spawns['Spawn1'].spawnCreep(['tough','tough','tough','tough','tough','tough','move','move','move','move','move','move','move','move','move','move','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','work','attack','attack','attack','attack','attack'] , 'SeigeBreaker',{memory:{role: 'warSeigeBreaker', getBoosted:['XGHO2','XZHO2','XZH2O'], seigeMode: true, attackFlag:'attack'}});
     /** @param {Creep} creep **/
     run: function(creep, village) {
         if (creep.spawning) {

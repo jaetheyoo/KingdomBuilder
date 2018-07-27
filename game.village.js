@@ -472,7 +472,23 @@ class Village {
         \n\tSPAWNQUEUE ${JSON.stringify(this.spawnQueue)}`
         console.log(status);
     }
-    
+    get colonizationInProgress() {
+        // check colonization status
+        if (!Memory.Villages[this.villageName].colonization) {
+            Memory.Villages[this.villageName].colonization = {
+                inProgress: false,
+                civRoom: null,
+                civCreeps: {},
+            }
+        }
+        return Memory.Villages[this.villageName].colonization.inProgress;
+    }
+
+    finishColonization() {
+        Memory.Villages[this.villageName].colonization.inProgress = false;
+        Memory.Villages[this.villageName].colonization.civRoom = null;
+    }
+
     execute() {
         //this.printStatus(); 
         this.checkLevel();
@@ -481,6 +497,11 @@ class Village {
         let creepReport = CreepReporter(this.creeps, this.debug, this);
         this.spawnQueue = creepReport.process(this); // TODO: only process if I have available energy and my spawn isnt busy
         
+        //if (this.colonizationInProgress) {
+        //    let civReport =  CivReporter(this.civCreeps, this.debug, this);
+        //    this.spawnQueue = civReport.process(this);
+        //}
+
         this.spawnNames.forEach(function(s) {
             let spawnObj = Game.spawns[s];
             if (!spawnObj) {

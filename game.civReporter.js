@@ -1,31 +1,15 @@
-var CreepReport = require('game.creepReport');
-var roleBuilder = require('myBuilder'); // needs debugging
-var roleRemoteClaimer = require('myRemoteClaimer');
-var roleDropHarvester = require('myDropHarvester'); // needs debugging
-var roleHarvester = require('myHarvester'); // needs debugging
-var roleLinkMaintainer = require('myLinkMaintainer'); // needs debugging
-var roleRepairer = require('myRepairer'); // needs debugging
-var roleRemoteDropHarvester = require('myRemoteDropHarvester'); // needs debugging
-var roleRemoteRepairer = require('myRemoteRepairer')
-var roleRemoteBodyguard = require('myRemoteBodyguard')
-var roleRemoteTransporter = require('myRemoteTransporter') // needs debugging
-var roleScavenger = require('myScavenger'); // needs debugging
-var roleUpgrader = require('myUpgrader'); // needs debugging
-var roleMineralHarvester = require('myMineralHarvester'); // needs debugging
-var roleMineralTransporter = require('myMineralTransporter'); // needs debugging
-var roleLabManager = require('myLabManager'); // needs debugging
-var roleDefenseContractor = require('myDefenseContractor');
-var warDrainer = require('warDrainer');
-var warGuardianAngel = require('warGuardianAngel');
-var warSeigeBreaker = require('warSeigeBreaker');
-var warGuardKiller = require('warGuardKiller');
+var CivReport = require('game.civReport');
+var cattle = require('civCattle'); // needs debugging
+var colonizer = require('civColonizer'); // needs debugging
+var missionary = require('civMissionary'); // needs debugging
+var conquerer = require('conquerer'); // needs debugging
 
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
  */
-var CreepReporter = function(creeps, debug, village) {
-    let creepReport = new CreepReport(debug, village.level);
-    village.debugMessage.append(`\t [CreepReporter] is running for ${village.villageName}`);
+var CivReporter = function(civCreeps, debug, village) {
+    let civReport = new CivReport(debug, village.level);
+    village.debugMessage.append(`\t [CivReporter] is running for ${village.villageName}`);
     
     _.forEach(Object.keys(creeps), function(creepName) {
         if (!Game.creeps[creepName]) {
@@ -106,10 +90,7 @@ var CreepReporter = function(creeps, debug, village) {
                     break;
                 case 'warGuardianAngel': 
                     warGuardianAngel.run(creep,village);
-                    break;   
-                case 'warGuardKiller': 
-                    warGuardKiller.run(creep,village);
-                    break;                       
+                    break;    
             }
             //let end = Game.cpu.getUsed();
             //let total = end - start;
@@ -121,4 +102,4 @@ var CreepReporter = function(creeps, debug, village) {
     return creepReport;
 }
 
-module.exports = CreepReporter;
+module.exports = CivReporter;

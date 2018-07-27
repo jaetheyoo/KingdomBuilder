@@ -142,6 +142,9 @@ var roleLabManager = {
                     // put excess reaction into term
                     reactionLabs.forEach(l => {
                         let labObj = Game.getObjectById(l);
+                        if (!labObj) {
+                            return;
+                        }
                         if ((labObj.mineralType && labObj.mineralType != reactionMin) || labObj.mineralAmount >= 200) {
                             creep.memory.dumpMineralAmount = 200;
                             creep.memory.dumpMineralType = labObj.mineralType;
