@@ -613,6 +613,7 @@ class Village {
             case 'remoteRepairer':
             case 'remoteClaimer':
             case 'remoteBodyguard':
+            case 'remoteHarvester':
                 myRoom = this.creeps[creepName].myRemoteRoom;
                 if (myRoom) {
                     i = Memory.Villages[this.villageName].remoteRooms[myRoom][role]--;

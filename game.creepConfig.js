@@ -1,11 +1,12 @@
 class CreepConfig {
     // TODO: build up or down according to available resources and other factors
     constructor(roleName, villageLevel, maxEnergy, availableEnergy) {
+        //console.log(roleName +" | "+maxEnergy  +" | "+ villageLevel +" | "+ maxEnergy  +" | "+availableEnergy)
         this.roleName = roleName;
         this.villageLevel = villageLevel;
         this.body = this.getBody();
         this.cost = this.getMinimumCost();
-        if (this.cost > availableEnergy) {
+        if (this.cost > availableEnergy && this.villageLevel > 1) {
             this.villageLevel--;
             this.body = this.getBody();
             this.cost = this.getMinimumCost();
@@ -28,6 +29,7 @@ class CreepConfig {
 
         this.memoryConfig = this.getMemoryConfig();
         this.name = this.getName();
+        //console.log(roleName +" | "+maxEnergy  +" | "+ this.villageLevel +" | "+ maxEnergy  +" | "+availableEnergy)
     }
 
     getMemoryConfig() {
@@ -82,20 +84,20 @@ class CreepConfig {
     getBody() {
         switch(this.roleName) {
             case 'remoteHarvester':
-                switch (this.villageLevel) {
-                    case 1:
-                        return [WORK,CARRY,MOVE,MOVE];
-                    case 2:
-                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
-                    case 3:
-                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
-                    case 4:
-                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
-                    case 5:
-                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
-                }
-                return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
-            case 'harvester':
+            switch (this.villageLevel) {
+                case 1:
+                    return [WORK,CARRY,MOVE,MOVE];
+                case 2:
+                    return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                case 3:
+                    return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                case 4:
+                    return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                case 5:
+                    return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+            }
+            return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                        case 'harvester':
                 switch (this.villageLevel) {
                     case 1:
                         return [WORK,CARRY,MOVE,MOVE];
@@ -159,7 +161,7 @@ class CreepConfig {
                 return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'builder':
                 switch (this.villageLevel) {
-                    case 1:
+                    case 1: 
                         return [WORK,CARRY,MOVE,MOVE];
                     case 2:
                         return [WORK,WORK,CARRY,MOVE,MOVE,MOVE];

@@ -26,6 +26,7 @@ var roleHarvester = {
             // go to dropoff location
             // TODO: if CPU is an issue, access these in memory
             let target = village.getEmptySpawn();
+            //console.log(target)
             if (!target) {
                 target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                     filter: (structure) => {

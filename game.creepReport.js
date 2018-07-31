@@ -12,7 +12,7 @@ class CreepReport {
 
     configLevel1() {
         return {
-            "harvester": { "priority": 5, "count": 8, "scalingFactor": 0},
+            "harvester": { "priority": 8, "count": 5, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
             "upgrader": { "priority": 3, "count": 2, "scalingFactor": 0}
         };
