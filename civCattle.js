@@ -1,9 +1,6 @@
 var roleCattle = {
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (BASE_CREEP.run(creep, village) == -1){
-            return;
-        }
         if (creep.carry.energy==0) {
             if (!creep.memory.storage) {
                 if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= creep.carryCapacity) {

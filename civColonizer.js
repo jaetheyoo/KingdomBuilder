@@ -1,10 +1,6 @@
 var roleColonizer = {
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        if (BASE_CREEP.run(creep, village) == -1){
-            return;
-        }
-
         if (creep.spawning) {
             return;
         }
@@ -41,7 +37,7 @@ var roleColonizer = {
             }
         }
 
-        if (creep.carry.energy==0) {
+        if (creep.carry.energy == 0) {
             if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= creep.carryCapacity) {
                 creep.moveWithdraw(creep.room.storage)
                 return

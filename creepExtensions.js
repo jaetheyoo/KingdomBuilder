@@ -222,22 +222,22 @@ Creep.prototype.emote = function(role, message) {
     return this.say(CREEP_SPEECH.getRole(role)+(message ? message : ''))
 }
 
-Object.defineProperties(Creep, {
-    journal: {
-        get() {
-            if (!this.memory.journal) {
-                this.memory.journal = [];
-            }
-            return this.memory.journal;
-        }
-    },
-    task: {
-        get() {
-            return this.memory.task;
-        },
-        set(value) {
-            this.journal.push(this.memory.task);
-            this.memory.task = value;
-        }
-    }
-})
+// Object.defineProperties(Creep, {
+//     journal: {
+//         get() {
+//             if (!this.memory.journal) {
+//                 this.memory.journal = [];
+//             }
+//             return this.memory.journal;
+//         }
+//     },
+//     task: {
+//         get() {
+//             return this.memory.task;
+//         },
+//         set(value) {
+//             this.journal.push(this.memory.task);
+//             this.memory.task = value;
+//         }
+//     }
+// })

@@ -2,6 +2,7 @@ require('utils.extensions');
 var DebugMessage = require('game.debugMessage');
 var CreepReporter = require('game.creepReporter');
 var CreepConfig = require('game.creepConfig');
+var CivReporter = require('game.civReporter');
 
 // TODO: Do we really need to keep track of structures?
 class Village {
@@ -496,7 +497,11 @@ class Village {
     }
 
     get civCreeps() {
-        return this.colonization.civCreeps;
+        if (this.colonizationInProgress) {
+            return this.colonization.civCreeps;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -536,8 +541,12 @@ class Village {
         if (this.colonizationInProgress) {
            let civReport =  CivReporter(this.civCreeps, this.debug, this);
            //this.spawnQueue = civReport.process(this).concat(this.spawnQueue);
+           
+           console.log('CIVREPORT: ' + civReport.process(this).concat(this.spawnQueue));
         }
-
+        if (!this.spawnNames) {
+            return;
+        }
         this.spawnNames.forEach(function(s) {
             let spawnObj = Game.spawns[s];
             if (!spawnObj) {
@@ -545,7 +554,13 @@ class Village {
             }
             if (spawnObj.spawning) {
                 let spawningCreepName = spawnObj.spawning.name;
-                if (!this.creeps[spawningCreepName] && !this.civCreeps[spawningCreepName]) {
+                let civCreepsSpawning = false;
+                if (!this.civCreeps) {
+                    civCreepsSpawning = true;
+                } else {
+                    civCreepsSpawning = !this.civCreeps[spawningCreepName];
+                }
+                if (!this.creeps[spawningCreepName] && civCreepsSpawning) {
                     this.registerCreep(spawningCreepName);
                     this.spawnQueue.shift();
                 } else {
@@ -823,6 +838,14 @@ class Village {
                 }
                 break;
             case 'remoteClaimer':
+                for (let room in this.remoteRooms) {
+                    //if (this.remoteRooms[room][role] == 0) {
+                    if (role in this.remoteRooms[room] && (!Game.rooms[room] || !Game.rooms[room].controller.reservation || !Game.rooms[room].controller.reservation.ticksToEnd < 3000)) {
+                        neededRemoteRole++;
+                    }
+                    //}
+                }
+                break;
             case 'remoteRepairer':
                 for (let room in this.remoteRooms) {
                     //if (this.remoteRooms[room][role] == 0) {
@@ -1045,8 +1068,19 @@ class Village {
                     }
                 }
                 break;
-            case 'remoteRepairer':
             case 'remoteClaimer':
+                for(let room in this.remoteRooms) {
+                    console.log( '\t' + room + ' | ' + this.remoteRooms[room][roleName]);
+                    if (this.remoteRooms[room][roleName] < 1 && (!Game.rooms[room] || !Game.rooms[room].controller.reservation || !Game.rooms[room].controller.reservation.ticksToEnd < 3000)) {
+                        myRoom = room;
+                        this.remoteRooms[room][roleName]++;
+                        this.creeps[myCreepName].myRemoteRoom = myRoom;
+                        console.log('\tSET TO: ' + myRoom + ' | ' + this.remoteRooms[myRoom][roleName]);
+                        return;
+                    }
+                }
+                break;
+            case 'remoteRepairer':
                 for(let room in this.remoteRooms) {
                     console.log( '\t' + room + ' | ' + this.remoteRooms[room][roleName]);
                     if (this.remoteRooms[room][roleName] < 1) {

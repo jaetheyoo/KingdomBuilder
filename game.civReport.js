@@ -73,7 +73,7 @@ class CivReport {
             let adjustedCount = config[role].count;
             switch(role) {
                 case 'conquerer':
-                    if (that.village.colonization.civRoom) { // if I've claimed the controller
+                    if (village.colonization.civRoom) { // if I've claimed the controller
                         adjustedCount = 0;
                     }
                     break;

@@ -1,11 +1,6 @@
 var roleMissionary = {
     /** @param {Creep} creep **/
     run: function(creep, village) {
-        
-        if (BASE_CREEP.run(creep, village) == -1){
-            return;
-        }
-
         if (creep.spawning) {
             return;
         }
