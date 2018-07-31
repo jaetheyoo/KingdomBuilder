@@ -25,23 +25,37 @@ var roleCattle = {
         if (!creep.memory.herder) {
             let myHerder = creep.room.find(FIND_MY_CREEPS, {
                 filter: function(c) {
+                    //console.log(c.memory.role)
                     return c.memory.role == "colonizer" || c.memory.role == "missionary";
                 }
             }).sort((x,y) => {
+                //console.log(x);
+                //console.log(y);
+
                 if (!x.memory.cattle) {
                     x.memory.cattle = [];
-                }                
+                }     
+                if (!y) {
+                    return 1;
+                }
                 if (!y.memory.cattle) {
                     y.memory.cattle = [];
                 }
                 return x.memory.length - y.memory.length;
-            })
+            })[0];
             if (myHerder) {
-                myHerder.memory.cattle.push(creep.name);
+                //console.log('herder' + myHerder)
+                if (myHerder) {
+                    if (!myHerder.memory.cattle) {
+                        myHerder.memory.cattle = [];
+                    }
+                    myHerder.memory.cattle.push(creep.name);
+                    creep.memory.herder = myHerder.name;
+                }
             }
         }
         let herder = Game.creeps[creep.memory.herder];
-        if (!creep.pos.isNear(herder)) {
+        if (!creep.pos.isNearTo(herder)) {
             creep.moveTo(herder);
         }
     }

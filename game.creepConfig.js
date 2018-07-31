@@ -81,6 +81,20 @@ class CreepConfig {
 
     getBody() {
         switch(this.roleName) {
+            case 'remoteHarvester':
+                switch (this.villageLevel) {
+                    case 1:
+                        return [WORK,CARRY,MOVE,MOVE];
+                    case 2:
+                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                    case 3:
+                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                    case 4:
+                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                    case 5:
+                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                }
+                return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
             case 'harvester':
                 switch (this.villageLevel) {
                     case 1:
@@ -333,11 +347,11 @@ class CreepConfig {
             case 'cattle':
                 return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
             case 'colonizer':
-                return [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,];
+                return [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY];
             case 'conquerer':
                 return [CLAIM,MOVE,MOVE,MOVE];
             case 'missionary':
-                return [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,];
+                return [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY];
         }
     }
 }

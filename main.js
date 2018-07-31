@@ -11,7 +11,7 @@ ALLIES = require('war.allies');
 var Village = require('game.village');
 var DebugMessage = require('game.debugMessage');
 var _Game = require('./game');
-var debug = false; 
+var debug = false;
 
 var Villages = {};
 

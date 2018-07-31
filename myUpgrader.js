@@ -23,7 +23,7 @@ var roleUpgrader = {
             if (upgradeSpot) {
                 const upgradeSpotFlag = Game.flags[upgradeSpot];
                 if (upgradeSpotFlag && !creep.pos.inRangeTo(Game.flags[upgradeSpot].pos,2)) {
-                    creep.moveTo(Game.flags);
+                    creep.moveTo(upgradeSpotFlag, {visualizePathStyle: {stroke: '#ffffff'}});
                     return;
                 }
             }

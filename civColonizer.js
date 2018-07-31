@@ -37,18 +37,46 @@ var roleColonizer = {
             }
         }
 
+        if (creep.memory.harvesting) {
+            if (creep.carry.energy == creep.carryCapacity) {
+                creep.memory.harvesting = false;
+                return;
+            }
+            if (!creep.memory.sourceId) {
+                creep.memory.sourceId = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
+            }
+            const source = Game.getObjectById(creep.memory.sourceId);
+            if (source) {
+                let status = creep.harvest(source);
+                switch (status) {
+                    case ERR_NOT_IN_RANGE: 
+                        creep.moveTo(source);
+                        break;
+                    case ERR_NOT_ENOUGH_RESOURCES:
+                        delete creep.memory.sourceId;
+                        break;
+                }
+                return;
+            }
+
+        }
+
         if (creep.carry.energy == 0) {
             if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= creep.carryCapacity) {
-                creep.moveWithdraw(creep.room.storage)
-                return
+                creep.withdrawMove(creep.room.storage);
+                return;
             }
-            if (creep.memory.cattleCount > 0) {
+            if (creep.memory.cattle && creep.memory.cattle.length > 0) {
                 let cattle = creep.memory.cattle[creep.memory.cattle.length - 1];
                 if (cattle) {
                     let cattleObj = Game.creeps[cattle];
-                    this.harvestCattle(creep, cattleObj);
+                    if (this.harvestCattle(creep, cattleObj) != -1){
+                        return;
+                    }
                 }
             }
+            
+            creep.memory.harvesting = true;
         }
         
         let flag = Game.flags[village.colonization.civFlag];
@@ -59,7 +87,7 @@ var roleColonizer = {
         }
 
         if (!creep.memory.constructionSite) {
-            let constructionSite = creep.findNearesetByRange(FIND_MY_CONSTRUCTION_SITES); 
+            let constructionSite = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES); 
             if (constructionSite) {
                 creep.memory.constructionSite = constructionSite.id;
             } else {
@@ -82,11 +110,11 @@ var roleColonizer = {
     harvestCattle(creep, cattleObj) {
         if (!creep.pos.isNearTo(cattleObj.pos)) {
             cattleObj.moveTo(creep.pos);
-            return;
+            return -1;
         }
         let pos = cattleObj.pos;
         cattleObj.drop(RESOURCE_ENERGY);
-        let droppedEnergy = creep.room.lookForAt(LOOK_RESOURCES, pos);
+        let droppedEnergy = creep.room.lookForAt(LOOK_RESOURCES, pos)[0];
         let status = creep.pickup(droppedEnergy);
         switch(status) {
             case 0: 

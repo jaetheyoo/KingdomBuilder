@@ -12,7 +12,7 @@ class CivReport {
 
     config() {
         return {
-            "cattle": { "priority": 6, "count": 5},
+            "cattle": { "priority": 6, "count": 1},
             "colonizer": { "priority": 8, "count": 1},
             "missionary": { "priority": 7, "count": 1},
             "conquerer": { "priority": 9, "count": 1}
@@ -74,6 +74,13 @@ class CivReport {
             switch(role) {
                 case 'conquerer':
                     if (village.colonization.civRoom) { // if I've claimed the controller
+                        adjustedCount = 0;
+                    }
+                    break;
+                case 'missionary':
+                case 'colonizer':
+                case 'cattle':
+                    if (village.Villages[village.colonization.civVillageName].level > 2) {
                         adjustedCount = 0;
                     }
                     break;

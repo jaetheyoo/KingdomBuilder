@@ -18,6 +18,7 @@ class Village {
                 this.spawns.push(mySpawn);
             }
         }
+        //console.log(this.spawns)
         this.level = 1;
         this.remoteCreeps = {};
         this.flags = {};
@@ -55,6 +56,10 @@ class Village {
         this.registerLevel();
     }
 
+    get firstSpawnObj() {
+        return Game.spawns[Memory.Villages[this.villageName].spawns[0]];
+    }
+    
     get controller() {
         return Game.structures[this.controllerId];
     }
@@ -147,7 +152,7 @@ class Village {
         }
 
         let allOrders = Game.market.getAllOrders();
-        let prices = {'O':0.077,'H':[0.150],'K':[.131],'L':[.081],'Z':[.125],'U':[.145],'X':[.211],
+        let prices = {'O':0.077,'H':[0.150],'K':[.131],'L':[.081],'Z':[.130],'U':[.145],'X':[.211],
             "G":[0.486],
             "UH2O":[0.556],
             "UHO2":[0.466],
@@ -426,7 +431,11 @@ class Village {
     checkLevel() {
         switch(this.level) {
             case 1: // just starting out
-                if (this.controller.level >= 2 && Object.keys(this.creeps).length >= 9){
+                let containers = Game.rooms[this.roomName].find(FIND_STRUCTURES, {
+                    filter: { structureType: STRUCTURE_CONTAINER }
+                }).length;
+                console.log(containers)
+                if (this.controller.level >= 2 && Object.keys(this.creeps).length >= 9 && containers >= 2){
                     this.increaseSourceHarvesters();
                     this.levelUp();
                 }
@@ -540,9 +549,9 @@ class Village {
         
         if (this.colonizationInProgress) {
            let civReport =  CivReporter(this.civCreeps, this.debug, this);
-           //this.spawnQueue = civReport.process(this).concat(this.spawnQueue);
+            //this.spawnQueue = civReport.process(this).concat(this.spawnQueue);
            
-           console.log('CIVREPORT: ' + civReport.process(this).concat(this.spawnQueue));
+           //console.log('CIVREPORT: ' + this.spawnQueue);
         }
         if (!this.spawnNames) {
             return;
@@ -566,7 +575,7 @@ class Village {
                 } else {
                     new RoomVisual(this.roomName)
                         .rect(spawnObj.pos.x + 1.3,spawnObj.pos.y - .8, 4, 1.2, {fill:'#000',stroke:'#fff'})
-                        .text(`${CREEP_SPEECH.getRole(this.creeps[spawningCreepName].role)}: ${Math.floor(100*(spawnObj.spawning.needTime-spawnObj.spawning.remainingTime)/spawnObj.spawning.needTime)}%`, spawnObj.pos.x + 3, spawnObj.pos.y, {color: 'white', font: 0.7});    
+                        .text(`${CREEP_SPEECH.getRole(Game.creeps[spawningCreepName].role)}: ${Math.floor(100*(spawnObj.spawning.needTime-spawnObj.spawning.remainingTime)/spawnObj.spawning.needTime)}%`, spawnObj.pos.x + 3, spawnObj.pos.y, {color: 'white', font: 0.7});    
                 }
             } else {
                 this.spawnCreep(s); // turn this into a prototype    
@@ -666,9 +675,9 @@ class Village {
         //         energyInExtensions += structure.energy;
         //     }
         // })
-        
-        let energyInSpawn = this.spawns[0].energy;
-        //console.log(energyInSpawn + " energy in spawn")
+        //console.log("My first spawn: " + this.spawns[0]);
+        //console.log("My real first spawn: " + this.firstSpawnObj.energy);
+        let energyInSpawn = this.firstSpawnObj.energy;
         //console.log(energyInExtensions + " energy in extensions")
         return energyInExtensions + energyInSpawn;
     }
@@ -681,6 +690,16 @@ class Village {
         for (let source in this.sources) {
             if (this.sources[source].container) {
                 dropContainers.push(Game.getObjectById(this.sources[source].container));
+            } else {
+                if (source.room) {
+                    let myContainer = source.pos.findInRange(FIND_STRUCTURES, 1, {
+                        filter: {structureType: STRUCTURE_CONTAINER}
+                    })[0];
+                    if (myContainer) {
+                        this.sources[source].container = myContainer.id;
+                        droContainers.push(myContainer);
+                    }
+                }
             }
         }
         return dropContainers;
@@ -784,7 +803,13 @@ class Village {
      * Returns the spawn object with less than full capacity
      */
     getEmptySpawn() {
-        return this.spawns.find(x => x.energy < x.energyCapacity);
+        for (let mySpawnName in this.spawnNames) {
+            let mySpawn = Game.spawns[this.spawnNames[mySpawnName]];
+            if (mySpawn && mySpawn.energy < mySpawn.energyCapacity) {
+                return mySpawn;
+            }
+        }        
+        return null;
     }
 
     getHideoutFlag() {
@@ -840,7 +865,7 @@ class Village {
             case 'remoteClaimer':
                 for (let room in this.remoteRooms) {
                     //if (this.remoteRooms[room][role] == 0) {
-                    if (role in this.remoteRooms[room] && (!Game.rooms[room] || !Game.rooms[room].controller.reservation || !Game.rooms[room].controller.reservation.ticksToEnd < 3000)) {
+                    if (role in this.remoteRooms[room] && (!Game.rooms[room] || !Game.rooms[room].controller.reservation || Game.rooms[room].controller.reservation.ticksToEnd < 3000)) {
                         neededRemoteRole++;
                     }
                     //}
@@ -1071,7 +1096,7 @@ class Village {
             case 'remoteClaimer':
                 for(let room in this.remoteRooms) {
                     console.log( '\t' + room + ' | ' + this.remoteRooms[room][roleName]);
-                    if (this.remoteRooms[room][roleName] < 1 && (!Game.rooms[room] || !Game.rooms[room].controller.reservation || !Game.rooms[room].controller.reservation.ticksToEnd < 3000)) {
+                    if (this.remoteRooms[room][roleName] < 1 && (!Game.rooms[room] || !Game.rooms[room].controller.reservation || Game.rooms[room].controller.reservation.ticksToEnd < 3000)) {
                         myRoom = room;
                         this.remoteRooms[room][roleName]++;
                         this.creeps[myCreepName].myRemoteRoom = myRoom;
@@ -1092,6 +1117,7 @@ class Village {
                     }
                 }
                 break;
+            case 'remoteHarvester':
             case 'remoteTransporter':
             case 'remoteDropHarvester':
                 // for each remote room, find a source
@@ -1277,9 +1303,9 @@ class Village {
             //console.log(this.villageName + " > PREPARING TO SPAWN: " + this.spawnQueue)
             let creepToSpawn = this.spawnQueue.peek();
             let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning(), this.getAvailableEnergyForSpawning());
-            //console.log(creepBuild.body + " | " + creepBuild.name)
+            console.log(creepBuild.body + " | " + creepBuild.name)
             if (this.canSpawn(creepBuild)) {
-                //this.debugMessage.append(`\t\t ${this.villageName} ${creepBuild.body} | ${creepBuild.name}`);
+                this.debugMessage.append(`\t\t ${this.villageName} ${creepBuild.body} | ${creepBuild.name}`);
                 //console.log(spawn + ' in ' + this.spawnNames);
                 let myCreepName = creepBuild.name;
                 let spawnMessage = Game.spawns[spawn].spawnCreep(creepBuild.body, myCreepName, {memory: creepBuild.memoryConfig});

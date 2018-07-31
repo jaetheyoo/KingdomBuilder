@@ -19,6 +19,7 @@ var warDrainer = require('warDrainer');
 var warGuardianAngel = require('warGuardianAngel');
 var warSeigeBreaker = require('warSeigeBreaker');
 var warGuardKiller = require('warGuardKiller');
+var roleRemoteHarvester = require('myRemoteHarvester');
 
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold

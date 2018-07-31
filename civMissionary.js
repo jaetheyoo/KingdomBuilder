@@ -36,18 +36,42 @@ var roleMissionary = {
                 delete creep.memory.getBoosted;
             }
         }
+        if (creep.memory.harvesting) {
+            if (creep.carry.energy == creep.carryCapacity) {
+                creep.memory.harvesting = false;
+                return;
+            }
+            if (!creep.memory.sourceId) {
+                creep.memory.sourceId = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
+            }
+            const source = Game.getObjectById(creep.memory.sourceId);
+            if (source) {
+                let status = creep.harvest(source);
+                switch (status) {
+                    case ERR_NOT_IN_RANGE: 
+                        creep.moveTo(source);
+                        break;
+                    case ERR_NOT_ENOUGH_RESOURCES:
+                        delete creep.memory.sourceId;
+                        break;
+                }
+                return;
+            }
 
+        }
         if (creep.carry.energy==0) {
             if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] >= creep.carryCapacity) {
-                creep.moveWithdraw(creep.room.storage)
+                creep.withdrawMove(creep.room.storage)
                 return
             }
-            if (creep.memory.cattle.length > 0) {
+            if (creep.memory.cattle && creep.memory.cattle.length > 0) {
                 let cattle = creep.memory.cattle[creep.memory.cattle.length - 1];
                 if (cattle) {
                     let cattleObj = Game.creeps[cattle];
                     this.harvestCattle(creep, cattleObj);
                 }
+            } else {
+                creep.memory.harvesting = true;
             }
         }
         
@@ -57,7 +81,7 @@ var roleMissionary = {
             creep.moveTo(flag);
             return;
         }
-        if (creep.upgradeController(creep.room.controller) == ERR_OUT_OF_RANGE) {
+        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
             creep.moveTo(creep.room.controller);
         }
     },
@@ -68,7 +92,7 @@ var roleMissionary = {
         }
         let pos = cattleObj.pos;
         cattleObj.drop(RESOURCE_ENERGY);
-        let droppedEnergy = creep.room.lookForAt(LOOK_RESOURCES, pos);
+        let droppedEnergy = creep.room.lookForAt(LOOK_RESOURCES, pos)[0];
         let status = creep.pickup(droppedEnergy);
         switch(status) {
             case 0: 
