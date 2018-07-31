@@ -2,6 +2,18 @@ var speech = {
     getRole(role) { 
         let roleEmote = '';
         switch (role) {
+            case 'cattle':
+                roleEmote =  '🐮';
+                break;    
+            case 'colonizer':
+                roleEmote =  '👑';
+                break;    
+            case 'missionary':
+                roleEmote =  '⛩️';
+                break;             
+            case 'conquerer':
+                roleEmote =  '🏁';
+                break;                
             case 'defenseContractor':
                 roleEmote =  '🏯️';
                 break;

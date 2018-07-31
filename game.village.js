@@ -5,7 +5,8 @@ var CreepConfig = require('game.creepConfig');
 
 // TODO: Do we really need to keep track of structures?
 class Village {
-    constructor(villageName, roomName, spawnNames, controllerId, debug) {
+    constructor(Villages, villageName, roomName, spawnNames, controllerId, debug) {
+        this.Villages = Villages;
         this.villageName = villageName;
         this.roomName = roomName;
         this.spawnNames = spawnNames;
@@ -476,12 +477,47 @@ class Village {
         // check colonization status
         if (!Memory.Villages[this.villageName].colonization) {
             Memory.Villages[this.villageName].colonization = {
+                civVillageName: null,
                 inProgress: false,
+                civFlag: "colonize",
                 civRoom: null,
                 civCreeps: {},
             }
         }
         return Memory.Villages[this.villageName].colonization.inProgress;
+    }
+
+    get colonization() {
+        if (this.colonizationInProgress) {
+            return Memory.Villages[this.villageName].colonization;
+        } else {
+            return null;
+        }
+    }
+
+    get civCreeps() {
+        return this.colonization.civCreeps;
+    }
+
+    /**
+     * Phase 0: colonization started
+     * Phase 1: colonizing actively
+     * Phase 2: colony is now at lv 4, stop making creep
+     */
+    get civPhase() {
+        if (this.colonizationInProgress) {
+            let civVillage = Memory.Villages[this.colonization.civVillageName];
+            if (!civVillage) {
+                return 0;
+            } else {
+                if (civVillage.level < 4) {
+                    return 1;
+                }
+                return 2;
+            }
+        } else {
+            return null;
+        }
     }
 
     finishColonization() {
@@ -497,10 +533,10 @@ class Village {
         let creepReport = CreepReporter(this.creeps, this.debug, this);
         this.spawnQueue = creepReport.process(this); // TODO: only process if I have available energy and my spawn isnt busy
         
-        //if (this.colonizationInProgress) {
-        //    let civReport =  CivReporter(this.civCreeps, this.debug, this);
-        //    this.spawnQueue = civReport.process(this);
-        //}
+        if (this.colonizationInProgress) {
+           let civReport =  CivReporter(this.civCreeps, this.debug, this);
+           //this.spawnQueue = civReport.process(this).concat(this.spawnQueue);
+        }
 
         this.spawnNames.forEach(function(s) {
             let spawnObj = Game.spawns[s];
@@ -509,10 +545,10 @@ class Village {
             }
             if (spawnObj.spawning) {
                 let spawningCreepName = spawnObj.spawning.name;
-                if (!this.creeps[spawningCreepName]) {
+                if (!this.creeps[spawningCreepName] && !this.civCreeps[spawningCreepName]) {
                     this.registerCreep(spawningCreepName);
                     this.spawnQueue.shift();
-                }else {
+                } else {
                     new RoomVisual(this.roomName)
                         .rect(spawnObj.pos.x + 1.3,spawnObj.pos.y - .8, 4, 1.2, {fill:'#000',stroke:'#fff'})
                         .text(`${CREEP_SPEECH.getRole(this.creeps[spawningCreepName].role)}: ${Math.floor(100*(spawnObj.spawning.needTime-spawnObj.spawning.remainingTime)/spawnObj.spawning.needTime)}%`, spawnObj.pos.x + 3, spawnObj.pos.y, {color: 'white', font: 0.7});    
@@ -944,6 +980,16 @@ class Village {
         let mySource;
         let myRoom;
         let roleName = Game.creeps[myCreepName].memory.role;
+        switch (roleName) {
+            case 'colonizer':
+            case 'cattle':
+            case 'missionary':
+            case 'conquerer':
+                this.civCreeps[myCreepName] = {role: roleName};
+                // assign to civ room
+                return;
+        }
+
         this.creeps[myCreepName] = {role: roleName};
         switch (roleName) {
             case 'harvester':

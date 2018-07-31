@@ -31,6 +31,12 @@ class CreepConfig {
     }
 
     getMemoryConfig() {
+        switch(this.roleName) {
+            case 'colonizer':
+                return {role: this.roleName, getBoosted:['XZHO2','XLH2O']};
+            case 'missionary':
+                return {role: this.roleName, getBoosted:['XZHO2','XGH2O']};
+        }
         return {role: this.roleName};
     }
 
@@ -324,6 +330,14 @@ class CreepConfig {
                     case 5:
                         return [WORK,CARRY,MOVE,MOVE];
                 }
+            case 'cattle':
+                return [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
+            case 'colonizer':
+                return [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,];
+            case 'conquerer':
+                return [CLAIM,MOVE,MOVE,MOVE];
+            case 'missionary':
+                return [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,];
         }
     }
 }

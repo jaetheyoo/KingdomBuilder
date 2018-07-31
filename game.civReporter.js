@@ -1,96 +1,40 @@
 var CivReport = require('game.civReport');
-var cattle = require('civCattle'); // needs debugging
-var colonizer = require('civColonizer'); // needs debugging
-var missionary = require('civMissionary'); // needs debugging
-var conquerer = require('conquerer'); // needs debugging
+var roleCattle = require('civCattle'); // needs debugging
+var roleColonizer = require('civColonizer'); // needs debugging
+var roleMissionary = require('civMissionary'); // needs debugging
+var roleConquerer = require('civConquerer'); // needs debugging
 
 /**
  * FEATURE: Emergency mode: push basic configs to creepQueue if #creeps is below threshold
  */
 var CivReporter = function(civCreeps, debug, village) {
-    let civReport = new CivReport(debug, village.level);
+    let civReport = new CivReport(debug, village.civPhase);
     village.debugMessage.append(`\t [CivReporter] is running for ${village.villageName}`);
     
-    _.forEach(Object.keys(creeps), function(creepName) {
+    _.forEach(Object.keys(civCreeps), function(creepName) {
         if (!Game.creeps[creepName]) {
-            village.deregister(creepName);
-            delete Memory.Villages[village.villageName].creeps[creepName];
-            delete village.creeps[creepName];
+            delete Memory.Villages[village.villageName].colonization.civCreeps[creepName];
             return;
         }
         let creep = Game.creeps[creepName];
-        let creepRole = creepReport.report(creep, village);
-        village.debugMessage.append(`\t\t [CreepReporter] ${creepName} is running role ${creepRole}`);
+        let creepRole = civReport.report(creep, village);
+        village.debugMessage.append(`\t\t [civReporter] ${creepName} is running role ${creepRole}`);
 
         try {
             //let start = Game.cpu.getUsed();
             switch (creepRole) {
-                case 'warDrainer':
-                    warDrainer.run(creep,village);
+                case 'cattle':
+                    roleCattle.run(creep, village);
                     break;
-                case 'defenseContractor':
-                    roleDefenseContractor.run(creep,village);
+                case 'colonizer':
+                    roleColonizer.run(creep, village);
                     break;
-                case 'builder':
-                    roleBuilder.run(creep, village);
+                case 'missionary':
+                    roleMissionary.run(creep, village);
                     break;
-                case 'remoteClaimer':
-                    roleRemoteClaimer.run(creep, village);
-                    break;
-                case 'dropHarvester':
-                    roleDropHarvester.run(creep, village);
-                    break;
-                case 'harvester':
-                    roleHarvester.run(creep, village);
-                    break;
-                case 'linkMaintainer':
-                    roleLinkMaintainer.run(creep,village);
-                    break;
-                case 'meleeDefender':
-                    roleMeleeDefender.run(creep);
-                    break;
-                case 'remoteDropHarvester':
-                    roleRemoteDropHarvester.run(creep,village);
-                    break;
-                case 'remoteBodyguard':
-                    roleRemoteBodyguard.run(creep,village);
-                    break;                    
-                case 'remoteHarvester':
-                    roleRemoteHarvester.run(creep,village);
-                    break;
-                case 'remoteRepairer':
-                    roleRemoteRepairer.run(creep,village);
-                    break;
-                case 'remoteTransporter':
-                    roleRemoteTransporter.run(creep,village);
-                    break;
-                case 'repairer':
-                    roleRepairer.run(creep, village);
-                    break;
-                case 'scavenger':
-                    roleScavenger.run(creep, village);
-                    break;
-                case 'scout':
-                    roleScout.run(creep);
-                    break;
-                case 'upgrader':
-                    roleUpgrader.run(creep, village);
-                    break;
-                case 'mineralHarvester':
-                    roleMineralHarvester.run(creep, village);
-                    break;
-                case 'mineralTransporter':
-                    roleMineralTransporter.run(creep, village);
-                    break;
-                case 'labManager': 
-                    roleLabManager.run(creep,village);
-                    break;
-                case 'warSeigeBreaker': 
-                    warSeigeBreaker.run(creep,village);
-                    break;
-                case 'warGuardianAngel': 
-                    warGuardianAngel.run(creep,village);
-                    break;    
+                case 'conquerer':
+                    roleConquerer.run(creep, village);
+                    break;   
             }
             //let end = Game.cpu.getUsed();
             //let total = end - start;
@@ -99,7 +43,7 @@ var CivReporter = function(civCreeps, debug, village) {
             console.log(`ERROR: ${creep.name} [ROLE: ${creepRole}] ${err.message}`);
         }
     });
-    return creepReport;
+    return civReport;
 }
 
 module.exports = CivReporter;

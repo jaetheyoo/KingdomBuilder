@@ -150,13 +150,17 @@ var init = function initVillage(Villages, debug) {
     } 
     
     // if recompiled, create new Village objects reading from memory
-    var village1 = new Village("village1",Memory.Villages.village1.room,Memory.Villages.village1.spawns,Memory.Villages.village1.controller, debug);
-    var village2 = new Village("village2",Memory.Villages.village2.room,Memory.Villages.village2.spawns,Memory.Villages.village2.controller, debug);
-    var village3 = new Village("village3",Memory.Villages.village3.room,Memory.Villages.village3.spawns,Memory.Villages.village3.controller, debug);
-
-    Villages.village1 = village1;
-    Villages.village2 = village2;
-    Villages.village3 = village3;
+    // TODO: do this programatically
+    for (let village in Memory.Villages) {
+        let villageMemObj = Memory.Villages[village];
+        Villages[village] = new Village(Villages, village, villageMemObj.room, villageMemObj.spawns, villageMemObj.controller, debug);
+    }
+    // var village1 = new Village("village1",Memory.Villages.village1.room,Memory.Villages.village1.spawns,Memory.Villages.village1.controller, debug);
+    // var village2 = new Village("village2",Memory.Villages.village2.room,Memory.Villages.village2.spawns,Memory.Villages.village2.controller, debug);
+    // var village3 = new Village("village3",Memory.Villages.village3.room,Memory.Villages.village3.spawns,Memory.Villages.village3.controller, debug);
+    // Villages.village1 = village1;
+    // Villages.village2 = village2;
+    // Villages.village3 = village3;
 }
 
 var upkeep = function upkeep(Villages) {
