@@ -43,7 +43,7 @@ var roleUpgrader = {
         if(creep.carry.energy == 0) {
             creep.memory.upgrading = false;
         }
-        if(creep.carry.energy == creep.carryCapacity) {
+        if(creep.carry.energy >= creep.carryCapacity*.95) {
             creep.memory.upgrading = true;
         }
 
@@ -63,7 +63,10 @@ var roleUpgrader = {
             }
         } else {
             creep.emote('upgrader', CREEP_SPEECH.REFILL)
-
+            if (village.upgradeLinkHasEnergy(creep.carryCapacity)) {
+                creep.withdrawMove(village.upgradeLinkObj);
+                return;
+            }
             // TODO: create a generic find target method that finds structures by type
             if (village.storage && village.storage.store[RESOURCE_ENERGY] >= creep.carryCapacity) {
                 creep.withdrawMove(village.storage, RESOURCE_ENERGY);

@@ -395,6 +395,30 @@ class Village {
         let fromLinks = links.fromLinks.length;
         return toLinks && fromLinks;
     }
+    
+    get upgradeLinkId() {
+        let links = this.structures.links;
+        if (!links) {
+            return null;
+        }
+        return links.upgradeLink;
+    }
+    
+    get upgradeLinkObj() {
+        let upgradeLinkId = this.upgradeLinkId;
+        if (!upgradeLinkId) {
+            return null;
+        }
+        return Game.getObjectById(upgradeLinkId);
+    }
+    
+    upgradeLinkHasEnergy(carryCapacity) {
+        let upgradeLinkObj = this.upgradeLinkObj;
+        if (!upgradeLinkObj) {
+            return false;
+        }
+        return upgradeLinkObj.energy >=carryCapacity;
+    }
 
     getToLinks() {
         let links = this.structures.links;
@@ -448,7 +472,7 @@ class Village {
                 }
                 break;
             case 3: // start remote mining // TODO: Not yet implemented in creep Report
-                if (this.controller.level >= 4 && Object.keys(this.creeps).length >= 13) {
+                if (this.controller.level >= 4 && Object.keys(this.creeps).length >= 13 && this.room.storage) {
                     this.makeConstructionSites();
                     this.levelUp();
                 }
@@ -986,8 +1010,17 @@ class Village {
         this.structures.links.fromLinks.forEach( fromLink => {
             let fromLinkObj = Game.structures[fromLink];
             //console.log(fromLinkObj)
-            let toLink = this.structures.links.toLinks.find(x => Game.structures[x].energy <= 400); // TODO: find a way to not hardcode this number
-            let toLinkObj = Game.structures[toLink];
+            let toLinkObj;
+            let upgradeLinkId = this.upgradeLinkId;
+            if (fromLinkObj && upgradeLinkId) {
+                let upgradeLinkObj = Game.getObjectById(upgradeLinkId);
+                if (upgradeLinkObj.energy < 600) {
+                    toLinkObj = upgradeLinkObj;
+                } else {
+                    let toLink = this.structures.links.toLinks.find(x => Game.structures[x].energy <= 400); // TODO: find a way to not hardcode this number
+                    toLinkObj = Game.structures[toLink];
+                }
+            }
             if (fromLinkObj && toLinkObj) {
                 let energyToSend = toLinkObj.energyCapacity - toLinkObj.energy;
                 if (fromLinkObj.energy < energyToSend) {
