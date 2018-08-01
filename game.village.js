@@ -152,7 +152,7 @@ class Village {
         }
 
         let allOrders = Game.market.getAllOrders();
-        let prices = {'O':0.077,'H':[0.150],'K':[.131],'L':[.081],'Z':[.130],'U':[.145],'X':[.211],
+        let prices = {'O':0.072,'H':[0.150],'K':[.131],'L':[.07],'Z':[.130],'U':[.142],'X':[.211],
             "G":[0.486],
             "UH2O":[0.556],
             "UHO2":[0.466],
@@ -330,13 +330,14 @@ class Village {
     makeConstructionSites() {
         let structureType = STRUCTURE_ROAD;
         let flags = this.room.find(FIND_FLAGS);
-        let regexes = [{regex: /v3road/, structureType: STRUCTURE_ROAD}, {regex: /v3extension/, structureType: STRUCTURE_EXTENSION},{regex: /v3terminal/, structureType: STRUCTURE_TERMINAL}]
+        let regexes = [{regex: /buildRoad/, structureType: STRUCTURE_ROAD}, {regex: /buildExtension/, structureType: STRUCTURE_EXTENSION},{regex: /buildTerminal/, structureType: STRUCTURE_TERMINAL},{regex: /buildTower/, structureType: STRUCTURE_TOWER}]
         regexes.forEach( r => {
             let regex = r.regex;
-            let type = r.structureType;
+            let structureType = r.structureType;
             flags.forEach(f => {
                 if (regex.test(f.name)) {
-                    if (this.room.createConstructionSite(f.pos, f.structureType)==0) {
+                    console.log('MAKING ' +structureType + ' CONSTRUCTION SITE AT ' + f.pos)
+                    if (this.room.createConstructionSite(f.pos, structureType)==0) {
                         f.remove();
                     };
                 }
@@ -442,11 +443,13 @@ class Village {
                 break;
             case 2: // focus on drop mining into containers with transportation
                 if (this.controller.level >= 3 && Object.keys(this.creeps).length >= 11){
+                    this.makeConstructionSites();
                     this.levelUp(); // TODO: add condition to check for containers
                 }
                 break;
             case 3: // start remote mining // TODO: Not yet implemented in creep Report
                 if (this.controller.level >= 4 && Object.keys(this.creeps).length >= 13) {
+                    this.makeConstructionSites();
                     this.levelUp();
                 }
                 break;
@@ -541,6 +544,7 @@ class Village {
 
     execute() {
         //this.printStatus(); 
+
         this.checkLevel();
         this.scanStructures();
         this.operateStructures();
@@ -575,7 +579,7 @@ class Village {
                 } else {
                     new RoomVisual(this.roomName)
                         .rect(spawnObj.pos.x + 1.3,spawnObj.pos.y - .8, 4, 1.2, {fill:'#000',stroke:'#fff'})
-                        .text(`${CREEP_SPEECH.getRole(Game.creeps[spawningCreepName].role)}: ${Math.floor(100*(spawnObj.spawning.needTime-spawnObj.spawning.remainingTime)/spawnObj.spawning.needTime)}%`, spawnObj.pos.x + 3, spawnObj.pos.y, {color: 'white', font: 0.7});    
+                        .text(`${CREEP_SPEECH.getRole(Game.creeps[spawningCreepName].memory.role)}: ${Math.floor(100*(spawnObj.spawning.needTime-spawnObj.spawning.remainingTime)/spawnObj.spawning.needTime)}%`, spawnObj.pos.x + 3, spawnObj.pos.y, {color: 'white', font: 0.7});    
                 }
             } else {
                 this.spawnCreep(s); // turn this into a prototype    
@@ -1292,6 +1296,10 @@ class Village {
         }
     }
 
+    get emergencyMode(){
+        return Object.keys(this.creeps).length < 6;
+    }
+
     /**
      * 
      * @param {string} spawn 
@@ -1303,8 +1311,8 @@ class Village {
         if (this.spawnQueue.length > 0) {
             //console.log(this.villageName + " > PREPARING TO SPAWN: " + this.spawnQueue)
             let creepToSpawn = this.spawnQueue.peek();
-            let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning(), this.getAvailableEnergyForSpawning());
-            console.log(creepBuild.body + " | " + creepBuild.name)
+            let creepBuild = new CreepConfig(creepToSpawn, this.level, this.getMaximumEnergyForSpawning(), this.getAvailableEnergyForSpawning(), this.emergencyMode);
+            //console.log(creepBuild.body + " | " + creepBuild.name)
             if (this.canSpawn(creepBuild)) {
                 this.debugMessage.append(`\t\t ${this.villageName} ${creepBuild.body} | ${creepBuild.name}`);
                 //console.log(spawn + ' in ' + this.spawnNames);

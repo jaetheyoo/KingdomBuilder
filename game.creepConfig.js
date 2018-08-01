@@ -1,17 +1,16 @@
 class CreepConfig {
     // TODO: build up or down according to available resources and other factors
-    constructor(roleName, villageLevel, maxEnergy, availableEnergy) {
+    constructor(roleName, villageLevel, maxEnergy, availableEnergy, emergencyMode) {
         //console.log(roleName +" | "+maxEnergy  +" | "+ villageLevel +" | "+ maxEnergy  +" | "+availableEnergy)
         this.roleName = roleName;
         this.villageLevel = villageLevel;
         this.body = this.getBody();
         this.cost = this.getMinimumCost();
-        if (this.cost > availableEnergy && this.villageLevel > 1) {
+        if (emergencyMode && this.cost > availableEnergy && this.villageLevel > 1) {
             this.villageLevel--;
             this.body = this.getBody();
             this.cost = this.getMinimumCost();
-            
-            while (roleName == 'scavenger' && this.cost > availableEnergy && this.villageLevel > 1) { // do this only in the case of crashes
+            while (this.cost > availableEnergy && this.villageLevel > 1) { // do this only in the case of crashes
                 this.villageLevel--;
                 this.body = this.getBody();
                 this.cost = this.getMinimumCost();
@@ -29,7 +28,7 @@ class CreepConfig {
 
         this.memoryConfig = this.getMemoryConfig();
         this.name = this.getName();
-        //console.log(roleName +" | "+maxEnergy  +" | "+ this.villageLevel +" | "+ maxEnergy  +" | "+availableEnergy)
+        //console.log(roleName +" | "+this.getMinimumCost()  +" | "+ this.villageLevel +" | "+ maxEnergy  +" | "+availableEnergy)
     }
 
     getMemoryConfig() {
@@ -38,6 +37,8 @@ class CreepConfig {
                 return {role: this.roleName, getBoosted:['XZHO2','XLH2O']};
             case 'missionary':
                 return {role: this.roleName, getBoosted:['XZHO2','XGH2O']};
+            case 'upgrader':
+                return {role: this.roleName, getBoosted:['XGH2O']};                
         }
         return {role: this.roleName};
     }

@@ -1,8 +1,5 @@
-
-
-
 var roleScavenger = {
-    run: function(creep, village) {
+    run: function(creep, village, roleHarvester) {
         if (BASE_CREEP.run(creep, village) == -1){
             return;
         }

@@ -6,8 +6,12 @@ var roleHarvester = {
             return;
         }
         // walk miner
-        const mySource = village.getSource(creep.name);
-        
+        let mySource = village.getSource(creep.name);
+        if (!mySource) {
+            console.log(creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id)
+            village.creeps[creep.name].mySource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE).id;
+            mySource = village.getSource(creep.name);
+        }
         //console.log(`${creep.name} -- mySource: ${mySource}`)
         if (creep.carry.energy == 0) {
             creep.memory.harvesting = true;

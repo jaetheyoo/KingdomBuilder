@@ -1,6 +1,6 @@
 /** EXTENSIONS */
 require('creepExtensions');
-
+ 
 /** GLOBALS */
 BASE_CREEP = require('role.base');
 CREEP_SPEECH = require('utils.speech');
