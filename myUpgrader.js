@@ -58,6 +58,10 @@ var roleUpgrader = {
                     return;
                 }
             }
+            if (village.upgradeLinkObj && creep.pos.inRangeTo(village.controller,3) && creep.pos.inRangeTo(village.upgradeLinkObj,1)) {
+                return;
+            }
+            
             if (!creep.pos.inRangeTo(village.controller,1)) {
                 creep.moveTo(village.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             }

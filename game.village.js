@@ -1016,11 +1016,13 @@ class Village {
                 let upgradeLinkObj = Game.getObjectById(upgradeLinkId);
                 if (upgradeLinkObj.energy < 600) {
                     toLinkObj = upgradeLinkObj;
-                } else {
-                    let toLink = this.structures.links.toLinks.find(x => Game.structures[x].energy <= 400); // TODO: find a way to not hardcode this number
-                    toLinkObj = Game.structures[toLink];
                 }
             }
+            if (!toLinkObj) {
+                let toLink = this.structures.links.toLinks.find(x => Game.structures[x].energy <= 400); // TODO: find a way to not hardcode this number
+                toLinkObj = Game.structures[toLink];                
+            }
+
             if (fromLinkObj && toLinkObj) {
                 let energyToSend = toLinkObj.energyCapacity - toLinkObj.energy;
                 if (fromLinkObj.energy < energyToSend) {

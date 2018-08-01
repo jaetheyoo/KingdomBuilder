@@ -29,14 +29,15 @@ var roleHarvester = {
             creep.emote('harvester', CREEP_SPEECH.DROPOFF)
             // go to dropoff location
             // TODO: if CPU is an issue, access these in memory
-            let target = village.getEmptySpawn();
+            let target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity);
+                }
+            });
+            
             //console.log(target)
             if (!target) {
-                target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity);
-                    }
-                });
+                target = village.getEmptySpawn();
             }
 
             if(target) {
