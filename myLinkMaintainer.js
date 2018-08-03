@@ -15,6 +15,31 @@ var roleLinkMaintainer = {
         const minimumTerminalAmount = 50000;
         const maximumTerminalAmount = minimumTerminalAmount + creep.carryCapacity;
         
+        if (village.hasLinks()) { // TODO: add stuff to do when TOLINKS are empty
+            let toLinkIds = village.getToLinks();
+            for(let i in toLinkIds) {
+                let toLink = Game.getObjectById(toLinkIds[i]);
+                if (toLink && toLink.energy > 0) {
+                    if (_.sum(creep.carry) == 0) {
+                        creep.emote('linkMaintainer', CREEP_SPEECH.WITHDRAW);
+                        creep.withdrawMove(toLink);
+                        return;
+                    } else {
+                        creep.emote('linkMaintainer', CREEP_SPEECH.TRANSPORT);
+                        let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                            filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
+                        });
+                        if (!transferTarget) {
+                            transferTarget = storage;
+                        }
+                        creep.transferMove(transferTarget);
+                        return;
+                    }
+                }
+            }
+        }
+        
+        
         let mineralsToMove = creep.memory.movingMinerals;
         if (mineralsToMove) {
             //console.log(creep.name + '|' + mineralsToMove)
@@ -65,29 +90,6 @@ var roleLinkMaintainer = {
          * 
          */
 
-        if (village.hasLinks()) { // TODO: add stuff to do when TOLINKS are empty
-            let toLinkIds = village.getToLinks();
-            for(let i in toLinkIds) {
-                let toLink = Game.getObjectById(toLinkIds[i]);
-                if (toLink && toLink.energy > 0) {
-                    if (_.sum(creep.carry) == 0) {
-                        creep.emote('linkMaintainer', CREEP_SPEECH.WITHDRAW);
-                        creep.withdrawMove(toLink);
-                        return;
-                    } else {
-                        creep.emote('linkMaintainer', CREEP_SPEECH.TRANSPORT);
-                        let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                            filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity
-                        });
-                        if (!transferTarget) {
-                            transferTarget = storage;
-                        }
-                        creep.transferMove(transferTarget);
-                        return;
-                    }
-                }
-            }
-        }
         
         for (let min in storage.store) {
             if (!terminal.store[min] || terminal.store[min] < minimumTerminalAmount) {

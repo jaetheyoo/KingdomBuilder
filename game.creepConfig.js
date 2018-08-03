@@ -6,7 +6,7 @@ class CreepConfig {
         this.villageLevel = villageLevel;
         this.body = this.getBody();
         this.cost = this.getMinimumCost();
-        if (emergencyMode && this.cost > availableEnergy && this.villageLevel > 1) {
+        if ((emergencyMode && this.cost > availableEnergy && this.villageLevel > 1) || this.cost > maxEnergy) {
             this.villageLevel--;
             this.body = this.getBody();
             this.cost = this.getMinimumCost();
@@ -96,9 +96,11 @@ class CreepConfig {
                     return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
                 case 5:
                     return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
+                case 6:
+                    return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
             }
             return [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
-                        case 'harvester':
+            case 'harvester':
                 switch (this.villageLevel) {
                     case 1:
                         return [WORK,CARRY,MOVE,MOVE];
@@ -109,6 +111,8 @@ class CreepConfig {
                     case 4:
                         return [WORK,WORK,WORK,CARRY,MOVE,MOVE];
                     case 5:
+                        return [WORK,WORK,WORK,CARRY,MOVE,MOVE];
+                    case 6:
                         return [WORK,WORK,WORK,CARRY,MOVE,MOVE];
                 }
                 return [WORK,WORK,WORK,CARRY,MOVE,MOVE];
@@ -159,7 +163,7 @@ class CreepConfig {
                     case 6:
                         return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
                 }
-                return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
+                return [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
             case 'builder':
                 switch (this.villageLevel) {
                     case 1: 
@@ -309,14 +313,16 @@ class CreepConfig {
             case 'remoteClaimer':
                 switch (this.villageLevel) {
                     case 1:
-                        return [CLAIM,CLAIM,MOVE];
+                        return [CLAIM,MOVE];
                     case 2:
-                        return [CLAIM,CLAIM,MOVE];
+                        return [CLAIM,MOVE];
                     case 3:
                         return [CLAIM,CLAIM,MOVE];
                     case 4:
                         return [CLAIM,CLAIM,MOVE,MOVE];
                     case 5:
+                        return [CLAIM,CLAIM,MOVE,MOVE,MOVE];
+                    case 6:
                         return [CLAIM,CLAIM,MOVE,MOVE,MOVE];
                 }
                 return [CLAIM,CLAIM,MOVE,MOVE,MOVE];

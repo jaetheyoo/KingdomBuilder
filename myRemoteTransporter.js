@@ -51,7 +51,7 @@ var roleRemoteTransfer = {
             if (creep.memory.dropoffLink) {
                 let linkObj = Game.getObjectById(creep.memory.dropoffLink);
                 if (linkObj) {
-                    creep.transferMove(linkObj, null, {ignoreCreeps: true});
+                    creep.transferMove(linkObj, null);
                     return;
                 } else {
                     delete creep.memory.dropoffLink;
@@ -71,7 +71,7 @@ var roleRemoteTransfer = {
                     return;
                 }
             }
-            creep.transferMove(village.room.storage, null, {ignoreCreeps: true});
+            creep.transferMove(village.room.storage, null);
         }
     }
 };

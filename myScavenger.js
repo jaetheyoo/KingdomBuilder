@@ -1,5 +1,5 @@
 var roleScavenger = {
-    run: function(creep, village, roleHarvester) {
+    run: function(creep, village) {
         if (BASE_CREEP.run(creep, village) == -1){
             return;
         }
@@ -34,7 +34,7 @@ var roleScavenger = {
             if (miningContainers.length > 0) {
                 creep.withdrawMove(miningContainers[0]);
             } else {
-                if (village.room.storage && village.getAvailableEnergyForSpawning() < village.getMaximumEnergyForSpawning()/2) {
+                if (village.room.storage && village.room.storage.store.energy > 0 && village.getAvailableEnergyForSpawning() < village.getMaximumEnergyForSpawning()/2) {
                     creep.withdrawMove(village.room.storage);    
                 }
                 //console.log(creep.name + ' | No containers found' )
@@ -51,12 +51,11 @@ var roleScavenger = {
                     //throw new Error(`ERROR: ${creep.name} failed to find dropoff for minerals while Scavenging`);
                 }
             }
-            let transferTarget = Game.spawns[village.spawnNames.find(x=>Game.spawns[x].energy < Game.spawns[x].energyCapacity)];
-            if (!transferTarget) {
-                transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+            let transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                     filter: structure => structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity
                 });
-                
+            if (!transferTarget) {
+                transferTarget = Game.spawns[village.spawnNames.find(x=>Game.spawns[x].energy < Game.spawns[x].energyCapacity)];
                 if (!transferTarget) {
                     transferTarget = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                         filter: structure => structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity

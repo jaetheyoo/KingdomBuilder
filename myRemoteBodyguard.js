@@ -48,7 +48,11 @@ var roleRemoteBodyguard = {
             creep.emote('remoteBodyguard',CREEP_SPEECH.REMOTEMOVING);
             creep.moveTo(flag);
         }
-        
+        const targets = creep.pos.findInRange(FIND_HOSTILE_CREEPS, 3);
+        if(targets.length > 1) {
+            creep.rangedMassAttack();
+            return;
+        }
         let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
             filter: 
                 x => !ALLIES.usernames.includes(x.owner.username)

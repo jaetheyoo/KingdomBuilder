@@ -40,14 +40,14 @@ class CreepReport {
 
     configLevel4() {
         return {
-            "dropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
+            "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
             "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
             "remoteRepairer": { "priority": 4.5, "count": 0, "scalingFactor": 0},
             "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
             "remoteBodyguard": { "priority": 10, "count": 0, "scalingFactor": 0},
             //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
             "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
-            "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
+            "scavenger": { "priority": 6, "count": 2, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 2, "scalingFactor": 0},
             "upgrader": { "priority": 1, "count": 2, "scalingFactor": 5000, "max":5}
         };
@@ -85,7 +85,7 @@ class CreepReport {
             "scavenger": { "priority": 6, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 6, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 4, "count": 1, "scalingFactor": 0},
-            "upgrader": { "priority": 0.5, "count": 0, "scalingFactor": 25000, "max":5},
+            "upgrader": { "priority": 0.5, "count": 1, "scalingFactor": 1, "max":1},
             "defenseContractor": { "priority": 1, "count": 1},
             "labManager":  { "priority": 1, "count": 1}
         };

@@ -152,7 +152,7 @@ class Village {
         }
 
         let allOrders = Game.market.getAllOrders();
-        let prices = {'O':0.072,'H':[0.150],'K':[.131],'L':[.07],'Z':[.130],'U':[.142],'X':[.211],
+        let prices = {'O':[0.070],'H':[0.145],'K':[.128],'L':[.062],'Z':[.127],'U':[.140],'X':[.211],
             "G":[0.486],
             "UH2O":[0.556],
             "UHO2":[0.466],
@@ -230,7 +230,7 @@ class Village {
                         continue;
                     }
                     console.log(`Currently budgeted: ${Memory.market.budget} out of 20000`);
-                    console.log(`\t\tPurchasing ${amount} ${res} at ${cheapestOption.id} using terminal in room ${this.roomName}`);
+                    console.log(`\t\tPurchasing ${amount} ${res} at ${cheapestOption.price} using terminal in room ${this.roomName}`);
                     if (isPurchasing) {
                         let status = Game.market.deal(cheapestOption.id,amount,this.roomName);
                         if (status == 0) {
@@ -283,7 +283,7 @@ class Village {
         }
 
         // no deals found, make margins a little smaller
-        if (Memory.market.markdown > 0.15) {
+        if (Memory.market.markdown > 0.18) {
             Memory.market.markdown -= 0.01;
         }
 
@@ -299,7 +299,7 @@ class Village {
      * @param {string} room 
      */
     calculateMarketPricePerUnit(order) {
-        let energyToCredConv = .03;
+        let energyToCredConv = .05;
         // gross cost in credits to complete an order
         let tCost = Game.market.calcTransactionCost(order.remainingAmount, order.roomName, this.roomName) * energyToCredConv;
         // gross cost to purchase all units
@@ -485,6 +485,12 @@ class Village {
                 break;
             case 5: // focus on defense and helping economy of smaller colonies 
                 if (this.controller.level >= 6 && Object.keys(this.creeps).length >= 17) {
+                    this.makeConstructionSites();
+                    this.levelUp();
+                }
+                break;
+            case 6: 
+                if (this.controller.level == 8) {
                     this.makeConstructionSites();
                     this.levelUp();
                 }
@@ -1014,7 +1020,7 @@ class Village {
             let upgradeLinkId = this.upgradeLinkId;
             if (fromLinkObj && upgradeLinkId) {
                 let upgradeLinkObj = Game.getObjectById(upgradeLinkId);
-                if (upgradeLinkObj.energy < 600) {
+                if (upgradeLinkObj.energy <= 400) {
                     toLinkObj = upgradeLinkObj;
                 }
             }

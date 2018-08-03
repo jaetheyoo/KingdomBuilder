@@ -36,6 +36,9 @@ var roleLabManager = {
         if (village.villageName == 'village3') {
             creep.moveTo(Game.flags['v3LabManager']);
         }
+        if (village.villageName == 'village1') {
+            creep.moveTo(Game.flags['v1LabManager']);
+        }
         
         if (creep.memory.fillMineralAmount > 0) {
             creep.emote('labManager', CREEP_SPEECH.WITHDRAW);

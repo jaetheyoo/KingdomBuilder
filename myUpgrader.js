@@ -21,6 +21,8 @@ var roleUpgrader = {
                         // Failed cause not enough minerals or energy
                         // TODO: create request to fill it up
                         //delete creep.memory.getBoosted;
+                        creep.memory.getBoosted.shift();
+                        delete creep.memory.lab
                         return;
                 }
             } else {
