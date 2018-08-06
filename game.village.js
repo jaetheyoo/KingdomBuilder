@@ -283,7 +283,7 @@ class Village {
         }
 
         // no deals found, make margins a little smaller
-        if (Memory.market.markdown > 0.18) {
+        if (Memory.market.markdown > 0.15) {
             Memory.market.markdown -= 0.01;
         }
 

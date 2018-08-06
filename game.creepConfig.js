@@ -6,7 +6,7 @@ class CreepConfig {
         this.villageLevel = villageLevel;
         this.body = this.getBody();
         this.cost = this.getMinimumCost();
-        if ((emergencyMode && this.cost > availableEnergy && this.villageLevel > 1) || this.cost > maxEnergy) {
+        if (((emergencyMode || this.roleName == 'scavenger') && this.cost > availableEnergy && this.villageLevel > 1) || this.cost > maxEnergy) {
             this.villageLevel--;
             this.body = this.getBody();
             this.cost = this.getMinimumCost();
@@ -333,7 +333,7 @@ class CreepConfig {
                     case 2:
                         return [MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,MOVE];
                     case 3:
-                        return [MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,MOVE];
+                        return [MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,MOVE];
                     case 4:
                         return [TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,MOVE];
                     case 5:

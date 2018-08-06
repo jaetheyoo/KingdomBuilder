@@ -46,7 +46,7 @@ var roleDefenseContractor = {
             });
             
             if (!target) {
-                creep.memory.thresold += creep.memory.thresold;
+                creep.memory.thresold += 1000 + creep.memory.thresold;
                 target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: function(object){
                         return 

@@ -151,7 +151,7 @@ var roleLabManager = {
                         if (!labObj) {
                             return;
                         }
-                        if ((labObj.mineralType && labObj.mineralType != reactionMin) || labObj.mineralAmount >= 200) {
+                        if ((labObj.mineralType && labObj.mineralType != reactionMin) || labObj.mineralAmount >= 400) {
                             creep.memory.dumpMineralAmount = 200;
                             creep.memory.dumpMineralType = labObj.mineralType;
                             creep.memory.dumpMineralTarget = l;

@@ -65,13 +65,31 @@ class CreepReport {
             "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 2, "count": 1, "scalingFactor": 0},
-            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 10000, "max":5},
+            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 10000, "max":10},
             "defenseContractor": { "priority": 1, "count": 1},
             "labManager":  { "priority": 1, "count": 1}
         };
     }
     
     configLevel6() {
+        return {
+            "dropHarvester": { "priority": 4, "count": 2, "scalingFactor": 0},
+            "remoteDropHarvester": { "priority": 4, "count": 0, "scalingFactor": 0},
+            "remoteRepairer": { "priority": 4.5, "count": 0, "scalingFactor": 0},
+            "remoteTransporter": { "priority": 4, "count": 0, "scalingFactor": 0},
+            //"scout": { "priority": 5, "count": 5, "scalingFactor": 0, "delay": 100},
+            "remoteBodyguard": { "priority": 10, "count": 0, "scalingFactor": 0},
+            "remoteClaimer": { "priority": 1, "count": 0, "scalingFactor": 0},
+            "scavenger": { "priority": 5, "count": 3, "scalingFactor": 0},
+            "linkMaintainer": { "priority": 5, "count": 1, "scalingFactor": 0},
+            "builder": { "priority": 2, "count": 1, "scalingFactor": 0},
+            "upgrader": { "priority": 1, "count": 2, "scalingFactor": 10000, "max":5},
+            "defenseContractor": { "priority": 1, "count": 1},
+            "labManager":  { "priority": 1, "count": 1}
+        };
+    }
+    
+    configLevel7() {
         return {
             "dropHarvester": { "priority": 5, "count": 2, "scalingFactor": 0},
             "remoteDropHarvester": { "priority": 3.5, "count": 0, "scalingFactor": 0},
@@ -85,7 +103,7 @@ class CreepReport {
             "scavenger": { "priority": 6, "count": 3, "scalingFactor": 0},
             "linkMaintainer": { "priority": 6, "count": 1, "scalingFactor": 0},
             "builder": { "priority": 4, "count": 1, "scalingFactor": 0},
-            "upgrader": { "priority": 0.5, "count": 1, "scalingFactor": 1, "max":1},
+            "upgrader": { "priority": 0.5, "count": 1, "scalingFactor": 9999999999, "max":1},
             "defenseContractor": { "priority": 1, "count": 1},
             "labManager":  { "priority": 1, "count": 1}
         };
@@ -149,6 +167,9 @@ class CreepReport {
             case 6: 
                 config = this.configLevel6();
                 break;
+            case 7: 
+                config = this.configLevel7();
+                break;
         }
         
         // return the first role by priority that isn't filled out
@@ -190,7 +211,8 @@ class CreepReport {
                 case ('upgrader'):
                     if (level >= 4) {
                         // console.log(village.room.storage.store[RESOURCE_ENERGY])
-                        // console.log(Math.min(village.room.storage.store[RESOURCE_ENERGY]/config[role].scalingFactor, config[role].max))
+                        //console.log(village.villageName + ' ' + level + ' ' + config[role].max)
+                        //console.log(Math.min(village.room.storage.store[RESOURCE_ENERGY]/config[role].scalingFactor, config[role].max))
                         adjustedCount += Math.min(village.room.storage.store[RESOURCE_ENERGY]/config[role].scalingFactor, config[role].max);
                     }
                     break;
